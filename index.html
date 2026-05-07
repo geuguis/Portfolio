@@ -35,6 +35,51 @@
         overflow-x: hidden;
       }
 
+      /* PANTALLA DE ENTRADA (OVERLAY) */
+      #entry-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: var(--white);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.8s ease, visibility 0.8s;
+      }
+
+      #entry-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* EL BOTÓN AHORA EN VERDE COHERENTE */
+      #bottone1 {
+        padding: 16px 33px;
+        border-radius: 9px;
+        background: var(--green-light); /* Verde esmeralda suave de tu paleta */
+        border: none;
+        font-family: inherit;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.4s;
+        color: white; /* Texto blanco para mejor contraste */
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-size: 0.75rem;
+      }
+
+      #bottone1:hover {
+        background: var(--green); /* Se oscurece al pasar el mouse */
+        box-shadow: 7px 5px 56px -14px var(--green-light);
+      }
+
+      #bottone1:active {
+        transform: scale(0.97);
+        box-shadow: 7px 5px 56px -10px var(--green-light);
+      }
+
+      /* ESTILOS DE FONDO ORIGINALES */
       body::before {
         content: "";
         position: fixed;
@@ -89,10 +134,7 @@
         margin-bottom: 10px;
       }
 
-      h1 em {
-        font-style: italic;
-        color: var(--green);
-      }
+      h1 em { font-style: italic; color: var(--green); }
 
       .role {
         font-size: 0.72rem;
@@ -134,11 +176,7 @@
         margin-bottom: 14px;
       }
 
-      .skills-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
+      .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 
       .skill-tag {
         font-family: "DM Mono", monospace;
@@ -159,7 +197,6 @@
         transform: translateY(-2px);
       }
 
-      /* LEARNING SECTION */
       .learning-section {
         margin-top: 36px;
         opacity: 0;
@@ -171,11 +208,7 @@
         padding-left: 16px;
       }
 
-      .learning-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
+      .learning-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 
       .learning-tag {
         font-family: "DM Mono", monospace;
@@ -190,12 +223,7 @@
         transition: opacity 0.25s, transform 0.2s, color 0.25s, border-color 0.25s;
       }
 
-      .learning-tag::before {
-        content: "↗ ";
-        font-size: 0.6rem;
-        opacity: 0.8;
-      }
-
+      .learning-tag::before { content: "↗ "; font-size: 0.6rem; opacity: 0.8; }
       .learning-tag:hover {
         opacity: 1;
         color: var(--green);
@@ -333,8 +361,11 @@
   </head>
   <body>
 
-    <div class="wrapper">
+    <div id="entry-overlay">
+      <button id="bottone1"><strong>ENTRAR</strong></button>
+    </div>
 
+    <div class="wrapper">
       <header class="header">
         <p class="eyebrow">Portfolio — 2025</p>
         <h1>Guillermo <em>Eugui</em><br>Sánchez</h1>
@@ -372,7 +403,6 @@
           LinkedIn <span class="arrow">→</span>
         </a>
       </div>
-
     </div>
 
     <footer>© 2025 Guillermo Eugui</footer>
@@ -384,16 +414,34 @@
       </button>
     </div>
 
-   <audio id="myAudio" src="jazz.mp3" loop preload="auto"></audio>
+    <audio id="myAudio" src="jazz.mp3" loop preload="auto"></audio>
 
     <script>
       (function () {
-        const btn   = document.getElementById('musicBtn');
-        const icon  = document.getElementById('musicIcon');
-        const label = document.getElementById('musicLabel');
-        const audio = document.getElementById('myAudio');
+        const btn      = document.getElementById('musicBtn');
+        const icon     = document.getElementById('musicIcon');
+        const label    = document.getElementById('musicLabel');
+        const audio    = document.getElementById('myAudio');
+        const entryBtn = document.getElementById('bottone1');
+        const overlay  = document.getElementById('entry-overlay');
 
         let playing = false;
+
+        function playAudio() {
+          audio.play().then(() => {
+            playing = true;
+            icon.textContent = '♬';
+            label.textContent = 'pause';
+            btn.classList.add('playing');
+          }).catch(error => {
+            console.log("El navegador bloqueó el audio:", error);
+          });
+        }
+
+        entryBtn.addEventListener('click', function() {
+          overlay.classList.add('hidden');
+          playAudio();
+        });
 
         btn.addEventListener('click', function () {
           if (!playing) {
@@ -412,6 +460,5 @@
         });
       })();
     </script>
-
   </body>
 </html>
