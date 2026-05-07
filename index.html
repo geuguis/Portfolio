@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guillermo Eugui Sánchez</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --white: #f9faf7;
+        --green: #2d6a4f;
+        --green-light: #52b788;
+        --green-pale: #d8f3dc;
+        --ink: #1a1a1a;
+        --muted: #8a9e91;
+        --border: #ddeae0;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: "DM Mono", monospace;
+        background-color: var(--white);
+        color: var(--ink);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.4;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(82,183,136,0.07) 0%, transparent 70%);
+        top: -150px;
+        right: -200px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 520px;
+      }
+
+      .header {
+        margin-bottom: 48px;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: fadeUp 0.7s ease forwards 0.1s;
+      }
+
+      .eyebrow {
+        font-size: 0.68rem;
+        font-weight: 300;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--green-light);
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(2.2rem, 6vw, 3rem);
+        line-height: 1.1;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--green);
+      }
+
+      .role {
+        font-size: 0.72rem;
+        font-weight: 300;
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .divider {
+        width: 40px;
+        height: 1px;
+        background: var(--green-light);
+        margin: 32px 0;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.3s;
+      }
+
+      .bio {
+        font-size: 0.88rem;
+        line-height: 1.85;
+        color: #555;
+        max-width: 380px;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.45s;
+      }
+
+      .skills-section {
+        margin-top: 44px;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.6s;
+      }
+
+      .section-label {
+        font-size: 0.63rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+
+      .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .skill-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--green);
+        border: 1px solid var(--border);
+        background: transparent;
+        padding: 5px 14px;
+        border-radius: 2px;
+        transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.2s;
+        cursor: default;
+      }
+
+      .skill-tag:hover {
+        background: var(--green);
+        color: var(--white);
+        border-color: var(--green);
+        transform: translateY(-2px);
+      }
+
+      /* LEARNING SECTION */
+      .learning-section {
+        margin-top: 36px;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.72s;
+      }
+
+      .learning-inner {
+        border-left: 2px solid var(--green-pale);
+        padding-left: 16px;
+      }
+
+      .learning-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .learning-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--green-light);
+        border: 1px dashed var(--border);
+        background: transparent;
+        padding: 5px 14px;
+        border-radius: 2px;
+        opacity: 0.6;
+        cursor: default;
+        transition: opacity 0.25s, transform 0.2s, color 0.25s, border-color 0.25s;
+      }
+
+      .learning-tag::before {
+        content: "↗ ";
+        font-size: 0.6rem;
+        opacity: 0.8;
+      }
+
+      .learning-tag:hover {
+        opacity: 1;
+        color: var(--green);
+        border-color: var(--green-light);
+        transform: translateY(-2px);
+      }
+
+      .links-section {
+        margin-top: 48px;
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.88s;
+      }
+
+      .link-btn {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+        transition: color 0.2s, gap 0.2s;
+      }
+
+      .link-btn::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--green-light);
+        transition: width 0.3s ease;
+      }
+
+      .link-btn:hover { color: var(--green); gap: 10px; }
+      .link-btn:hover::after { width: 100%; }
+      .link-btn .arrow { font-size: 0.9rem; transition: transform 0.2s; }
+      .link-btn:hover .arrow { transform: translateX(3px); }
+
+      footer {
+        margin-top: 64px;
+        font-size: 0.63rem;
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        opacity: 0;
+        animation: fadeUp 0.5s ease forwards 1.05s;
+      }
+
+      /* MUSIC PLAYER */
+      .music-player {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        animation: fadeUp 0.5s ease forwards 1.2s;
+      }
+
+      .music-label {
+        font-family: "DM Mono", monospace;
+        font-size: 0.63rem;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+
+      .music-player:hover .music-label { opacity: 1; }
+
+      .music-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.25s, border-color 0.25s, transform 0.2s;
+        box-shadow: 0 2px 12px rgba(45,106,79,0.08);
+      }
+
+      .music-btn:hover {
+        background: var(--green);
+        border-color: var(--green);
+        transform: scale(1.06);
+      }
+
+      .music-btn:hover .music-icon { color: white; }
+
+      .music-icon {
+        font-size: 1rem;
+        color: var(--green);
+        transition: color 0.25s;
+        user-select: none;
+        line-height: 1;
+      }
+
+      @keyframes pulse-ring {
+        0%   { box-shadow: 0 2px 12px rgba(45,106,79,0.08), 0 0 0 0 rgba(82,183,136,0.35); }
+        70%  { box-shadow: 0 2px 12px rgba(45,106,79,0.08), 0 0 0 10px rgba(82,183,136,0); }
+        100% { box-shadow: 0 2px 12px rgba(45,106,79,0.08), 0 0 0 0 rgba(82,183,136,0); }
+      }
+
+      .music-btn.playing {
+        animation: pulse-ring 1.8s ease-out infinite;
+        background: var(--green);
+        border-color: var(--green);
+      }
+
+      .music-btn.playing .music-icon { color: white; }
+
+      @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 480px) {
+        body { padding: 40px 24px; }
+        h1 { font-size: 2rem; }
+        .music-player { bottom: 20px; right: 20px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="wrapper">
+
+      <header class="header">
+        <p class="eyebrow">Portfolio — 2025</p>
+        <h1>Guillermo <em>Eugui</em><br>Sánchez</h1>
+        <p class="role">Desarrollo de Aplicaciones Multiplataforma</p>
+      </header>
+
+      <div class="divider"></div>
+
+      <p class="bio">Estudiando DAM. Me gusta escribir código limpio y eficiente.</p>
+
+      <section class="skills-section">
+        <p class="section-label">Stack</p>
+        <div class="skills-grid">
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">VS Code</span>
+        </div>
+      </section>
+
+      <section class="learning-section">
+        <p class="section-label">Aprendiendo actualmente</p>
+        <div class="learning-inner">
+          <div class="learning-grid">
+            <span class="learning-tag">Java</span>
+            <span class="learning-tag">SQL</span>
+            <span class="learning-tag">Estructuras de Datos</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="links-section">
+        <a href="https://www.linkedin.com/in/guillermo-e%C3%BAgui-s%C3%A1nchez-8a4040409/" target="_blank" class="link-btn">
+          LinkedIn <span class="arrow">→</span>
+        </a>
+      </div>
+
+    </div>
+
+    <footer>© 2025 Guillermo Eugui</footer>
+
+    <div class="music-player" id="musicPlayer">
+      <span class="music-label" id="musicLabel">jazz</span>
+      <button class="music-btn" id="musicBtn" title="Reproducir jazz" aria-label="Reproducir música">
+        <span class="music-icon" id="musicIcon">♪</span>
+      </button>
+    </div>
+
+   <audio id="myAudio" src="jazz.mp3" loop preload="auto"></audio>
+
+    <script>
+      (function () {
+        const btn   = document.getElementById('musicBtn');
+        const icon  = document.getElementById('musicIcon');
+        const label = document.getElementById('musicLabel');
+        const audio = document.getElementById('myAudio');
+
+        let playing = false;
+
+        btn.addEventListener('click', function () {
+          if (!playing) {
+            audio.play();
+            icon.textContent = '♬';
+            label.textContent = 'pause';
+            btn.classList.add('playing');
+            playing = true;
+          } else {
+            audio.pause();
+            icon.textContent = '♪';
+            label.textContent = 'jazz';
+            btn.classList.remove('playing');
+            playing = false;
+          }
+        });
+      })();
+    </script>
+
+  </body>
+</html>
