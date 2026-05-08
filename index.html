@@ -782,12 +782,25 @@
         let animating = false;
         let startTime = null;
 
-        function resize() {
+        let lastWidth = window.innerWidth;
+
+        function initCanvasSize() {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
         }
-        resize();
-        window.addEventListener('resize', resize);
+        
+        initCanvasSize();
+
+        window.addEventListener('resize', function() {
+          if (window.innerWidth !== lastWidth) {
+            lastWidth = window.innerWidth;
+            initCanvasSize();
+            
+            if (canvas.classList.contains('visible') && window.startFlowers) {
+              window.startFlowers();
+            }
+          }
+        });
 
         const palette = [
           '#2d6a4f', '#52b788', '#d8f3dc', '#8a9e91', '#b7e4c7', '#74c69d', '#40916c'
