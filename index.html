@@ -44,12 +44,97 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transition: opacity 0.8s ease, visibility 0.8s;
+        gap: 0;
+        transition: opacity 1s ease, visibility 1s;
+        overflow: hidden;
       }
 
       #entry-overlay.hidden {
         opacity: 0;
         visibility: hidden;
+      }
+
+      #entry-overlay::before {
+        content: "";
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(82,183,136,0.13) 0%, transparent 68%);
+        pointer-events: none;
+        animation: glowPulse 4s ease-in-out infinite;
+      }
+
+      @keyframes glowPulse {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50%       { transform: scale(1.12); opacity: 1; }
+      }
+
+      #entry-overlay::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(82,183,136,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(82,183,136,0.04) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+      }
+
+      .entry-name {
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(2rem, 5vw, 2.8rem);
+        color: var(--ink);
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+        text-align: center;
+        margin-bottom: 6px;
+        opacity: 0;
+        transform: translateY(14px);
+        animation: overlayFadeUp 0.9s ease forwards 0.2s;
+        position: relative;
+        z-index: 1;
+      }
+
+      .entry-name em { font-style: italic; color: var(--green); }
+
+      .entry-tagline {
+        font-family: "DM Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 44px;
+        opacity: 0;
+        animation: overlayFadeUp 0.9s ease forwards 0.45s;
+        position: relative;
+        z-index: 1;
+      }
+
+      .entry-divider {
+        width: 0;
+        height: 1px;
+        background: var(--green-light);
+        margin-bottom: 44px;
+        opacity: 0;
+        animation: dividerGrow 0.8s ease forwards 0.65s;
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes dividerGrow {
+        to { width: 40px; opacity: 1; }
+      }
+
+      @keyframes overlayFadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      #overlay-particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
       }
 
       #bottone1 {
@@ -65,6 +150,10 @@
         text-transform: uppercase;
         letter-spacing: 0.15em;
         font-size: 0.75rem;
+        position: relative;
+        z-index: 1;
+        opacity: 0;
+        animation: overlayFadeUp 0.9s ease forwards 0.85s;
       }
 
       #bottone1:hover {
@@ -661,9 +750,13 @@
   </head>
   <body>
 
-    <div id="entry-overlay">
-      <button id="bottone1"><strong>ENTRAR</strong></button>
-    </div>
+  <div id="entry-overlay">
+    <canvas id="overlay-particles"></canvas>
+    <p class="entry-name">Guillermo <em>Eugui</em></p>
+    <p class="entry-tagline">Desarrollo · Código · Diseño</p>
+    <div class="entry-divider"></div>
+    <button id="bottone1"><strong>ENTRAR</strong></button>
+  </div>
 
     <canvas id="flowers-canvas"></canvas>
 
@@ -773,6 +866,69 @@
     </div>
 
     <audio id="myAudio" src="jazz.mp3" loop preload="auto"></audio>
+
+    <script>
+	
+      (function() {
+        const canvas = document.getElementById('overlay-particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let raf;
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const colors = ['#52b788','#2d6a4f','#b7e4c7','#8a9e91','#d8f3dc'];
+
+        function makeParticle() {
+          return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: 1.2 + Math.random() * 2.8,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            alpha: 0.08 + Math.random() * 0.18,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: -0.15 - Math.random() * 0.3,
+            wobble: Math.random() * Math.PI * 2,
+            wobbleSpeed: 0.008 + Math.random() * 0.012
+          };
+        }
+
+        for (let i = 0; i < 55; i++) particles.push(makeParticle());
+
+        function drawParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach(p => {
+            p.wobble += p.wobbleSpeed;
+            p.x += p.vx + Math.sin(p.wobble) * 0.18;
+            p.y += p.vy;
+            if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          });
+          raf = requestAnimationFrame(drawParticles);
+        }
+
+        drawParticles();
+
+        const overlay = document.getElementById('entry-overlay');
+        const observer = new MutationObserver(() => {
+          if (overlay.classList.contains('hidden')) {
+            cancelAnimationFrame(raf);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        });
+        observer.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+      })();
+    </script>
 
     <script>
       (function() {
