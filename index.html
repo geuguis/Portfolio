@@ -6,20 +6,55 @@
     <title>Guillermo Eugui Sánchez — Portfolio</title>
 
     <!-- SEO -->
-    <meta name="description" content="Portfolio de Guillermo Eugui Sánchez, estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM). Proyectos web con HTML, CSS, JavaScript y C#." />
+    <meta name="description" content="Junior Full-Stack Developer en Sevilla, disponible para prácticas en empresas. Stack: HTML5, CSS, JavaScript y C#. Interfaces web limpias, accesibles y mantenibles." />
     <meta name="author" content="Guillermo Eugui Sánchez" />
     <meta name="theme-color" content="#2d6a4f" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://geuguis.github.io/" />
+
+    <!-- Favicon (sustitúyelos por los tuyos en /favicon.svg, /apple-touch-icon.png) -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Open Graph / redes sociales -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Guillermo Eugui Sánchez — Portfolio" />
-    <meta property="og:description" content="Estudiante de DAM. Desarrollo, código y diseño." />
+    <meta property="og:title" content="Guillermo Eugui Sánchez — Junior Full-Stack Developer" />
+    <meta property="og:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas. Portfolio con proyectos web limpios y accesibles." />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content="https://geuguis.github.io/" />
+    <!-- TODO: crea og-cover.png 1200×630 px y súbelo a la raíz -->
+    <meta property="og:image" content="https://geuguis.github.io/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Portfolio de Guillermo Eugui Sánchez — Junior Full-Stack Developer" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Guillermo Eugui Sánchez — Portfolio" />
-    <meta name="twitter:description" content="Estudiante de DAM. Desarrollo, código y diseño." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Guillermo Eugui Sánchez — Junior Full-Stack Developer" />
+    <meta name="twitter:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas." />
+    <meta name="twitter:image" content="https://geuguis.github.io/og-cover.png" />
+
+    <!-- Datos estructurados: Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Guillermo Eugui Sánchez",
+      "jobTitle": "Junior Full-Stack Developer",
+      "description": "Junior Full-Stack Developer en formación, especializado en desarrollo web con HTML5, CSS, JavaScript y C#.",
+      "url": "https://geuguis.github.io/",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Sevilla",
+        "addressCountry": "ES"
+      },
+      "knowsAbout": ["HTML5", "CSS", "JavaScript", "C#", "Java", "SQL", "Desarrollo Web", "Accesibilidad Web"],
+      "sameAs": [
+        "https://github.com/geuguis",
+        "https://www.linkedin.com/in/guillermo-e%C3%BAgui-s%C3%A1nchez-8a4040409/"
+      ]
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,7 +66,7 @@
         --green-light: #52b788;
         --green-pale: #d8f3dc;
         --ink: #1a1a1a;
-        --muted: #8a9e91;
+        --muted: #5d7468;
         --border: #ddeae0;
       }
 
@@ -521,6 +556,100 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
+      /* Badge de disponibilidad */
+      .availability {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 5px 12px 5px 11px;
+        border: 1px solid var(--green-pale);
+        border-radius: 999px;
+        background: rgba(216, 243, 220, 0.45);
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--green);
+      }
+
+      .availability::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green-light);
+        animation: pulse-dot 2.2s ease-out infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%   { box-shadow: 0 0 0 0 rgba(82,183,136,0.65); }
+        70%  { box-shadow: 0 0 0 7px rgba(82,183,136,0); }
+        100% { box-shadow: 0 0 0 0 rgba(82,183,136,0); }
+      }
+
+      /* CTA primaria de contacto */
+      .cta-primary {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 400;
+        background: var(--green);
+        color: var(--white);
+        border: none;
+        padding: 11px 22px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s, gap 0.2s;
+        box-shadow: 0 2px 18px rgba(45,106,79,0.18);
+      }
+
+      .cta-primary:hover {
+        background: var(--green-light);
+        gap: 12px;
+        box-shadow: 0 6px 28px rgba(45,106,79,0.22);
+      }
+
+      .cta-primary:active { transform: scale(0.98); }
+
+      .cta-primary:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
+      }
+
+      .links-section {
+        flex-wrap: wrap;
+      }
+
+      /* Toast de notificación (email copiado / mailto abierto) */
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--ink);
+        color: var(--white);
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        padding: 10px 18px;
+        border-radius: 3px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s, transform 0.3s;
+        z-index: 200;
+        box-shadow: 0 6px 28px rgba(0,0,0,0.18);
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
           animation-duration: 0.01ms !important;
@@ -608,8 +737,22 @@
       .projects-inner {
         position: relative;
         width: 100%;
-        max-width: 560px;
+        max-width: 1100px;
         margin: auto 0;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+        align-items: start;
+      }
+
+      @media (max-width: 820px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 22px;
+        }
       }
 
       .projects-header {
@@ -822,12 +965,12 @@
   </head>
   <body>
 
-  <div id="entry-overlay" role="dialog" aria-label="Pantalla de bienvenida">
+  <div id="entry-overlay" role="dialog" aria-modal="true" aria-labelledby="entry-name-id">
     <canvas id="overlay-particles" aria-hidden="true"></canvas>
-    <p class="entry-name">Guillermo <em>Eugui</em></p>
+    <p class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></p>
     <p class="entry-tagline">Desarrollo · Código · Diseño</p>
     <div class="entry-divider" aria-hidden="true"></div>
-    <button id="bottone1" aria-label="Entrar al portfolio y reproducir música de fondo"><strong>ENTRAR</strong></button>
+    <button id="bottone1" aria-label="Entrar al portfolio y reproducir música de fondo">ENTRAR</button>
   </div>
 
     <canvas id="flowers-canvas" aria-hidden="true"></canvas>
@@ -835,14 +978,15 @@
     <main id="portfolio-view">
       <div class="wrapper">
         <header class="header">
-          <p class="eyebrow">Portfolio — <span class="js-year">2025</span></p>
+          <p class="eyebrow">Portfolio · <span class="js-year">2026</span></p>
           <h1><em>Guillermo Eugui Sánchez</em></h1>
-          <p class="role">Desarrollo de Aplicaciones Multiplataforma</p>
+          <p class="role">Junior Full-Stack Developer · Sevilla</p>
+          <p class="availability" aria-label="Estado: disponible para prácticas en empresas">Disponible para prácticas</p>
         </header>
 
         <div class="divider" aria-hidden="true"></div>
 
-        <p class="bio">Estudiante de DAM en Sevilla. Me interesa el desarrollo web y de aplicaciones, y disfruto resolviendo problemas escribiendo código limpio y eficiente.</p>
+        <p class="bio">Construyo interfaces web limpias, accesibles y bien estructuradas. Curso DAM en Sevilla y trabajo con HTML5, CSS, JavaScript y C#. Me importa el detalle, el código mantenible y entender el problema antes de resolverlo. Busco prácticas en empresas — incorporación inmediata.</p>
 
         <section class="skills-section" aria-labelledby="stack-label">
           <p class="section-label" id="stack-label">Stack</p>
@@ -867,8 +1011,14 @@
         </section>
 
         <nav class="links-section" aria-label="Enlaces principales">
+          <button class="cta-primary" id="contactBtn" type="button" aria-label="Abrir cliente de correo para escribirme">
+            Hablemos <span class="arrow" aria-hidden="true">→</span>
+          </button>
           <a href="https://www.linkedin.com/in/guillermo-e%C3%BAgui-s%C3%A1nchez-8a4040409/" target="_blank" rel="noopener noreferrer" class="link-btn">
             LinkedIn <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="https://github.com/geuguis" target="_blank" rel="noopener noreferrer" class="link-btn">
+            GitHub <span class="arrow" aria-hidden="true">→</span>
           </a>
           <button class="projects-trigger" id="openProjects" aria-controls="projects-view" aria-expanded="false">
             Proyectos <span class="arrow" aria-hidden="true">→</span>
@@ -876,7 +1026,7 @@
         </nav>
       </div>
 
-      <footer>© <span class="js-year">2025</span> Guillermo Eugui</footer>
+      <footer>© <span class="js-year">2026</span> Guillermo Eugui · Sevilla</footer>
     </main>
 
     <section id="projects-view" aria-label="Lista de proyectos" aria-hidden="true">
@@ -885,9 +1035,54 @@
         <button class="back-btn" id="backBtn">← Volver al portfolio</button>
 
         <div class="projects-header">
-          <p class="projects-eyebrow">Trabajos — <span class="js-year">2025</span></p>
+          <p class="projects-eyebrow">Trabajos · <span class="js-year">2026</span></p>
           <h2 class="projects-title">Mis <em>proyectos</em></h2>
         </div>
+
+        <div class="projects-grid">
+
+        <article class="project-card">
+          <div class="project-card-accent" aria-hidden="true"></div>
+
+          <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
+            <div class="project-preview-overlay" aria-hidden="true"></div>
+            <iframe
+              class="project-preview"
+              src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
+              title="Freekiland 3D — vista previa"
+              loading="lazy"
+              sandbox="allow-scripts"
+              referrerpolicy="no-referrer"
+              tabindex="-1"
+            ></iframe>
+          </a>
+
+          <div class="project-body">
+            <p class="project-number">Proyecto 002 · Cliente real</p>
+            <h3 class="project-name">Freekiland 3D</h3>
+            <p class="project-desc">
+              Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
+              empresa de impresión y prototipado 3D. Diseño responsive con secciones de
+              servicios, productos y contacto, pensada para presentar la marca y captar
+              clientes potenciales.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">HTML5</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">Responsive</span>
+              <span class="project-tag">Prácticas</span>
+            </div>
+            <div class="project-links">
+              <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">
+                Ver en vivo <span aria-hidden="true">↗</span>
+              </a>
+              <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">
+                Código fuente <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
 
         <article class="project-card">
           <div class="project-card-accent" aria-hidden="true"></div>
@@ -899,7 +1094,8 @@
               src="https://geuguis.github.io/Primer-reto-web/"
               title="Club Atlético El Plantinar — vista previa"
               loading="lazy"
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts"
+              referrerpolicy="no-referrer"
               tabindex="-1"
             ></iframe>
           </a>
@@ -909,8 +1105,8 @@
             <h3 class="project-name">Club Atlético El Plantinar</h3>
             <p class="project-desc">
               Mi primera página web, construida desde cero. Sitio para un club deportivo
-              que incluye presentación del equipo, galería y sección de contacto.
-              Maquetación completa con HTML5 y CSS puro.
+              con presentación del equipo, galería y sección de contacto.
+              Maquetación completa en HTML5 y CSS puro, sin dependencias.
             </p>
             <div class="project-tags">
               <span class="project-tag">HTML5</span>
@@ -921,12 +1117,14 @@
               <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">
                 Ver en vivo <span aria-hidden="true">↗</span>
               </a>
-              <a href="https://github.com/geuguis/Primer-reto-web.git" target="_blank" rel="noopener noreferrer" class="project-link">
+              <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">
                 Código fuente <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
         </article>
+
+        </div>
 
       </div>
     </section>
@@ -937,6 +1135,8 @@
         <span class="music-icon" id="musicIcon" aria-hidden="true">♪</span>
       </button>
     </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <audio id="myAudio" src="jazz.mp3" loop preload="none"></audio>
 
@@ -1190,7 +1390,7 @@
     </script>
 
     <script>
-      // Lógica principal: navegación entre vistas + reproductor de música
+      // Lógica principal: navegación entre vistas + reproductor de música + contacto
       (function () {
         const btn        = document.getElementById('musicBtn');
         const icon       = document.getElementById('musicIcon');
@@ -1202,8 +1402,62 @@
         const backBtn       = document.getElementById('backBtn');
         const portfolioView = document.getElementById('portfolio-view');
         const projectsView  = document.getElementById('projects-view');
+        const contactBtn    = document.getElementById('contactBtn');
+        const toast         = document.getElementById('toast');
 
         let playing = false;
+
+        // ─── Bloquea contenido tras el overlay (focus trap básico) ──────────
+        // El <main> queda inerte hasta que se cierra el overlay
+        if (portfolioView && 'inert' in HTMLElement.prototype) {
+          portfolioView.inert = true;
+        }
+
+        // ─── Toast helper ──────────────────────────────────────────────────
+        let toastTimer = null;
+        function showToast(msg, ms) {
+          if (!toast) return;
+          toast.textContent = msg;
+          toast.classList.add('visible');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            toast.classList.remove('visible');
+          }, ms || 3200);
+        }
+
+        // ─── Contacto con email ofuscado ───────────────────────────────────
+        // El email NUNCA aparece como string literal en el HTML/JS source.
+        // Se reconstruye en runtime al hacer clic, así los scrapers de spam
+        // que solo leen el código estático no lo capturan.
+        function buildEmail() {
+          // Partes intencionalmente fragmentadas + char-codes para el "@"
+          var u = ['don', 'ge', 'ugui'].join('');
+          var at = String.fromCharCode(0x40);
+          var d = ['gmail', 'com'].join(String.fromCharCode(0x2E));
+          return u + at + d;
+        }
+
+        if (contactBtn) {
+          contactBtn.addEventListener('click', function () {
+            var email = buildEmail();
+            var subject = encodeURIComponent('Contacto desde tu portfolio');
+            var body    = encodeURIComponent(
+              'Hola Guillermo,\n\nMe pongo en contacto contigo desde tu portfolio.\n\n'
+            );
+            // Intenta copiar el email al portapapeles como red de seguridad
+            if (navigator.clipboard && window.isSecureContext) {
+              navigator.clipboard.writeText(email).then(function () {
+                showToast('Email copiado · abriendo cliente de correo…');
+              }).catch(function () {
+                showToast('Abriendo cliente de correo…');
+              });
+            } else {
+              showToast('Abriendo cliente de correo…');
+            }
+            // Abre el cliente de correo del usuario
+            window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+          });
+        }
 
         // Sincroniza UI con el estado real del audio
         function setPlayingUI(isPlaying) {
@@ -1242,6 +1496,10 @@
         // Botón ENTRAR
         entryBtn.addEventListener('click', function() {
           overlay.classList.add('hidden');
+          // Libera el foco al portfolio
+          if (portfolioView && 'inert' in HTMLElement.prototype) {
+            portfolioView.inert = false;
+          }
           tryPlay();
           if (window.startFlowers) window.startFlowers();
         });
