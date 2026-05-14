@@ -481,7 +481,7 @@
         position: fixed;
         bottom: 28px;
         right: 28px;
-        z-index: 10;
+        z-index: 110;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -960,6 +960,59 @@
         border: 0;
       }
 
+      /* Etiqueta de grupo dentro de proyectos */
+      .projects-group-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 22px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* Botón ver más */
+      .see-more-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 40px 0 0;
+      }
+
+      .see-more-btn {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        cursor: pointer;
+        padding: 10px 26px;
+        border-radius: 2px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.2s, border-color 0.2s, gap 0.2s;
+      }
+
+      .see-more-btn:hover {
+        color: var(--green);
+        border-color: var(--green-light);
+        gap: 13px;
+      }
+
+      .see-more-btn:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
+        border-radius: 2px;
+      }
+
+      /* Sección todos los proyectos */
+      .all-projects-section {
+        padding-top: 64px;
+        scroll-margin-top: 32px;
+      }
+
     </style>
   </head>
   <body>
@@ -1038,132 +1091,278 @@
           <h2 class="projects-title">Mis <em>proyectos</em></h2>
         </div>
 
+        <!-- DESTACADOS -->
+        <p class="projects-group-label">Proyectos destacados</p>
+
         <div class="projects-grid">
 
-        <article class="project-card">
-          <div class="project-card-accent" aria-hidden="true"></div>
-
-          <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
-            <div class="project-preview-overlay" aria-hidden="true"></div>
-            <iframe
-              class="project-preview"
-              src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
-              title="Freekiland 3D — vista previa"
-              loading="lazy"
-              sandbox="allow-scripts"
-              referrerpolicy="no-referrer"
-              tabindex="-1"
-            ></iframe>
-          </a>
-
-          <div class="project-body">
-            <p class="project-number">Proyecto 002 · Cliente real</p>
-            <h3 class="project-name">Freekiland 3D</h3>
-            <p class="project-desc">
-              Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
-              empresa de impresión y prototipado 3D. Diseño responsive con secciones de
-              servicios, productos y contacto, pensada para presentar la marca y captar
-              clientes potenciales.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">HTML5</span>
-              <span class="project-tag">CSS</span>
-              <span class="project-tag">JavaScript</span>
-              <span class="project-tag">Responsive</span>
-              <span class="project-tag">Prácticas</span>
+          <article class="project-card">
+            <div class="project-card-accent" aria-hidden="true"></div>
+            <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
+              <div class="project-preview-overlay" aria-hidden="true"></div>
+              <iframe
+                class="project-preview"
+                src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
+                title="Freekiland 3D — vista previa"
+                loading="lazy"
+                sandbox="allow-scripts"
+                referrerpolicy="no-referrer"
+                tabindex="-1"
+              ></iframe>
+            </a>
+            <div class="project-body">
+              <p class="project-number">Proyecto 002 · Cliente real</p>
+              <h3 class="project-name">Freekiland 3D</h3>
+              <p class="project-desc">
+                Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
+                empresa de impresión y prototipado 3D. Diseño responsive con secciones de
+                servicios, productos y contacto, pensada para presentar la marca y captar
+                clientes potenciales.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">HTML5</span>
+                <span class="project-tag">CSS</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">Responsive</span>
+                <span class="project-tag">Prácticas</span>
+              </div>
+              <div class="project-links">
+                <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+              </div>
             </div>
-            <div class="project-links">
-              <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">
-                Ver en vivo <span aria-hidden="true">↗</span>
-              </a>
-              <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">
-                Código fuente <span aria-hidden="true">→</span>
-              </a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-card-accent" aria-hidden="true"></div>
+            <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
+              <div class="project-preview-overlay" aria-hidden="true"></div>
+              <iframe
+                class="project-preview"
+                src="https://geuguis.github.io/LandingPage-003/"
+                title="Landing Page Temática Balatro — vista previa"
+                loading="lazy"
+                sandbox="allow-scripts"
+                referrerpolicy="no-referrer"
+                tabindex="-1"
+              ></iframe>
+            </a>
+            <div class="project-body">
+              <p class="project-number">Proyecto 004 · Cliente real</p>
+              <h3 class="project-name">Landing Page Temática Balatro</h3>
+              <p class="project-desc">
+                Landing Page realizada para un compañero de DAM con temática inspirada en el videojuego Balatro.
+                Visualmente original con toque retro y friki, assets propios y de la comunidad, y efectos
+                interactivos a medida.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">HTML5</span>
+                <span class="project-tag">CSS</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">Responsive</span>
+              </div>
+              <div class="project-links">
+                <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+              </div>
             </div>
+          </article>
+
+        </div>
+
+        <!-- Botón ver más -->
+        <div class="see-more-wrap">
+          <button class="see-more-btn" id="seeMoreBtn" aria-label="Ver todos los proyectos">
+            Ver más proyectos <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+
+        <!-- TODOS LOS PROYECTOS -->
+        <div id="all-projects-anchor" class="all-projects-section">
+          <p class="projects-group-label">Todos los proyectos</p>
+
+          <div class="projects-grid">
+
+            <article class="project-card">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
+                <div class="project-preview-overlay" aria-hidden="true"></div>
+                <iframe
+                  class="project-preview"
+                  src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
+                  title="Freekiland 3D — vista previa"
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerpolicy="no-referrer"
+                  tabindex="-1"
+                ></iframe>
+              </a>
+              <div class="project-body">
+                <p class="project-number">Proyecto 002 · Cliente real</p>
+                <h3 class="project-name">Freekiland 3D</h3>
+                <p class="project-desc">
+                  Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
+                  empresa de impresión y prototipado 3D. Diseño responsive con secciones de
+                  servicios, productos y contacto, pensada para presentar la marca y captar
+                  clientes potenciales.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML5</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">Responsive</span>
+                  <span class="project-tag">Prácticas</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
+                <div class="project-preview-overlay" aria-hidden="true"></div>
+                <iframe
+                  class="project-preview"
+                  src="https://geuguis.github.io/LandingPage-003/"
+                  title="Landing Page Temática Balatro — vista previa"
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerpolicy="no-referrer"
+                  tabindex="-1"
+                ></iframe>
+              </a>
+              <div class="project-body">
+                <p class="project-number">Proyecto 004 · Cliente real</p>
+                <h3 class="project-name">Landing Page Temática Balatro</h3>
+                <p class="project-desc">
+                  Landing Page realizada para un compañero de DAM con temática inspirada en el videojuego Balatro.
+                  Visualmente original con toque retro y friki, assets propios y de la comunidad, y efectos
+                  interactivos a medida.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML5</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">Responsive</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Club Atlético El Plantinar en una nueva pestaña">
+                <div class="project-preview-overlay" aria-hidden="true"></div>
+                <iframe
+                  class="project-preview"
+                  src="https://geuguis.github.io/Primer-reto-web/"
+                  title="Club Atlético El Plantinar — vista previa"
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerpolicy="no-referrer"
+                  tabindex="-1"
+                ></iframe>
+              </a>
+              <div class="project-body">
+                <p class="project-number">Proyecto 001</p>
+                <h3 class="project-name">Club Atlético El Plantinar</h3>
+                <p class="project-desc">
+                  Mi primera página web, construida desde cero. Sitio para un club deportivo
+                  con presentación del equipo, galería y sección de contacto.
+                  Maquetación completa en HTML5 y CSS puro, sin dependencias.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML5</span>
+                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">Responsive</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" aria-label="Ver Portfolio Next.js + Three.js en una nueva pestaña">
+                <div class="project-preview-overlay" aria-hidden="true"></div>
+                <iframe
+                  class="project-preview"
+                  src="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/"
+                  title="Portfolio Next.js + Three.js — vista previa"
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerpolicy="no-referrer"
+                  tabindex="-1"
+                ></iframe>
+              </a>
+              <div class="project-body">
+                <p class="project-number">Demo · Next.js + Three.js</p>
+                <h3 class="project-name">Portfolio with Next.js</h3>
+                <p class="project-desc">
+                  Portfolio construido con Next.js 15 (App Router) y Three.js para renderizado 3D en navegador.
+                  La integración de un motor 3D en un portfolio DAM aporta profundidad visual inusual en el sector.
+                  Diseño sobrio con Tailwind CSS y Shadcn/UI: modo oscuro, accesibilidad y rendimiento Vercel-first.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">Next.js 15</span>
+                  <span class="project-tag">Three.js</span>
+                  <span class="project-tag">Tailwind CSS</span>
+                  <span class="project-tag">Shadcn/UI</span>
+                  <span class="project-tag">App Router</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/DEMO-PortfolioWith-Nextjs" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Cyberpunk WebGL en una nueva pestaña">
+                <div class="project-preview-overlay" aria-hidden="true"></div>
+                <iframe
+                  class="project-preview"
+                  src="https://geuguis.github.io/Demo-LandingPage002/"
+                  title="Landing Page Cyberpunk WebGL — vista previa"
+                  loading="lazy"
+                  sandbox="allow-scripts"
+                  referrerpolicy="no-referrer"
+                  tabindex="-1"
+                ></iframe>
+              </a>
+              <div class="project-body">
+                <p class="project-number">Demo · WebGL + Vanilla JS</p>
+                <h3 class="project-name">Landing Page Cyberpunk</h3>
+                <p class="project-desc">
+                  Demo experimental de ingeniería frontend pura. El fondo líquido y las ondas al clic se calculan
+                  directamente en la GPU mediante shaders GLSL. Estética HUD con elementos de interfaz vivos:
+                  coordenadas, reloj y estado del sistema. Cursor y seguimiento de luz optimizados a mano con
+                  requestAnimationFrame — control total sobre hardware y estética, sin framework.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">WebGL</span>
+                  <span class="project-tag">GLSL Shaders</span>
+                  <span class="project-tag">Vanilla JS</span>
+                  <span class="project-tag">GPU</span>
+                  <span class="project-tag">Cyberpunk HUD</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/Demo-LandingPage002" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
           </div>
-        </article>
-		
-		       <article class="project-card">
-          <div class="project-card-accent" aria-hidden="true"></div>
-
-          <a href="https://geuguis.github.io/portfolio-joseluis/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page estilo Balatro en una nueva pestaña">
-            <div class="project-preview-overlay" aria-hidden="true"></div>
-            <iframe
-              class="project-preview"
-              src="https://geuguis.github.io/portfolio-joseluis/"
-              title="Landing Page estilo Balatro — vista previa"
-              loading="lazy"
-              sandbox="allow-scripts"
-              referrerpolicy="no-referrer"
-              tabindex="-1"
-            ></iframe>
-          </a>
-
-          <div class="project-body">
-            <p class="project-number">Proyecto 004 · Cliente real</p>
-            <h3 class="project-name">Portfolio Balatro</h3>
-            <p class="project-desc">
-              Landing Page realizada para un compañero de desarrollo de aplicaciones multiplataformas, contiene una temática
-			  inspirada en el videojuego balatro, contiene assets propios como creado por otros usuarios (https://pound-os.neocities.org/balatro_css),
-		      este landing page es visualmente original, con un toque retro y friki, y efectos propios.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">HTML5</span>
-              <span class="project-tag">CSS</span>
-              <span class="project-tag">JavaScript</span>
-              <span class="project-tag">Responsive</span>
-            </div>
-            <div class="project-links">
-              <a href="https://geuguis.github.io/portfolio-joseluis/" target="_blank" rel="noopener noreferrer" class="project-link primary">
-                Ver en vivo <span aria-hidden="true">↗</span>
-              </a>
-              <a href="https://github.com/geuguis/portfolio-joseluis" target="_blank" rel="noopener noreferrer" class="project-link">
-                Código fuente <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card">
-          <div class="project-card-accent" aria-hidden="true"></div>
-
-          <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Club Atlético El Plantinar en una nueva pestaña">
-            <div class="project-preview-overlay" aria-hidden="true"></div>
-            <iframe
-              class="project-preview"
-              src="https://geuguis.github.io/Primer-reto-web/"
-              title="Club Atlético El Plantinar — vista previa"
-              loading="lazy"
-              sandbox="allow-scripts"
-              referrerpolicy="no-referrer"
-              tabindex="-1"
-            ></iframe>
-          </a>
-
-          <div class="project-body">
-            <p class="project-number">Proyecto 001</p>
-            <h3 class="project-name">Club Atlético El Plantinar</h3>
-            <p class="project-desc">
-              Mi primera página web, construida desde cero. Sitio para un club deportivo
-              con presentación del equipo, galería y sección de contacto.
-              Maquetación completa en HTML5 y CSS puro, sin dependencias.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">HTML5</span>
-              <span class="project-tag">CSS</span>
-              <span class="project-tag">Responsive</span>
-            </div>
-            <div class="project-links">
-              <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">
-                Ver en vivo <span aria-hidden="true">↗</span>
-              </a>
-              <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">
-                Código fuente <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </div>
-        </article>
-
         </div>
 
       </div>
@@ -1443,7 +1642,10 @@
         const portfolioView = document.getElementById('portfolio-view');
         const projectsView  = document.getElementById('projects-view');
         const contactBtn    = document.getElementById('contactBtn');
+        const seeMoreBtn    = document.getElementById('seeMoreBtn');
         const toast         = document.getElementById('toast');
+
+        audio.volume = 0.6;
 
         let playing = false;
 
@@ -1572,6 +1774,13 @@
             openProjects.focus();
           }, 650);
         });
+
+        // Scroll a todos los proyectos
+        if (seeMoreBtn) {
+          seeMoreBtn.addEventListener('click', function () {
+            document.getElementById('all-projects-anchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
 
         // ESC para volver desde la vista de proyectos
         document.addEventListener('keydown', function (e) {
