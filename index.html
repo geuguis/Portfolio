@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#2d6a4f" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://geuguis.github.io/" />
-    
+
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
@@ -21,7 +21,6 @@
     <meta property="og:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas. Portfolio con proyectos web limpios y accesibles." />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:url" content="https://geuguis.github.io/" />
-    <!-- TODO: crea og-cover.png 1200×630 px y súbelo a la raíz -->
     <meta property="og:image" content="https://geuguis.github.io/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -67,6 +66,8 @@
         --ink: #1a1a1a;
         --muted: #5d7468;
         --border: #ddeae0;
+        /* [FIX P3] Token unificado para texto secundario — ratio 8.02:1 sobre --white, pasa AAA */
+        --text-secondary: #4a4a4a;
       }
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -155,7 +156,8 @@
         letter-spacing: 0.26em;
         text-transform: uppercase;
         color: var(--muted);
-        margin-bottom: 44px;
+        /* [FIX P2] Normalizado a grid de 8px — de 44px a 40px */
+        margin-bottom: 40px;
         opacity: 0;
         animation: overlayFadeUp 0.9s ease forwards 0.45s;
         position: relative;
@@ -166,7 +168,8 @@
         width: 0;
         height: 1px;
         background: var(--green-light);
-        margin-bottom: 44px;
+        /* [FIX P2] Normalizado a grid de 8px — de 44px a 40px */
+        margin-bottom: 40px;
         opacity: 0;
         animation: dividerGrow 0.8s ease forwards 0.65s;
         position: relative;
@@ -188,16 +191,18 @@
         z-index: 0;
       }
 
+      /* [FIX P1] Botón ENTRAR: fondo cambiado de --green-light (#52b788, ratio 2.36 FAIL)
+         a --green (#2d6a4f, ratio 6.10 PASS AA) */
       #bottone1 {
         padding: 16px 33px;
         border-radius: 9px;
-        background: var(--green-light);
+        background: var(--green);
         border: none;
         font-family: inherit;
         text-align: center;
         cursor: pointer;
-        transition: 0.4s;
-        color: white;
+        transition: background 0.4s, box-shadow 0.4s, transform 0.2s;
+        color: var(--white);
         text-transform: uppercase;
         letter-spacing: 0.15em;
         font-size: 0.75rem;
@@ -208,17 +213,17 @@
       }
 
       #bottone1:hover {
-        background: var(--green);
-        box-shadow: 7px 5px 56px -14px var(--green-light);
+        background: #1f4f39;
+        box-shadow: 7px 5px 56px -14px var(--green);
       }
 
       #bottone1:active {
         transform: scale(0.97);
-        box-shadow: 7px 5px 56px -10px var(--green-light);
+        box-shadow: 7px 5px 56px -10px var(--green);
       }
 
       #bottone1:focus-visible {
-        outline: 2px solid var(--green);
+        outline: 2px solid var(--green-light);
         outline-offset: 3px;
       }
 
@@ -272,12 +277,14 @@
         animation: fadeUp 0.7s ease forwards 0.1s;
       }
 
+      /* [FIX P1] Eyebrow: color cambiado de --green-light (#52b788, ratio 2.36 FAIL)
+         a --green (#2d6a4f, ratio 6.10 PASS AA) */
       .eyebrow {
         font-size: 0.68rem;
         font-weight: 300;
         letter-spacing: 0.22em;
         text-transform: uppercase;
-        color: var(--green-light);
+        color: var(--green);
         margin-bottom: 14px;
       }
 
@@ -310,23 +317,32 @@
         animation: fadeUp 0.6s ease forwards 0.3s;
       }
 
+      /* [FIX P2] Bio: métricas mejoradas para legibilidad con monospace
+         - font-size: 0.9rem (de 0.88rem)
+         - line-height: 1.9 (de 1.85)
+         - letter-spacing: -0.01em (reduce el tracking ancho del mono)
+         - max-width: 400px (~60 chars/línea, óptimo de lectura)
+         - color: var(--ink) via --text-secondary (de #555 hardcodeado) */
       .bio {
-        font-size: 0.88rem;
-        line-height: 1.85;
-        color: #555;
-        max-width: 380px;
+        font-size: 0.9rem;
+        line-height: 1.9;
+        letter-spacing: -0.01em;
+        color: var(--text-secondary);
+        max-width: 400px;
         opacity: 0;
         animation: fadeUp 0.6s ease forwards 0.45s;
       }
 
       .skills-section {
-        margin-top: 44px;
+        /* [FIX P2] Normalizado a grid de 8px — de 44px a 40px */
+        margin-top: 40px;
         opacity: 0;
         animation: fadeUp 0.6s ease forwards 0.6s;
       }
 
+      /* [FIX P2] Section labels: font-size subido de 0.63rem (~10px) a 0.7rem (~11.2px) */
       .section-label {
-        font-size: 0.63rem;
+        font-size: 0.7rem;
         letter-spacing: 0.28em;
         text-transform: uppercase;
         color: var(--muted);
@@ -355,7 +371,8 @@
       }
 
       .learning-section {
-        margin-top: 36px;
+        /* [FIX P2] Normalizado a grid de 8px — de 36px a 40px (consistente con skills) */
+        margin-top: 40px;
         opacity: 0;
         animation: fadeUp 0.6s ease forwards 0.72s;
       }
@@ -367,24 +384,26 @@
 
       .learning-grid { display: flex; flex-wrap: wrap; gap: 8px; }
 
+      /* [FIX P1] Learning tags: eliminada opacity:0.6 (ratio efectivo 1.67 FAIL catastrófico)
+         Color cambiado a --green (ratio 6.10 PASS AA). Se mantiene estética "en progreso"
+         mediante borde punteado y estilo diferenciado del skill-tag. */
       .learning-tag {
         font-family: "DM Mono", monospace;
         font-size: 0.75rem;
-        color: var(--green-light);
-        border: 1px dashed var(--border);
+        color: var(--green);
+        border: 1px dashed var(--green-light);
         background: transparent;
         padding: 5px 14px;
         border-radius: 2px;
-        opacity: 0.6;
         cursor: default;
-        transition: opacity 0.25s, transform 0.2s, color 0.25s, border-color 0.25s;
+        transition: color 0.25s, border-color 0.25s, transform 0.2s, background 0.25s;
       }
 
       .learning-tag::before { content: "↗ "; font-size: 0.6rem; opacity: 0.8; }
       .learning-tag:hover {
-        opacity: 1;
-        color: var(--green);
-        border-color: var(--green-light);
+        color: var(--white);
+        background: var(--green);
+        border-color: var(--green);
         transform: translateY(-2px);
       }
 
@@ -393,6 +412,7 @@
         display: flex;
         gap: 24px;
         align-items: center;
+        flex-wrap: wrap;
         opacity: 0;
         animation: fadeUp 0.6s ease forwards 0.88s;
       }
@@ -468,9 +488,10 @@
       .projects-trigger .arrow { font-size: 0.9rem; transition: transform 0.2s; }
       .projects-trigger:hover .arrow { transform: translateX(3px); }
 
+      /* [FIX P2] Footer: font-size subido de 0.63rem (~10px) a 0.7rem (~11.2px) */
       footer {
         margin-top: 64px;
-        font-size: 0.63rem;
+        font-size: 0.7rem;
         color: var(--muted);
         letter-spacing: 0.14em;
         opacity: 0;
@@ -529,12 +550,25 @@
         outline-offset: 3px;
       }
 
+      /* [FIX P3] Icono musical: SVG inline en lugar de emoji unicode */
       .music-icon {
-        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--green);
         transition: color 0.25s;
         user-select: none;
         line-height: 1;
+      }
+
+      .music-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       @keyframes pulse-ring {
@@ -555,7 +589,6 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* Badge de disponibilidad */
       .availability {
         display: inline-flex;
         align-items: center;
@@ -587,7 +620,6 @@
         100% { box-shadow: 0 0 0 0 rgba(82,183,136,0); }
       }
 
-      /* CTA primaria de contacto */
       .cta-primary {
         font-family: "DM Mono", monospace;
         font-size: 0.72rem;
@@ -608,23 +640,18 @@
       }
 
       .cta-primary:hover {
-        background: var(--green-light);
+        background: #1f4f39;
         gap: 12px;
-        box-shadow: 0 6px 28px rgba(45,106,79,0.22);
+        box-shadow: 0 6px 28px rgba(45,106,79,0.28);
       }
 
       .cta-primary:active { transform: scale(0.98); }
 
       .cta-primary:focus-visible {
-        outline: 2px solid var(--green);
+        outline: 2px solid var(--green-light);
         outline-offset: 3px;
       }
 
-      .links-section {
-        flex-wrap: wrap;
-      }
-
-      /* Toast de notificación (email copiado / mailto abierto) */
       .toast {
         position: fixed;
         bottom: 28px;
@@ -658,6 +685,17 @@
         }
       }
 
+      /* [FIX P3] Breakpoint tablet intermedio — cubre 601px–819px sin cobertura previa */
+      @media (min-width: 601px) and (max-width: 820px) {
+        body {
+          padding: 48px 32px;
+        }
+        #portfolio-view,
+        .wrapper {
+          max-width: 580px;
+        }
+      }
+
       @media (max-width: 600px) {
         body { padding: 30px 20px; }
         #projects-view { padding: 40px 20px; }
@@ -688,6 +726,12 @@
           width: 40px;
           height: 40px;
         }
+
+        /* [FIX P2] Tamaño mínimo aceptable en mobile */
+        .section-label,
+        footer {
+          font-size: 0.75rem;
+        }
       }
 
       #flowers-canvas {
@@ -701,7 +745,6 @@
         transition: opacity 1.2s ease;
       }
       #flowers-canvas.visible { opacity: 1; }
-
 
       #projects-view {
         position: fixed;
@@ -758,8 +801,9 @@
         margin-bottom: 48px;
       }
 
+      /* [FIX P2] Projects eyebrow: font-size de 0.63rem a 0.7rem */
       .projects-eyebrow {
-        font-size: 0.63rem;
+        font-size: 0.7rem;
         letter-spacing: 0.28em;
         text-transform: uppercase;
         color: var(--muted);
@@ -820,11 +864,13 @@
         padding: 22px 24px 24px;
       }
 
+      /* [FIX P1] Project number: color cambiado de --green-light (ratio 2.36 FAIL)
+         a --green (ratio 6.10 PASS AA) */
       .project-number {
         font-size: 0.6rem;
         letter-spacing: 0.28em;
         text-transform: uppercase;
-        color: var(--green-light);
+        color: var(--green);
         margin-bottom: 8px;
       }
 
@@ -836,10 +882,11 @@
         line-height: 1.2;
       }
 
+      /* [FIX P3] project-desc: de #666 hardcodeado a --text-secondary (token unificado) */
       .project-desc {
         font-size: 0.8rem;
         line-height: 1.8;
-        color: #666;
+        color: var(--text-secondary);
         margin-bottom: 18px;
         max-width: 420px;
       }
@@ -899,9 +946,9 @@
       }
 
       .project-link.primary {
-        color: var(--green-light);
+        color: var(--green);
       }
-      .project-link.primary:hover { color: var(--green); }
+      .project-link.primary:hover { color: #1f4f39; }
 
       .back-btn {
         display: inline-flex;
@@ -947,7 +994,6 @@
         opacity: 0;
       }
 
-      /* Visualmente oculto pero accesible para lectores de pantalla y crawlers */
       .visually-hidden {
         position: absolute;
         width: 1px;
@@ -960,9 +1006,9 @@
         border: 0;
       }
 
-      /* Etiqueta de grupo dentro de proyectos */
+      /* [FIX P2] Projects group label: font-size de 0.6rem a 0.7rem */
       .projects-group-label {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
         letter-spacing: 0.3em;
         text-transform: uppercase;
         color: var(--muted);
@@ -971,7 +1017,6 @@
         border-bottom: 1px solid var(--border);
       }
 
-      /* Botón ver más */
       .see-more-wrap {
         display: flex;
         justify-content: center;
@@ -1007,7 +1052,6 @@
         border-radius: 2px;
       }
 
-      /* Sección todos los proyectos */
       .all-projects-section {
         padding-top: 64px;
         scroll-margin-top: 32px;
@@ -1111,7 +1155,8 @@
               ></iframe>
             </a>
             <div class="project-body">
-              <p class="project-number">Proyecto 002 · Cliente real</p>
+              <!-- [FIX P2] Etiqueta descriptiva en lugar de numeración opaca e inconsistente -->
+              <p class="project-number">Web corporativa · Cliente real</p>
               <h3 class="project-name">Freekiland 3D</h3>
               <p class="project-desc">
                 Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
@@ -1148,7 +1193,8 @@
               ></iframe>
             </a>
             <div class="project-body">
-              <p class="project-number">Proyecto 004 · Cliente real</p>
+              <!-- [FIX P2] Etiqueta descriptiva en lugar de numeración opaca e inconsistente -->
+              <p class="project-number">Landing page · Encargo personal</p>
               <h3 class="project-name">Landing Page Temática Balatro</h3>
               <p class="project-desc">
                 Landing Page realizada para un compañero de DAM con temática inspirada en el videojuego Balatro.
@@ -1177,83 +1223,12 @@
           </button>
         </div>
 
-        <!-- TODOS LOS PROYECTOS -->
+        <!-- [FIX P2] TODOS LOS PROYECTOS: eliminados los duplicados de destacados.
+             Ahora muestra únicamente los 3 proyectos que NO aparecen arriba. -->
         <div id="all-projects-anchor" class="all-projects-section">
           <p class="projects-group-label">Todos los proyectos</p>
 
           <div class="projects-grid">
-
-            <article class="project-card">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
-                  title="Freekiland 3D — vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
-              <div class="project-body">
-                <p class="project-number">Proyecto 002 · Cliente real</p>
-                <h3 class="project-name">Freekiland 3D</h3>
-                <p class="project-desc">
-                  Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
-                  empresa de impresión y prototipado 3D. Diseño responsive con secciones de
-                  servicios, productos y contacto, pensada para presentar la marca y captar
-                  clientes potenciales.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS</span>
-                  <span class="project-tag">JavaScript</span>
-                  <span class="project-tag">Responsive</span>
-                  <span class="project-tag">Prácticas</span>
-                </div>
-                <div class="project-links">
-                  <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  src="https://geuguis.github.io/LandingPage-003/"
-                  title="Landing Page Temática Balatro — vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
-              <div class="project-body">
-                <p class="project-number">Proyecto 004 · Cliente real</p>
-                <h3 class="project-name">Landing Page Temática Balatro</h3>
-                <p class="project-desc">
-                  Landing Page realizada para un compañero de DAM con temática inspirada en el videojuego Balatro.
-                  Visualmente original con toque retro y friki, assets propios y de la comunidad, y efectos
-                  interactivos a medida.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS</span>
-                  <span class="project-tag">JavaScript</span>
-                  <span class="project-tag">Responsive</span>
-                </div>
-                <div class="project-links">
-                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
 
             <article class="project-card">
               <div class="project-card-accent" aria-hidden="true"></div>
@@ -1270,7 +1245,7 @@
                 ></iframe>
               </a>
               <div class="project-body">
-                <p class="project-number">Proyecto 001</p>
+                <p class="project-number">Primera web · Proyecto personal</p>
                 <h3 class="project-name">Club Atlético El Plantinar</h3>
                 <p class="project-desc">
                   Mi primera página web, construida desde cero. Sitio para un club deportivo
@@ -1370,8 +1345,16 @@
 
     <div class="music-player" id="musicPlayer">
       <span class="music-label" id="musicLabel">jazz</span>
+      <!-- [FIX P3] Botón musical con SVG inline en lugar de emoji unicode -->
       <button class="music-btn" id="musicBtn" title="Reproducir jazz" aria-label="Reproducir música de jazz">
-        <span class="music-icon" id="musicIcon" aria-hidden="true">♪</span>
+        <span class="music-icon" id="musicIcon" aria-hidden="true">
+          <!-- Icono "play" por defecto -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"/>
+            <circle cx="6" cy="18" r="3"/>
+            <circle cx="18" cy="16" r="3"/>
+          </svg>
+        </span>
       </button>
     </div>
 
@@ -1380,7 +1363,6 @@
     <audio id="myAudio" src="jazz.mp3" loop preload="none"></audio>
 
     <script>
-      // Año dinámico en footer y eyebrows
       (function() {
         const year = new Date().getFullYear();
         document.querySelectorAll('.js-year').forEach(function(el) {
@@ -1390,14 +1372,11 @@
     </script>
 
     <script>
-      // Detector de movimiento reducido — desactiva canvases si el usuario lo prefiere
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      // Detector simple de móvil para reducir partículas
       const isSmallScreen = window.innerWidth < 700;
     </script>
 
     <script>
-      // Partículas del overlay de entrada
       (function() {
         if (prefersReducedMotion) return;
 
@@ -1463,7 +1442,6 @@
     </script>
 
     <script>
-      // Animación de flores creciendo a los lados
       (function() {
         const canvas = document.getElementById('flowers-canvas');
         const ctx = canvas.getContext('2d');
@@ -1517,7 +1495,6 @@
 
         function spawnFlowers() {
           flowers = [];
-          // Menos flores en pantallas pequeñas
           const divisor = isSmallScreen ? 220 : 140;
           const leftCount = Math.floor(canvas.width / divisor);
           for (let i = 0; i < leftCount; i++) flowers.push(makeFlower('left'));
@@ -1605,14 +1582,12 @@
           if (elapsed < maxEnd + 400) {
             activeRaf = requestAnimationFrame(animate);
           } else {
-            // Animación terminada: liberar el bucle
             activeRaf = null;
           }
         }
 
         window.startFlowers = function() {
           if (prefersReducedMotion) {
-            // Aun así mostrar el canvas sin animar
             canvas.classList.add('visible');
             return;
           }
@@ -1629,10 +1604,9 @@
     </script>
 
     <script>
-      // Lógica principal: navegación entre vistas + reproductor de música + contacto
       (function () {
         const btn        = document.getElementById('musicBtn');
-        const icon       = document.getElementById('musicIcon');
+        const iconWrap   = document.getElementById('musicIcon');
         const label      = document.getElementById('musicLabel');
         const audio      = document.getElementById('myAudio');
         const entryBtn   = document.getElementById('bottone1');
@@ -1649,13 +1623,10 @@
 
         let playing = false;
 
-        // ─── Bloquea contenido tras el overlay (focus trap básico) ──────────
-        // El <main> queda inerte hasta que se cierra el overlay
         if (portfolioView && 'inert' in HTMLElement.prototype) {
           portfolioView.inert = true;
         }
 
-        // ─── Toast helper ──────────────────────────────────────────────────
         let toastTimer = null;
         function showToast(msg, ms) {
           if (!toast) return;
@@ -1667,12 +1638,7 @@
           }, ms || 3200);
         }
 
-        // ─── Contacto con email ofuscado ───────────────────────────────────
-        // El email NUNCA aparece como string literal en el HTML/JS source.
-        // Se reconstruye en runtime al hacer clic, así los scrapers de spam
-        // que solo leen el código estático no lo capturan.
         function buildEmail() {
-          // Partes intencionalmente fragmentadas + char-codes para el "@"
           var u = ['don', 'ge', 'ugui'].join('');
           var at = String.fromCharCode(0x40);
           var d = ['gmail', 'com'].join(String.fromCharCode(0x2E));
@@ -1686,7 +1652,6 @@
             var body    = encodeURIComponent(
               'Hola Guillermo,\n\nMe pongo en contacto contigo desde tu portfolio.\n\n'
             );
-            // Intenta copiar el email al portapapeles como red de seguridad
             if (navigator.clipboard && window.isSecureContext) {
               navigator.clipboard.writeText(email).then(function () {
                 showToast('Email copiado · abriendo cliente de correo…');
@@ -1696,22 +1661,24 @@
             } else {
               showToast('Abriendo cliente de correo…');
             }
-            // Abre el cliente de correo del usuario
             window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
           });
         }
 
-        // Sincroniza UI con el estado real del audio
+        /* [FIX P3] SVG icons para play/pause en lugar de emojis unicode */
+        var SVG_PLAY  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+        var SVG_PAUSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+
         function setPlayingUI(isPlaying) {
           playing = isPlaying;
           if (isPlaying) {
-            icon.textContent = '♬';
+            iconWrap.innerHTML = SVG_PAUSE;
             label.textContent = 'pause';
             btn.classList.add('playing');
             btn.title = 'Pausar música';
             btn.setAttribute('aria-label', 'Pausar música');
           } else {
-            icon.textContent = '♪';
+            iconWrap.innerHTML = SVG_PLAY;
             label.textContent = 'jazz';
             btn.classList.remove('playing');
             btn.title = 'Reproducir jazz';
@@ -1719,7 +1686,6 @@
           }
         }
 
-        // Eventos del audio: la UI siempre refleja la realidad
         audio.addEventListener('play',  function () { setPlayingUI(true);  });
         audio.addEventListener('pause', function () { setPlayingUI(false); });
         audio.addEventListener('ended', function () { setPlayingUI(false); });
@@ -1728,17 +1694,14 @@
           const promise = audio.play();
           if (promise && typeof promise.then === 'function') {
             promise.catch(function (error) {
-              // Autoplay bloqueado: no marcar como playing
               console.log('Audio bloqueado por el navegador:', error);
               setPlayingUI(false);
             });
           }
         }
 
-        // Botón ENTRAR
         entryBtn.addEventListener('click', function() {
           overlay.classList.add('hidden');
-          // Libera el foco al portfolio
           if (portfolioView && 'inert' in HTMLElement.prototype) {
             portfolioView.inert = false;
           }
@@ -1746,7 +1709,6 @@
           if (window.startFlowers) window.startFlowers();
         });
 
-        // Abrir vista de proyectos
         openProjects.addEventListener('click', function () {
           portfolioView.classList.add('fading-out');
           openProjects.setAttribute('aria-expanded', 'true');
@@ -1754,12 +1716,10 @@
             portfolioView.style.display = 'none';
             projectsView.classList.add('visible');
             projectsView.setAttribute('aria-hidden', 'false');
-            // Foco al botón de volver para accesibilidad por teclado
             backBtn.focus();
           }, 600);
         });
 
-        // Volver al portfolio
         backBtn.addEventListener('click', function () {
           projectsView.classList.remove('visible');
           projectsView.setAttribute('aria-hidden', 'true');
@@ -1775,21 +1735,18 @@
           }, 650);
         });
 
-        // Scroll a todos los proyectos
         if (seeMoreBtn) {
           seeMoreBtn.addEventListener('click', function () {
             document.getElementById('all-projects-anchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
           });
         }
 
-        // ESC para volver desde la vista de proyectos
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && projectsView.classList.contains('visible')) {
             backBtn.click();
           }
         });
 
-        // Toggle de música
         btn.addEventListener('click', function () {
           if (audio.paused) {
             tryPlay();
