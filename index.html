@@ -68,8 +68,47 @@
         --border: #ddeae0;
         /* [FIX P3] Token unificado para texto secundario — ratio 8.02:1 sobre --white, pasa AAA */
         --text-secondary: #4a4a4a;
+        /* Texto que va SOBRE el verde de los botones (se mantiene claro en modo claro) */
+        --on-accent: #f9faf7;
         /* Curva ease-out fuerte para interacciones (feedback inmediato) */
         --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        /* Curva suave y tranquila para el cambio de tema */
+        --ease-theme: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* === Modo oscuro: cómodo a la vista, verde nocturno === */
+      [data-theme="dark"] {
+        --white: #0f1512;        /* fondo principal y tarjetas */
+        --green: #52b788;        /* acento legible sobre fondo oscuro */
+        --green-light: #74c69d;
+        --green-pale: #18231d;   /* superficies verdes sutiles */
+        --ink: #eef2ec;          /* texto principal */
+        --muted: #8fa89a;        /* texto secundario tenue */
+        --border: #28382f;
+        --text-secondary: #c4cfc8;
+        --on-accent: #0f1512;    /* texto oscuro sobre botones verde claro */
+      }
+
+      [data-theme="dark"] .availability {
+        background: rgba(82, 183, 136, 0.12);
+      }
+
+      /* Transición elegante y tranquila al alternar el tema.
+         El selector universal no pisa las transiciones propias de los
+         elementos interactivos (menor especificidad), así que los hovers
+         siguen intactos y todo el lienzo cambia de tema al unísono. */
+      *,
+      *::before,
+      *::after {
+        transition: background-color 0.55s var(--ease-theme),
+                    color 0.55s var(--ease-theme),
+                    border-color 0.55s var(--ease-theme),
+                    fill 0.55s var(--ease-theme),
+                    stroke 0.55s var(--ease-theme);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition-duration: 0.001ms !important; }
       }
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -99,7 +138,9 @@
         align-items: center;
         justify-content: center;
         gap: 0;
-        transition: opacity 1s ease, visibility 1s;
+        transition: opacity 1s ease, visibility 1s,
+                    background-color 0.55s var(--ease-theme),
+                    color 0.55s var(--ease-theme);
         overflow: hidden;
       }
 
@@ -205,7 +246,7 @@
         cursor: pointer;
         transition: background 0.3s, box-shadow 0.3s,
                     transform 0.18s var(--ease-out);
-        color: var(--white);
+        color: var(--on-accent);
         text-transform: uppercase;
         letter-spacing: 0.15em;
         font-size: 0.75rem;
@@ -452,7 +493,7 @@
 
       .skill-tag:hover {
         background: var(--green);
-        color: var(--white);
+        color: var(--on-accent);
         border-color: var(--green);
         transform: translateY(-2px);
       }
@@ -607,7 +648,7 @@
       .dock-item:hover,
       .dock-item:focus-visible {
         background: var(--green);
-        color: var(--white);
+        color: var(--on-accent);
         border-color: var(--green);
         outline: none;
       }
@@ -709,7 +750,7 @@
         transform: scale(1.06);
       }
 
-      .music-btn:hover .music-icon { color: white; }
+      .music-btn:hover .music-icon { color: var(--on-accent); }
 
       .music-btn:focus-visible {
         outline: 2px solid var(--green);
@@ -749,7 +790,7 @@
         border-color: var(--green);
       }
 
-      .music-btn.playing .music-icon { color: white; }
+      .music-btn.playing .music-icon { color: var(--on-accent); }
 
       @keyframes fadeUp {
         to { opacity: 1; transform: translateY(0); }
@@ -793,7 +834,7 @@
         text-transform: uppercase;
         font-weight: 400;
         background: var(--green);
-        color: var(--white);
+        color: var(--on-accent);
         border: none;
         padding: 11px 22px;
         border-radius: 3px;
@@ -924,7 +965,9 @@
         padding: 60px 24px 80px;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.65s ease;
+        transition: opacity 0.65s ease,
+                    background-color 0.55s var(--ease-theme),
+                    color 0.55s var(--ease-theme);
         overflow-y: auto;
       }
 
@@ -993,7 +1036,9 @@
         border-radius: 4px;
         overflow: hidden;
         background: var(--white);
-        transition: box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+        transition: box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-out),
+                    background-color 0.55s var(--ease-theme),
+                    border-color 0.55s var(--ease-theme);
         position: relative;
       }
 
@@ -1227,9 +1272,114 @@
         scroll-margin-top: 32px;
       }
 
+      /* =========================================================
+         Toggle de tema (Minecraft switch · Uiverse.io by csozidev)
+         Fijado en la esquina superior derecha.
+         ========================================================= */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      /* The switch - the box around the slider */
+      .switch {
+        font-size: 17px;
+        position: relative;
+        display: inline-block;
+        width: 2em;
+        height: 2em;
+        cursor: pointer;
+      }
+
+      /* Cursor de mano en todo el toggle para indicar que es clicable */
+      .switch input,
+      .switch .slider,
+      .switch .off,
+      .switch .on {
+        cursor: pointer;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .switch .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        transition: 0.4s;
+      }
+
+      .switch .off {
+        position: absolute;
+        content: "";
+        height: 2em;
+        width: 2em;
+        background-color: white;
+        transition: 0.4s;
+        image-rendering: pixelated;
+        opacity: 1;
+      }
+
+      .switch .on {
+        position: absolute;
+        content: "";
+        height: 2em;
+        width: 2em;
+        background-color: white;
+        transition: 0.4s;
+        image-rendering: pixelated;
+        opacity: 0;
+      }
+
+      .switch input:checked + .slider {
+        background-color: transparent;
+      }
+
+      /* Sin desplazamiento: el sprite cambia de apagado a encendido en el sitio */
+      .switch input:checked ~ .off {
+        opacity: 0;
+      }
+
+      .switch input:checked ~ .on {
+        opacity: 1;
+      }
+
     </style>
+    <!-- Aplica el tema guardado/preferido ANTES del primer pintado para evitar parpadeo -->
+    <script>
+      (function () {
+        try {
+          // Por defecto arranca en claro; solo respeta la elección guardada.
+          var saved = localStorage.getItem("theme");
+          if (saved === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
+
+  <!-- Toggle de modo oscuro (Minecraft switch · Uiverse.io by csozidev) -->
+  <div class="theme-toggle">
+    <label class="switch" title="Cambiar tema claro/oscuro">
+      <input type="checkbox" id="theme-switch" role="switch" aria-label="Activar modo oscuro">
+      <span class="slider"></span>
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" alt="" aria-hidden="true">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" alt="" aria-hidden="true">
+    </label>
+  </div>
 
   <div id="entry-overlay" role="dialog" aria-modal="true" aria-labelledby="entry-name-id">
     <canvas id="overlay-particles" aria-hidden="true"></canvas>
@@ -2243,6 +2393,34 @@
 
           cards.forEach(function (c) { io.observe(c); });
         }
+      })();
+
+      /* Toggle de modo oscuro: sincroniza el switch y persiste la elección. */
+      (function () {
+        var input = document.getElementById('theme-switch');
+        if (!input) return;
+        var root = document.documentElement;
+
+        function isDark() {
+          return root.getAttribute('data-theme') === 'dark';
+        }
+
+        function applyTheme(dark) {
+          if (dark) {
+            root.setAttribute('data-theme', 'dark');
+          } else {
+            root.removeAttribute('data-theme');
+          }
+          input.checked = dark;
+        }
+
+        // Estado inicial coherente con lo que aplicó el script del <head>.
+        input.checked = isDark();
+
+        input.addEventListener('change', function () {
+          applyTheme(input.checked);
+          try { localStorage.setItem('theme', input.checked ? 'dark' : 'light'); } catch (e) {}
+        });
       })();
     </script>
   </body>
