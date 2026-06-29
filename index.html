@@ -1281,6 +1281,13 @@
         top: 20px;
         right: 20px;
         z-index: 1000;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: themeToggleIn 0.9s var(--ease-out) forwards 0.3s;
+      }
+
+      @keyframes themeToggleIn {
+        to { opacity: 1; transform: translateY(0); }
       }
 
       /* The switch - the box around the slider */
