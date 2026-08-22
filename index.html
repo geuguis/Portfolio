@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guillermo Eugui Sánchez · Portfolio</title>
 
-    <!-- SEO -->
     <meta name="description" content="Junior Full-Stack Developer en Sevilla, disponible para prácticas en empresas. Stack: HTML5, CSS, JavaScript y C#. Interfaces web limpias, accesibles y mantenibles." />
     <meta name="author" content="Guillermo Eugui Sánchez" />
     <meta name="theme-color" content="#2d6a4f" />
@@ -15,7 +14,6 @@
 	<link rel="icon" href="img/favicon.svg?v=3" type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
 
-    <!-- Open Graph / redes sociales -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
     <meta property="og:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas. Portfolio con proyectos web limpios y accesibles." />
@@ -26,13 +24,11 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Portfolio de Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
     <meta name="twitter:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas." />
     <meta name="twitter:image" content="https://geuguis.github.io/img/og-cover.png" />
 
-    <!-- Datos estructurados: Person -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -49,13 +45,13 @@
       "knowsAbout": ["HTML5", "CSS", "JavaScript", "C#", "Java", "SQL", "Desarrollo Web", "Accesibilidad Web"],
       "sameAs": [
         "https://github.com/geuguis",
-        "https://www.linkedin.com/in/guillermo-e%C3%BAgui-s%C3%A1nchez-8a4040409/"
+        "https://www.linkedin.com/in/guillermoeuguisanchez"
       ]
     }
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
     <style>
       :root {
@@ -66,39 +62,29 @@
         --ink: #1a1a1a;
         --muted: #5d7468;
         --border: #ddeae0;
-        /* [FIX P3] Token unificado para texto secundario — ratio 8.02:1 sobre --white, pasa AAA */
         --text-secondary: #4a4a4a;
-        /* Texto que va SOBRE el verde de los botones (se mantiene claro en modo claro) */
         --on-accent: #f9faf7;
-        /* Curva ease-out fuerte para interacciones (feedback inmediato) */
         --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-        /* Curva suave y tranquila para el cambio de tema */
         --ease-theme: cubic-bezier(0.4, 0, 0.2, 1);
-        /* Textura de ruido compartida (body y vista de proyectos) */
         --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
       }
 
-      /* === Modo oscuro: cómodo a la vista, verde nocturno === */
       [data-theme="dark"] {
-        --white: #0f1512;        /* fondo principal y tarjetas */
-        --green: #52b788;        /* acento legible sobre fondo oscuro */
+        --white: #0f1512;
+        --green: #52b788;
         --green-light: #74c69d;
-        --green-pale: #18231d;   /* superficies verdes sutiles */
-        --ink: #eef2ec;          /* texto principal */
-        --muted: #8fa89a;        /* texto secundario tenue */
+        --green-pale: #18231d;
+        --ink: #eef2ec;
+        --muted: #8fa89a;
         --border: #28382f;
         --text-secondary: #c4cfc8;
-        --on-accent: #0f1512;    /* texto oscuro sobre botones verde claro */
+        --on-accent: #0f1512;
       }
 
       [data-theme="dark"] .availability {
         background: rgba(82, 183, 136, 0.12);
       }
 
-      /* Transición elegante y tranquila al alternar el tema.
-         La clase .theme-anim solo vive en <html> durante los ~600 ms del
-         toggle: el resto del tiempo ningún elemento arrastra transiciones
-         universales (menos trabajo de estilo en cada interacción). */
       .theme-anim *,
       .theme-anim *::before,
       .theme-anim *::after {
@@ -197,7 +183,6 @@
         letter-spacing: 0.26em;
         text-transform: uppercase;
         color: var(--muted);
-        /* [FIX P2] Normalizado a grid de 8px — de 44px a 40px */
         margin-bottom: 40px;
         opacity: 0;
         animation: overlayFadeUp 0.9s ease forwards 0.45s;
@@ -282,8 +267,6 @@
         animation: fadeUp 0.7s ease forwards 0.1s;
       }
 
-      /* [FIX P1] Eyebrow: color cambiado de --green-light (#52b788, ratio 2.36 FAIL)
-         a --green (#2d6a4f, ratio 6.10 PASS AA) */
       .eyebrow {
         font-size: 0.68rem;
         font-weight: 300;
@@ -332,8 +315,6 @@
         cursor: ns-resize;
         transition: top 0.25s ease, height 0.25s ease;
       }
-      /* Zona ampliada contenida (±60px): suficiente para "tirar" de la onda
-         sin tapar los textos y enlaces cercanos al divisor */
       .wave-hit:hover {
         top: -60px;
         height: 120px;
@@ -353,12 +334,6 @@
         stroke-width: 1.5;
       }
 
-      /* [FIX P2] Bio: métricas mejoradas para legibilidad con monospace
-         - font-size: 0.9rem (de 0.88rem)
-         - line-height: 1.9 (de 1.85)
-         - letter-spacing: -0.01em (reduce el tracking ancho del mono)
-         - max-width: 400px (~60 chars/línea, óptimo de lectura)
-         - color: var(--ink) via --text-secondary (de #555 hardcodeado) */
       .bio {
         font-size: 0.9rem;
         line-height: 1.9;
@@ -370,13 +345,11 @@
       }
 
       .skills-section {
-        /* [FIX P2] Normalizado a grid de 8px — de 44px a 40px */
         margin-top: 40px;
         opacity: 0;
         animation: fadeUp 0.6s ease forwards 0.6s;
       }
 
-      /* [FIX P2] Section labels: font-size subido de 0.63rem (~10px) a 0.7rem (~11.2px) */
       .section-label {
         font-size: 0.7rem;
         letter-spacing: 0.28em;
@@ -385,7 +358,6 @@
         margin-bottom: 14px;
       }
 
-      /* Título "Stack" destacado: serif de marca con acento verde */
       #stack-label {
         font-family: "DM Serif Display", serif;
         font-size: 1.5rem;
@@ -432,7 +404,6 @@
         transform: translateY(-2px);
       }
 
-      /* Dock de stack: magnificación tipo macOS + tooltip (vanilla, inspirado en badtz-ui dock) */
       .dock-stack {
         display: inline-flex;
         flex-direction: column;
@@ -469,29 +440,18 @@
         cursor: default;
       }
 
-      /* La magnificación solo con ratón fino (evita estado pegajoso en táctil).
-         Se escala la imagen con transform en vez de width/height: la caja que
-         detecta el hover no cambia nunca de tamaño ni de posición, así el
-         puntero no rebota entre dos iconos vecinos. */
       @media (hover: hover) and (pointer: fine) {
-        /* icono bajo el ratón (por encima de sus vecinos al crecer) */
         .s-icon:hover { z-index: 2; }
         .s-icon:hover img { transform: scale(1.5); }
-        /* vecinos a la derecha */
         .s-icon:hover + .s-icon img { transform: scale(1.33); }
         .s-icon:hover + .s-icon + .s-icon img { transform: scale(1.17); }
-        /* vecinos a la izquierda (requiere :has) */
         .s-icon:has(+ .s-icon:hover) img { transform: scale(1.33); }
         .s-icon:has(+ .s-icon + .s-icon:hover) img { transform: scale(1.17); }
         .s-icon:hover .s-name {
           opacity: 1;
-          /* sube el tooltip para no pisar la imagen agrandada */
           transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
         }
 
-        /* Al magnificar un icono de la fila superior, el verde crece hacia
-           arriba para envolverlo (intercambio margen/padding: el contenido
-           no se mueve, solo se extiende el fondo). */
         .dock-stack:has(.stack-dock:first-child .s-icon:hover) {
           margin-top: 8px;
           padding-top: 26px;
@@ -504,7 +464,6 @@
         object-fit: contain;
         border-radius: 8px;
         pointer-events: none;
-        /* crece hacia arriba, como el dock original */
         transform-origin: bottom center;
         transition: transform 150ms cubic-bezier(0.25, 1, 0.5, 1);
       }
@@ -541,7 +500,6 @@
         animation: fadeUp 0.6s ease forwards 0.88s;
       }
 
-      /* Dock magnético de contacto (vanilla, inspirado en magnetic-dock) */
       .dock {
         display: flex;
         align-items: flex-end;
@@ -617,11 +575,9 @@
       .projects-trigger .arrow { font-size: 0.9rem; transition: transform 0.2s; }
       .projects-trigger:hover .arrow { transform: translateX(3px); }
 
-      /* Enlace de descarga del CV: mismo estilo que el trigger de proyectos */
       a.projects-trigger { text-decoration: none; }
       .cv-link:hover .arrow { transform: translateY(3px); }
 
-      /* [FIX P2] Footer: font-size subido de 0.63rem (~10px) a 0.7rem (~11.2px) */
       footer {
         margin-top: 64px;
         font-size: 0.7rem;
@@ -680,7 +636,6 @@
         outline-offset: 3px;
       }
 
-      /* Vinyl Tonearm */
       .vinyl-tonearm {
         position: absolute;
         z-index: 20;
@@ -733,7 +688,6 @@
         transform: translateX(-50%);
       }
 
-      /* Vinyl Disc */
       .vinyl-disc {
         position: relative;
         width: 100%;
@@ -898,7 +852,6 @@
         }
       }
 
-      /* [FIX P3] Breakpoint tablet intermedio — cubre 601px–819px sin cobertura previa */
       @media (min-width: 601px) and (max-width: 820px) {
         body {
           padding: 48px 32px;
@@ -940,7 +893,6 @@
           height: 46px;
         }
 
-        /* [FIX P2] Tamaño mínimo aceptable en mobile */
         .section-label,
         footer {
           font-size: 0.75rem;
@@ -1016,7 +968,6 @@
         margin-bottom: 48px;
       }
 
-      /* [FIX P2] Projects eyebrow: font-size de 0.63rem a 0.7rem */
       .projects-eyebrow {
         font-size: 0.7rem;
         letter-spacing: 0.28em;
@@ -1077,8 +1028,6 @@
         z-index: 2;
       }
 
-      /* Pista sobre la preview mientras el iframe aún no se ha cargado
-         (carga diferida: al pasar el ratón o al entrar en pantalla) */
       .project-card.iframe-pending .project-preview-overlay::after {
         content: "▶ demo en vivo";
         position: absolute;
@@ -1097,8 +1046,6 @@
         padding: 22px 24px 24px;
       }
 
-      /* [FIX P1] Project number: color cambiado de --green-light (ratio 2.36 FAIL)
-         a --green (ratio 6.10 PASS AA) */
       .project-number {
         font-size: 0.6rem;
         letter-spacing: 0.28em;
@@ -1115,7 +1062,6 @@
         line-height: 1.2;
       }
 
-      /* [FIX P3] project-desc: de #666 hardcodeado a --text-secondary (token unificado) */
       .project-desc {
         font-size: 0.8rem;
         line-height: 1.8;
@@ -1214,9 +1160,6 @@
         to   { opacity: 1; transform: translateY(0); }
       }
 
-      /* Reveal escalonado al hacer scroll (motion: whileInView + stagger).
-         Estado inicial oculto solo si el JS va a animar; si no, las tarjetas
-         se muestran normalmente (la revelación realza un default visible). */
       .project-card.pre-reveal { opacity: 0; }
 
       #projects-view.visible .projects-header {
@@ -1241,7 +1184,6 @@
         border: 0;
       }
 
-      /* [FIX P2] Projects group label: font-size de 0.6rem a 0.7rem */
       .projects-group-label {
         font-size: 0.7rem;
         letter-spacing: 0.3em;
@@ -1294,10 +1236,6 @@
         scroll-margin-top: 32px;
       }
 
-      /* =========================================================
-         Toggle de tema (Minecraft switch · Uiverse.io by csozidev)
-         Fijado en la esquina superior derecha.
-         ========================================================= */
       .theme-toggle {
         position: fixed;
         top: 20px;
@@ -1312,7 +1250,6 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* The switch - the box around the slider */
       .switch {
         font-size: 17px;
         position: relative;
@@ -1322,7 +1259,6 @@
         cursor: pointer;
       }
 
-      /* Cursor de mano en todo el toggle para indicar que es clicable */
       .switch input,
       .switch .slider,
       .switch .off,
@@ -1330,14 +1266,12 @@
         cursor: pointer;
       }
 
-      /* Hide default HTML checkbox */
       .switch input {
         opacity: 0;
         width: 0;
         height: 0;
       }
 
-      /* The slider */
       .switch .slider {
         position: absolute;
         cursor: pointer;
@@ -1373,7 +1307,6 @@
         background-color: transparent;
       }
 
-      /* Sin desplazamiento: el sprite cambia de apagado a encendido en el sitio */
       .switch input:checked ~ .off {
         opacity: 0;
       }
@@ -1383,12 +1316,9 @@
       }
 
     </style>
-    <!-- Aplica el tema guardado/preferido ANTES del primer pintado para evitar parpadeo -->
     <script>
       (function () {
         try {
-          // Por defecto arranca en claro; solo respeta la elección guardada.
-          // (clave "theme-v2": descarta el "dark" que pudo quedar guardado antes)
           var saved = localStorage.getItem("theme-v2");
           if (saved === "dark") {
             document.documentElement.setAttribute("data-theme", "dark");
@@ -1399,7 +1329,6 @@
   </head>
   <body>
 
-  <!-- Toggle de modo oscuro (Minecraft switch · Uiverse.io by csozidev) -->
   <div class="theme-toggle">
     <label class="switch" title="Cambiar tema claro/oscuro">
       <input type="checkbox" id="theme-switch" role="switch" aria-label="Activar modo oscuro">
@@ -1409,8 +1338,6 @@
     </label>
   </div>
 
-  <!-- Splash decorativo: se retira solo en ~1,8 s (o al primer clic/tecla).
-       Sin puerta de entrada: el trabajo debe verse sin pedir ni un clic. -->
   <div id="entry-overlay">
     <canvas id="overlay-particles" aria-hidden="true"></canvas>
     <p class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></p>
@@ -1443,28 +1370,28 @@
           <p class="section-label" id="stack-label">Stack</p>
           <div class="dock-stack">
             <ul class="stack-dock" aria-label="Stack: lenguajes, web y bases de datos">
-              <li class="s-icon"><span class="s-name">Java</span><img src="https://skillicons.dev/icons?i=java" alt="Java" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Python</span><img src="https://skillicons.dev/icons?i=py" alt="Python" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">C#</span><img src="https://skillicons.dev/icons?i=cs" alt="C#" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">JavaScript</span><img src="https://skillicons.dev/icons?i=js" alt="JavaScript" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Lua</span><img src="https://skillicons.dev/icons?i=lua" alt="Lua" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">HTML</span><img src="https://skillicons.dev/icons?i=html" alt="HTML" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">CSS</span><img src="https://skillicons.dev/icons?i=css" alt="CSS" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Bootstrap</span><img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">MySQL</span><img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">PostgreSQL</span><img src="https://skillicons.dev/icons?i=postgres" alt="PostgreSQL" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" loading="lazy"></li>
             </ul>
             <ul class="stack-dock" aria-label="Stack: IDEs, control de versiones, terminal y sistemas">
               <li class="s-icon"><span class="s-name">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">VS Code</span><img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Git</span><img src="https://skillicons.dev/icons?i=git" alt="Git" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">GitHub</span><img src="https://skillicons.dev/icons?i=github" alt="GitHub" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Bash</span><img src="https://skillicons.dev/icons?i=bash" alt="Bash" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">PowerShell</span><img src="https://skillicons.dev/icons?i=powershell" alt="PowerShell" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Ubuntu</span><img src="https://skillicons.dev/icons?i=ubuntu" alt="Ubuntu" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Windows</span><img src="https://skillicons.dev/icons?i=windows" alt="Windows" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Markdown</span><img src="https://skillicons.dev/icons?i=md" alt="Markdown" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Regex</span><img src="https://skillicons.dev/icons?i=regex" alt="Regex" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" loading="lazy"></li>
+              <li class="s-icon"><span class="s-name">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" loading="lazy"></li>
             </ul>
           </div>
         </section>
@@ -1477,7 +1404,7 @@
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
             </button>
-            <a class="dock-item" href="https://www.linkedin.com/in/guillermo-e%C3%BAgui-s%C3%A1nchez-8a4040409/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a class="dock-item" href="https://www.linkedin.com/in/guillermoeuguisanchez/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                 <rect x="2" y="9" width="4" height="12"/>
@@ -1512,7 +1439,6 @@
           <h2 class="projects-title">Mis <em>proyectos</em></h2>
         </div>
 
-        <!-- DESTACADOS -->
         <p class="projects-group-label">Proyectos destacados</p>
 
         <div class="projects-grid">
@@ -1532,8 +1458,6 @@
               ></iframe>
             </a>
             <div class="project-body">
-
-              <!-- [FIX P2] Etiqueta descriptiva en lugar de numeración opaca e inconsistente -->
               <p class="project-number">Web corporativa · Segundo cliente real</p>
               <h3 class="project-name">Tarifa House</h3>
               <p class="project-desc">
@@ -1591,16 +1515,12 @@
 
         </div>
 
-        <!-- Botón ver más -->
         <div class="see-more-wrap">
           <button class="see-more-btn" id="seeMoreBtn" aria-label="Ver todos los proyectos">
             Ver más proyectos <span aria-hidden="true">↓</span>
           </button>
         </div>
 
-
-        <!-- [FIX P2] TODOS LOS PROYECTOS: eliminados los duplicados de destacados. -->
-			 
         <div id="all-projects-anchor" class="all-projects-section">
           <p class="projects-group-label">Todos los proyectos</p>
 
@@ -1621,8 +1541,6 @@
                 ></iframe>
               </a>
               <div class="project-body">
-
-                <!-- [FIX P2] Etiqueta descriptiva en lugar de numeración opaca e inconsistente -->
                 <p class="project-number">Web corporativa · Cliente real</p>
                 <h3 class="project-name">Freekiland 3D</h3>
                 <p class="project-desc">
@@ -1645,7 +1563,6 @@
               </div>
             </article>
 
-
             <article class="project-card">
               <div class="project-card-accent" aria-hidden="true"></div>
               <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" aria-label="Ver Portfolio Next.js + Three.js en una nueva pestaña">
@@ -1665,7 +1582,7 @@
                 <h3 class="project-name">Portfolio con Next.js</h3>
                 <p class="project-desc">
                   Portfolio construido con Next.js 15 y Three.js para renderizado 3D en navegador.
-                  La integración de un motor 3D en un portfolio aporta profundidad visual inusual y llamativo.
+                  La integración de un motor 3D en un portfolio aporta una profundidad visual inusual y llamativa.
                   Diseño sobrio con Tailwind CSS y Shadcn/UI: modo oscuro, accesibilidad y rendimiento Vercel-first.
                 </p>
                 <div class="project-tags">
@@ -1725,7 +1642,7 @@
                 <div class="project-preview-overlay" aria-hidden="true"></div>
                 <iframe
                   class="project-preview"
-                  src="https://geuguis.github.io/LandingPage-003/"
+                  data-src="https://geuguis.github.io/LandingPage-003/"
                   title="Landing Page Temática Balatro · vista previa"
                   loading="lazy"
                   sandbox="allow-scripts"
@@ -1827,7 +1744,6 @@
 
     <div class="music-player" id="musicPlayer">
       <span class="music-label" id="musicLabel">piano</span>
-      <!-- Reproductor tipo vinilo -->
       <button class="music-btn" id="musicBtn" title="Reproducir piano" aria-label="Reproducir música de piano">
         <div class="vinyl-tonearm">
           <div class="tonearm-base"></div>
@@ -1873,7 +1789,6 @@
         let particles = [];
         let raf;
 
-        // Estados: 'float' (flotando) · 'gather' (agrupándose en el botón) · 'burst' (estallido final)
         let mode = 'float';
         const target = { x: 0, y: 0 };
 
@@ -1899,8 +1814,8 @@
             vy: -0.15 - Math.random() * 0.3,
             wobble: Math.random() * Math.PI * 2,
             wobbleSpeed: 0.008 + Math.random() * 0.012,
-            ox: 0, oy: 0,   // dispersión dentro del botón al agruparse
-            bvx: 0, bvy: 0  // velocidad del estallido
+            ox: 0, oy: 0,
+            bvx: 0, bvy: 0
           };
         }
 
@@ -1911,19 +1826,16 @@
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           particles.forEach(p => {
             if (mode === 'gather') {
-              // se acercan al ratón sobre el botón, con dispersión para llenarlo
               p.x += (target.x + p.ox - p.x) * 0.15;
               p.y += (target.y + p.oy - p.y) * 0.15;
               p.alpha += (Math.min(0.7, p.baseAlpha * 3) - p.alpha) * 0.1;
             } else if (mode === 'burst') {
-              // estallan hacia fuera y se desvanecen
               p.x += p.bvx;
               p.y += p.bvy;
               p.bvx *= 1.01;
               p.bvy *= 1.01;
               p.alpha *= 0.96;
             } else {
-              // flotación normal
               p.wobble += p.wobbleSpeed;
               p.x += p.vx + Math.sin(p.wobble) * 0.18;
               p.y += p.vy;
@@ -1944,7 +1856,6 @@
 
         const overlay = document.getElementById('entry-overlay');
 
-        // Al ocultarse el splash, detener el bucle y limpiar el canvas
         const observer = new MutationObserver(() => {
           if (overlay.classList.contains('hidden')) {
             cancelAnimationFrame(raf);
@@ -2138,8 +2049,6 @@
         if (portfolioView && 'inert' in HTMLElement.prototype) {
           portfolioView.inert = true;
         }
-        // La vista de proyectos arranca oculta: sin inert, sus enlaces
-        // seguirían siendo alcanzables con Tab pese a ser invisibles.
         if (projectsView && 'inert' in HTMLElement.prototype) {
           projectsView.inert = true;
         }
@@ -2224,9 +2133,6 @@
           if (window.startFlowers) window.startFlowers();
         }
 
-        // Splash breve sin bloqueo: se retira solo, o antes si el visitante
-        // interactúa. La música ya no arranca sola: queda como opción en el
-        // reproductor de vinilo (autoplay penaliza con quien evalúa el portfolio).
         setTimeout(revealPortfolio, prefersReducedMotion ? 200 : 1800);
         overlay.addEventListener('click', revealPortfolio);
         document.addEventListener('keydown', revealPortfolio, { once: true });
@@ -2280,7 +2186,6 @@
         });
       })();
 
-      /* Separadores ondulados interactivos (vanilla, adaptado de wave-path) */
       (function () {
         function initWave(container) {
           var path = container.querySelector('.wave-svg path');
@@ -2350,7 +2255,6 @@
         document.querySelectorAll('.divider, .entry-divider').forEach(initWave);
       })();
 
-      /* Dock magnético: los iconos crecen según la cercanía del ratón */
       (function () {
         var dock = document.querySelector('.dock');
         if (!dock) return;
@@ -2359,12 +2263,10 @@
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-        var BASE = 44;   // tamaño en reposo (px)
-        var MAX = 64;    // tamaño del icono bajo el ratón (px)
-        var RANGE = 110; // alcance del efecto (px)
+        var BASE = 44;
+        var MAX = 64;
+        var RANGE = 110;
 
-        // Centros cacheados al entrar (en reposo): evita un
-        // getBoundingClientRect por icono en cada mousemove.
         var centers = [];
         function cacheCenters() {
           centers = items.map(function (it) {
@@ -2394,8 +2296,6 @@
         dock.addEventListener('mouseleave', reset);
       })();
 
-      /* Reveal escalonado de las tarjetas de proyecto al hacer scroll
-         (vanilla equivalente de whileInView + staggerChildren). */
       (function () {
         var view = document.getElementById('projects-view');
         var openBtn = document.getElementById('openProjects');
@@ -2406,14 +2306,12 @@
         var cards = Array.prototype.slice.call(view.querySelectorAll('.project-card'));
         if (!cards.length) return;
 
-        // Ocultar de inicio; si el JS falla, las tarjetas quedan visibles.
         cards.forEach(function (c) { c.classList.add('pre-reveal'); });
 
         var started = false;
         openBtn.addEventListener('click', function () {
           if (started) return;
           started = true;
-          // Esperar a que la vista sea visible antes de observar.
           requestAnimationFrame(function () {
             requestAnimationFrame(observe);
           });
@@ -2444,9 +2342,6 @@
         }
       })();
 
-      /* Carga diferida de las previews en iframe: cada una es una web
-         completa (Three.js, WebGL...), así que no se cargan las 5 a la vez.
-         Con ratón: al pasar por la tarjeta. En táctil: al entrar en pantalla. */
       (function () {
         var frames = Array.prototype.slice.call(
           document.querySelectorAll('iframe.project-preview[data-src]')
@@ -2492,7 +2387,19 @@
         }
       })();
 
-      /* Toggle de modo oscuro: sincroniza el switch y persiste la elección. */
+      (function () {
+        document.querySelectorAll('.s-icon img').forEach(function(img) {
+          img.addEventListener('error', function() {
+            var src = img.getAttribute('src');
+            if (src.endsWith('-Dark.svg')) {
+              img.src = src.replace('-Dark.svg', '.svg');
+            } else if (src.endsWith('.svg') && !src.endsWith('-Dark.svg')) {
+              img.src = src.replace('.svg', '-Dark.svg');
+            }
+          }, { once: true });
+        });
+      })();
+
       (function () {
         var input = document.getElementById('theme-switch');
         if (!input) return;
@@ -2505,7 +2412,6 @@
         }
 
         function applyTheme(dark, animate) {
-          // La transición universal solo vive durante el cambio de tema.
           if (animate) {
             root.classList.add('theme-anim');
             clearTimeout(animTimer);
@@ -2524,7 +2430,6 @@
           input.checked = dark;
         }
 
-        // Estado inicial coherente con lo que aplicó el script del <head>.
         applyTheme(isDark(), false);
 
         input.addEventListener('change', function () {
