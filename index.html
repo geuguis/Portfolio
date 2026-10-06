@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guillermo Eugui Sánchez · Portfolio</title>
 
-    <meta name="description" content="Junior Full-Stack Developer en Sevilla, disponible para prácticas en empresas. Stack: HTML5, CSS, JavaScript y C#. Interfaces web limpias, accesibles y mantenibles." />
+    <meta name="description" content="Junior Full-Stack Developer en Sevilla, disponible para prácticas en empresas. Stack: HTML5, CSS, C# y Flutter. Interés en IA y Big Data. Interfaces web limpias, accesibles y mantenibles." />
     <meta name="author" content="Guillermo Eugui Sánchez" />
     <meta name="theme-color" content="#2d6a4f" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://geuguis.github.io/" />
+    <link rel="canonical" href="https://geuguis.github.io/Portfolio/" />
 
 	<link rel="icon" href="img/favicon.svg?v=3" type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
@@ -18,8 +18,8 @@
     <meta property="og:title" content="Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
     <meta property="og:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas. Portfolio con proyectos web limpios y accesibles." />
     <meta property="og:locale" content="es_ES" />
-    <meta property="og:url" content="https://geuguis.github.io/" />
-    <meta property="og:image" content="https://geuguis.github.io/img/og-cover.png" />
+    <meta property="og:url" content="https://geuguis.github.io/Portfolio/" />
+    <meta property="og:image" content="https://geuguis.github.io/Portfolio/img/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Portfolio de Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
@@ -27,7 +27,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Guillermo Eugui Sánchez · Junior Full-Stack Developer" />
     <meta name="twitter:description" content="Junior Full-Stack Developer · Sevilla · Disponible para prácticas." />
-    <meta name="twitter:image" content="https://geuguis.github.io/img/og-cover.png" />
+    <meta name="twitter:image" content="https://geuguis.github.io/Portfolio/img/og-cover.png" />
 
     <script type="application/ld+json">
     {
@@ -35,14 +35,14 @@
       "@type": "Person",
       "name": "Guillermo Eugui Sánchez",
       "jobTitle": "Junior Full-Stack Developer",
-      "description": "Junior Full-Stack Developer en formación, especializado en desarrollo web con HTML5, CSS, JavaScript y C#.",
-      "url": "https://geuguis.github.io/",
+      "description": "Junior Full-Stack Developer en formación, especializado en desarrollo web con HTML5, CSS, C# y Flutter, con interés en Inteligencia Artificial y Big Data.",
+      "url": "https://geuguis.github.io/Portfolio/",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Sevilla",
         "addressCountry": "ES"
       },
-      "knowsAbout": ["HTML5", "CSS", "JavaScript", "C#", "Java", "SQL", "Desarrollo Web", "Accesibilidad Web"],
+      "knowsAbout": ["HTML5", "CSS", "JavaScript", "C#", "Flutter", "Dart", "Java", "Python", "SQL", "Inteligencia Artificial", "Big Data", "Desarrollo Web", "Accesibilidad Web"],
       "sameAs": [
         "https://github.com/geuguis",
         "https://www.linkedin.com/in/guillermoeuguisanchez"
@@ -405,35 +405,51 @@
       }
 
       .dock-stack {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 30px;
+        display: block;
+        width: 100%;
         margin-top: 28px;
-        padding: 6px 8px;
-        max-width: 100%;
+        padding: 16px 18px 18px;
         border-radius: 14px;
         background: var(--green-pale);
         border: 1px solid var(--border);
-        transition: margin-top 150ms cubic-bezier(0.25, 1, 0.5, 1),
-                    padding-top 150ms cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      .stack-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 18px;
+      }
+
+      .stack-group { min-width: 0; }
+
+      .stack-group-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .stack-dock {
-        --icon-size: 40px;
+        --icon-size: 36px;
         display: flex;
         align-items: flex-end;
         list-style: none;
         margin: 0;
         padding: 0;
         gap: 4px;
+        max-width: 100%;
+        min-width: 0;
       }
 
       .s-icon {
         position: relative;
-        width: var(--icon-size);
-        height: var(--icon-size);
-        flex: none;
+        flex: 0 1 var(--icon-size);
+        min-width: 0;
+        aspect-ratio: 1 / 1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -451,21 +467,30 @@
           opacity: 1;
           transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
         }
-
-        .dock-stack:has(.stack-dock:first-child .s-icon:hover) {
-          margin-top: 8px;
-          padding-top: 26px;
-        }
       }
 
       .s-icon img {
         width: 100%;
-        height: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
         object-fit: contain;
         border-radius: 8px;
         pointer-events: none;
         transform-origin: bottom center;
         transition: transform 150ms cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      .s-icon:focus { outline: none; }
+      .s-icon:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+        border-radius: 10px;
+        z-index: 2;
+      }
+      .s-icon:focus-visible img { transform: scale(1.3); }
+      .s-icon:focus-visible .s-name {
+        opacity: 1;
+        transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
       }
 
       .s-name {
@@ -488,6 +513,122 @@
 
       @media (max-width: 600px) {
         .stack-dock { --icon-size: 30px; }
+        .stack-grid { grid-template-columns: 1fr; gap: 18px; }
+      }
+
+
+      #cert-label {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.5rem;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        text-transform: none;
+        color: var(--green);
+        margin-bottom: 16px;
+      }
+
+      .cert-section {
+        margin-top: 40px;
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards 0.75s;
+      }
+
+      .cert-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        background: var(--green-pale);
+        border: 1px solid var(--border);
+        color: var(--ink);
+        text-decoration: none;
+        transition: transform 0.2s var(--ease-out), border-color 0.2s ease;
+      }
+
+      .cert-card:hover { transform: translateY(-2px); border-color: var(--green-light); }
+      .cert-card:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+
+      .cert-badge {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        color: var(--on-accent);
+      }
+
+      .cert-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+      .cert-title { font-family: "DM Serif Display", serif; font-size: 1.15rem; line-height: 1.1; }
+      .cert-issuer { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
+      .cert-meta, .cert-id { font-size: 0.68rem; color: var(--muted); line-height: 1.5; }
+      .cert-id { overflow-wrap: anywhere; }
+      .cert-arrow { flex: none; color: var(--green); font-size: 1.1rem; transition: transform 0.2s var(--ease-out); }
+      .cert-card:hover .cert-arrow { transform: translate(2px, -2px); }
+
+      @media (max-width: 600px) {
+        .cert-card { padding: 12px 14px; gap: 12px; }
+        .cert-badge { width: 38px; height: 38px; }
+      }
+
+      .cert-list { display: flex; flex-direction: column; gap: 12px; }
+      .cert-badge { background: #fff; overflow: hidden; border: 1px solid var(--border); }
+      .cert-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+      .cert-wip { border-style: dashed; background: transparent; }
+      .wip-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 8px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--green-light);
+        color: var(--green);
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        vertical-align: middle;
+      }
+      .wip-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green-light);
+        animation: wipPulse 1.4s ease-in-out infinite;
+      }
+      .wip-bar {
+        position: relative;
+        display: block;
+        height: 6px;
+        margin-top: 6px;
+        border-radius: 999px;
+        background: var(--green-pale);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .wip-fill {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 35%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--green), var(--green-light));
+        animation: wipSlide 1.6s ease-in-out infinite;
+      }
+      @keyframes wipSlide {
+        0%   { transform: translateX(-100%); }
+        100% { transform: translateX(290%); }
+      }
+      @keyframes wipPulse {
+        0%, 100% { opacity: 0.35; transform: scale(0.8); }
+        50%      { opacity: 1;    transform: scale(1.1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wip-fill { animation: none; width: 40%; }
+        .wip-dot { animation: none; }
       }
 
       .links-section {
@@ -1364,35 +1505,104 @@
           <svg class="wave-svg" aria-hidden="true"><path></path></svg>
         </div>
 
-        <p class="bio">Construyo interfaces web limpias, accesibles y bien estructuradas. Curso DAM en Sevilla y trabajo con HTML5, CSS, JavaScript y C#. Me importa el detalle, el código mantenible y entender el problema antes de resolverlo. Busco prácticas en empresas con incorporación inmediata.</p>
+        <p class="bio">Construyo interfaces web limpias, accesibles y bien estructuradas. Curso DAM en Sevilla y trabajo con HTML5, CSS, C# y Flutter. Me interesan la IA y el Big Data, y tengo intención de cursar un máster en IA y Big Data. En Tarifa House conseguí 100/100 en las cuatro auditorías de Google Lighthouse. Me importa el detalle, el código mantenible y entender el problema antes de resolverlo. Busco prácticas en empresas con incorporación inmediata.</p>
 
         <section class="skills-section" aria-labelledby="stack-label">
           <p class="section-label" id="stack-label">Stack</p>
           <div class="dock-stack">
-            <ul class="stack-dock" aria-label="Stack: lenguajes, web y bases de datos">
-              <li class="s-icon"><span class="s-name">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" loading="lazy"></li>
-            </ul>
-            <ul class="stack-dock" aria-label="Stack: IDEs, control de versiones, terminal y sistemas">
-              <li class="s-icon"><span class="s-name">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" loading="lazy"></li>
-              <li class="s-icon"><span class="s-name">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" loading="lazy"></li>
-            </ul>
+            <div class="stack-grid">
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-0">Lenguajes</p>
+                <ul class="stack-dock" aria-labelledby="sg-0">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/dart.svg" alt="Dart" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-1">Web</p>
+                <ul class="stack-dock" aria-labelledby="sg-1">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-2">Móvil y motores</p>
+                <ul class="stack-dock" aria-labelledby="sg-2">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/flutter.svg" alt="Flutter" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/android.svg" alt="Android" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/unity.svg" alt="Unity" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-3">Bases de datos</p>
+                <ul class="stack-dock" aria-labelledby="sg-3">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-4">IDEs</p>
+                <ul class="stack-dock" aria-labelledby="sg-4">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/androidstudio.svg" alt="Android Studio" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-5">Versiones y DevOps</p>
+                <ul class="stack-dock" aria-labelledby="sg-5">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/docker.svg" alt="Docker" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-6">Terminal y sistemas</p>
+                <ul class="stack-dock" aria-labelledby="sg-6">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/linux.svg" alt="Linux" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" loading="lazy"></li>
+                </ul>
+              </div>
+              <div class="stack-group">
+                <p class="stack-group-label" id="sg-7">Utilidades</p>
+                <ul class="stack-dock" aria-labelledby="sg-7">
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" loading="lazy"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cert-section" aria-labelledby="cert-label">
+          <p class="section-label" id="cert-label">Certificaciones</p>
+          <div class="cert-list">
+          <a class="cert-card" href="https://www.datacamp.com/certificate/SQA0012337299104" target="_blank" rel="noopener noreferrer" aria-label="Ver credencial SQL Associate de DataCamp (se abre en una pestaña nueva)">
+            <span class="cert-badge"><img src="img/datacampinc_logo.jpg" alt="" width="44" height="44" loading="lazy"></span>
+            <span class="cert-info">
+              <span class="cert-title">SQL Associate</span>
+              <span class="cert-issuer">DataCamp</span>
+              <span class="cert-meta">Expedición: sept. de 2026 · Vencimiento: sept. de 2028</span>
+              <span class="cert-id">ID de la credencial: SQA0012337299104</span>
+            </span>
+            <span class="cert-arrow" aria-hidden="true">↗</span>
+          </a>
+          <div class="cert-card cert-wip" role="group" aria-label="MongoDB, certificación en preparación">
+            <span class="cert-badge"><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/mongodb.svg" alt="" width="44" height="44" loading="lazy"></span>
+            <span class="cert-info">
+              <span class="cert-title">MongoDB <span class="wip-pill"><span class="wip-dot" aria-hidden="true"></span>WIP</span></span>
+              <span class="cert-meta">Estudiando para conseguir la certificación</span>
+              <span class="wip-bar" role="progressbar" aria-label="Preparación de la certificación MongoDB en curso" aria-valuetext="En progreso"><span class="wip-fill"></span></span>
+            </span>
+          </div>
           </div>
         </section>
 
