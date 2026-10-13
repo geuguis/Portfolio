@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Cuadrado verde con esquinas redondeadas -->
+  <rect x="50" y="50" width="400" height="400" rx="80" ry="80" fill="#3B9243" />
+  
+  <!-- Letra G en color blanco, cursiva serif similar a la de la imagen -->
+  <text x="52%" y="54%" font-family="'Georgia', 'Times New Roman', serif" font-size="310" font-weight="normal" font-style="italic" fill="#FFFFFF" text-anchor="middle" dominant-baseline="middle">G</text>
+</svg>
