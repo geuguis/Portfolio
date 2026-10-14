@@ -403,7 +403,7 @@
       }
 
       .stack-group { min-width: 0; }
-	  .stack-group:first-child { grid-column: 1 / -1; }
+      .stack-group:first-child { grid-column: 1 / -1; }
 
       .stack-group-label {
         font-size: 0.6rem;
@@ -541,7 +541,12 @@
         height: 44px;
         border-radius: 10px;
         color: var(--on-accent);
+        background: #fff;
+        overflow: hidden;
+        border: 1px solid var(--border);
       }
+
+      .cert-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
       .cert-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
       .cert-title { font-family: "DM Serif Display", serif; font-size: 1.15rem; line-height: 1.1; }
@@ -557,8 +562,6 @@
       }
 
       .cert-list { display: flex; flex-direction: column; gap: 12px; }
-      .cert-badge { background: #fff; overflow: hidden; border: 1px solid var(--border); }
-      .cert-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
       .cert-wip { border-style: dashed; background: transparent; }
       .wip-pill {
@@ -912,38 +915,6 @@
         100% { box-shadow: 0 0 0 0 rgba(82,183,136,0); }
       }
 
-      .cta-primary {
-        font-family: "DM Mono", monospace;
-        font-size: 0.72rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        font-weight: 400;
-        background: var(--green);
-        color: var(--on-accent);
-        border: none;
-        padding: 11px 22px;
-        border-radius: 3px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: background 0.25s, transform 0.16s var(--ease-out), box-shadow 0.25s, gap 0.2s;
-        box-shadow: 0 2px 18px rgba(45,106,79,0.18);
-      }
-
-      .cta-primary:hover {
-        background: #1f4f39;
-        gap: 12px;
-        box-shadow: 0 6px 28px rgba(45,106,79,0.28);
-      }
-
-      .cta-primary:active { transform: scale(0.98); }
-
-      .cta-primary:focus-visible {
-        outline: 2px solid var(--green-light);
-        outline-offset: 3px;
-      }
-
       .toast {
         position: fixed;
         bottom: 28px;
@@ -984,43 +955,6 @@
         #portfolio-view,
         .wrapper {
           max-width: 580px;
-        }
-      }
-
-      @media (max-width: 600px) {
-        body { padding: 30px 20px; }
-        #projects-view { padding: 40px 20px; }
-
-        h1 { font-size: 2.2rem; }
-        .projects-title { font-size: 1.8rem; }
-
-        .links-section,
-        .project-links {
-          flex-wrap: wrap;
-          gap: 16px;
-        }
-
-        .project-body {
-          padding: 16px 18px 20px;
-        }
-
-        .project-preview,
-        .project-preview-overlay {
-          height: 160px;
-        }
-
-        .music-player {
-          bottom: 20px;
-          right: 20px;
-        }
-        .music-btn {
-          width: 46px;
-          height: 46px;
-        }
-
-        .section-label,
-        footer {
-          font-size: 0.75rem;
         }
       }
 
@@ -1066,20 +1000,416 @@
         background-image: var(--noise);
         pointer-events: none;
         opacity: 0.4;
+        z-index: 1;
       }
 
       .projects-inner {
         position: relative;
+        z-index: 2;
         width: 100%;
-        max-width: 1100px;
-        margin: auto 0;
+        max-width: 1080px;
+      }
+
+      #balatro-bg-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      #project-fx-layer {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        background-repeat: repeat;
+        transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      #project-fx-layer::before,
+      #project-fx-layer::after {
+        content: none;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      #projects-view.fx-on #project-fx-layer {
+        opacity: 1;
+      }
+
+      .balatro-scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.65s ease;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.16) 2px,
+          rgba(0, 0, 0, 0.16) 4px
+        );
+      }
+
+      #projects-view.fx-on[data-active-fx="balatro"] #balatro-bg-canvas {
+        opacity: 0.85;
+      }
+
+      #projects-view.fx-on[data-active-fx="cyber"] #balatro-bg-canvas {
+        opacity: 1;
+      }
+
+      #projects-view.fx-on[data-active-fx="balatro"] .balatro-scanlines,
+      #projects-view.fx-on[data-active-fx="cyber"] .balatro-scanlines {
+        opacity: 1;
+      }
+
+      #projects-view[data-active-fx="tarifa"] #project-fx-layer {
+        background:
+          radial-gradient(circle at 82% 18%, rgba(255, 243, 176, 0.95) 0%, rgba(251, 191, 36, 0.55) 14%, rgba(245, 158, 11, 0.18) 32%, transparent 60%),
+          linear-gradient(180deg, #0ea5e9 0%, #0284c7 42%, #0d9488 68%, #d97706 88%, #b45309 100%);
+      }
+
+      #projects-view[data-active-fx="tarifa"] #project-fx-layer::before,
+      #projects-view[data-active-fx="tarifa"] #project-fx-layer::after {
+        content: "";
+        left: -720px;
+        right: 0;
+        background-repeat: repeat;
+        will-change: transform;
+      }
+
+      #projects-view[data-active-fx="tarifa"] #project-fx-layer::before {
+        top: 46%;
+        bottom: 14%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='40' viewBox='0 0 240 40'%3E%3Cpath d='M0 20 Q30 6 60 20 T120 20 T180 20 T240 20' fill='none' stroke='rgba(255,255,255,0.30)' stroke-width='2'/%3E%3C/svg%3E");
+        background-size: 240px 40px;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 75%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 75%, transparent 100%);
+        animation: tarifaWaves 22s linear infinite;
+      }
+
+      #projects-view[data-active-fx="tarifa"] #project-fx-layer::after {
+        top: 62%;
+        bottom: 4%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='56' viewBox='0 0 360 56'%3E%3Cpath d='M0 28 Q45 8 90 28 T180 28 T270 28 T360 28' fill='none' stroke='rgba(255,251,235,0.42)' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-size: 360px 56px;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 70%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 70%, transparent 100%);
+        animation: tarifaWaves 13s linear infinite;
+      }
+
+      @keyframes tarifaWaves {
+        from { transform: translate3d(0, 0, 0); }
+        to   { transform: translate3d(720px, 0, 0); }
+      }
+
+      #projects-view[data-active-fx="rogue"] #project-fx-layer {
+        background-color: #0f172a;
+        background-image:
+          linear-gradient(rgba(245, 158, 11, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245, 158, 11, 0.12) 1px, transparent 1px),
+          radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.15) 0%, rgba(2, 6, 23, 0.92) 85%),
+          radial-gradient(circle at 50% 40%, rgba(126, 34, 206, 0.22) 0%, transparent 55%),
+          repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%);
+        background-size: 96px 96px, 96px 96px, 100% 100%, 100% 100%, 96px 96px;
+        background-position: 50% 50%, 50% 50%, 0 0, 0 0, 50% 50%;
+      }
+
+      #projects-view[data-active-fx="rogue"] #project-fx-layer::before,
+      #projects-view[data-active-fx="rogue"] #project-fx-layer::after {
+        content: "♚   ❦   ♞";
+        white-space: pre;
+        font-family: "DM Serif Display", Georgia, serif;
+        line-height: 1;
+        color: rgba(251, 191, 36, 0.14);
+        text-shadow: 0 0 40px rgba(126, 34, 206, 0.35);
+        font-variant-emoji: text;
+      }
+
+      #projects-view[data-active-fx="rogue"] #project-fx-layer::before {
+        top: 6%;
+        left: 50%;
+        font-size: clamp(5rem, 16vw, 15rem);
+        animation: rogueFloat 9s ease-in-out infinite alternate;
+      }
+
+      #projects-view[data-active-fx="rogue"] #project-fx-layer::after {
+        content: "♞   ❦   ♚";
+        bottom: 4%;
+        left: 50%;
+        font-size: clamp(3rem, 9vw, 8rem);
+        color: rgba(251, 191, 36, 0.1);
+        animation: rogueFloat 12s ease-in-out infinite alternate-reverse;
+      }
+
+      @keyframes rogueFloat {
+        from { transform: translate3d(-50%, 0, 0) rotate(-1.5deg); }
+        to   { transform: translate3d(-50%, -18px, 0) rotate(1.5deg); }
+      }
+
+      #projects-view[data-active-fx="freeki"] #project-fx-layer {
+        background-color: #0a0f0d;
+        background-image:
+          radial-gradient(ellipse 55% 42% at 25% 22%, rgba(45, 212, 191, 0.22), transparent 65%),
+          radial-gradient(ellipse 50% 45% at 75% 28%, rgba(168, 85, 247, 0.22), transparent 65%),
+          radial-gradient(ellipse 60% 50% at 50% 80%, rgba(16, 185, 129, 0.18), transparent 70%);
+      }
+
+      #projects-view[data-active-fx="freeki"] #project-fx-layer::before {
+        content: "";
+        position: absolute;
+        top: 14%;
+        left: 8%;
+        right: 8%;
+        height: 60vh;
+        border-radius: 40%;
+        filter: blur(45px);
+        background: linear-gradient(120deg, rgba(52, 211, 153, 0.28), rgba(45, 212, 191, 0.25), rgba(168, 85, 247, 0.28), rgba(236, 72, 153, 0.22));
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.08),
+          inset 0 4px 0 0 rgba(255, 255, 255, 0.35);
+        animation: freekiAurora 10s ease-in-out infinite alternate;
+      }
+
+      @keyframes freekiAurora {
+        0%   { transform: translate3d(-3%, 0, 0) rotate(-2deg) scale(0.96); }
+        50%  { transform: translate3d(2%, -18px, 0) rotate(1.5deg) scale(1.04); }
+        100% { transform: translate3d(3%, 8px, 0) rotate(3deg) scale(0.98); }
+      }
+
+      #projects-view[data-active-fx="freeki"] #project-fx-layer::after {
+        content: "Imprime tus sueños · 3D Studio";
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(1.8rem, 5vw, 3.8rem);
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+        background: linear-gradient(90deg, #34d399, #2dd4bf, #a855f7, #ec4899);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        opacity: 0.22;
+      }
+
+      #projects-view[data-active-fx="cyber"] #project-fx-layer {
+        background-color: transparent;
+        background-image:
+          linear-gradient(rgba(0, 255, 231, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 231, 0.04) 1px, transparent 1px);
+        background-size: 80px 80px, 80px 80px;
+      }
+
+      #projects-view[data-active-fx="cyber"] #project-fx-layer::before,
+      #projects-view[data-active-fx="cyber"] #project-fx-layer::after {
+        font-family: "DM Mono", monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+        color: #00ffe7;
+        text-shadow: 0 0 10px rgba(0, 255, 231, 0.7);
+        white-space: nowrap;
+        animation: hudBlink 2.4s steps(2, end) infinite;
+      }
+
+      #projects-view[data-active-fx="cyber"] #project-fx-layer::before {
+        content: "SYS::ONLINE // SEVILLA::ES // GPU::ACTIVE";
+        top: 22px;
+        left: 24px;
+      }
+
+      #projects-view[data-active-fx="cyber"] #project-fx-layer::after {
+        content: "RENDER::WEBGL // FPS::60 // 37.38N 5.98W";
+        bottom: 26px;
+        left: 24px;
+        animation-delay: 1.2s;
+      }
+
+      @keyframes hudBlink {
+        0%, 100% { opacity: 0.95; }
+        50%      { opacity: 0.55; }
+      }
+
+      #projects-view[data-active-fx="nextjs"] #project-fx-layer {
+        background-color: #030305;
+        background-image: radial-gradient(ellipse 80% 50% at 50% 55%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+      }
+
+      #projects-view[data-active-fx="nextjs"] #project-fx-layer::before {
+        content: "";
+        left: -15%;
+        right: -15%;
+        top: 28%;
+        height: 95vh;
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        background: transparent;
+        box-shadow:
+          inset 0 6px 12px rgba(255, 255, 255, 0.95),
+          inset 0 14px 20px rgba(56, 189, 248, 0.85),
+          inset 0 26px 28px rgba(59, 130, 246, 0.75),
+          0 -6px 16px rgba(255, 255, 255, 0.9),
+          0 -16px 26px rgba(250, 204, 21, 0.85),
+          0 -28px 36px rgba(249, 115, 22, 0.8),
+          0 -42px 50px rgba(239, 68, 68, 0.75),
+          0 -70px 90px rgba(59, 130, 246, 0.35);
+        filter: blur(5px);
+        transform-origin: 50% 100%;
+        animation: rainbowArcWave 7s ease-in-out infinite alternate;
+      }
+
+      #projects-view[data-active-fx="nextjs"] #project-fx-layer::after {
+        content: "";
+        left: -10%;
+        right: -10%;
+        top: 30%;
+        height: 90vh;
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        box-shadow:
+          0 -4px 10px rgba(255, 255, 255, 0.95),
+          inset 0 10px 24px rgba(14, 165, 233, 0.65),
+          0 -22px 40px rgba(234, 88, 12, 0.65);
+        filter: blur(2px);
+        mix-blend-mode: screen;
+        animation: rainbowArcWave2 5.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes rainbowArcWave {
+        0%   { transform: translate3d(-2%, 12px, 0) rotate(-2.5deg) scaleY(0.96); }
+        50%  { transform: translate3d(1%, -18px, 0) rotate(1.2deg) scaleY(1.04); }
+        100% { transform: translate3d(2%, 6px, 0) rotate(2.8deg) scaleY(0.98); }
+      }
+
+      @keyframes rainbowArcWave2 {
+        0%   { transform: translate3d(2%, -8px, 0) rotate(2deg) scaleX(1.02); }
+        100% { transform: translate3d(-2%, 14px, 0) rotate(-2deg) scaleX(0.98); }
+      }
+
+      #projects-view[data-active-fx="workshop"] #project-fx-layer {
+        background-color: #171a21;
+        background-image:
+          linear-gradient(rgba(102, 192, 244, 0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(102, 192, 244, 0.18) 1px, transparent 1px),
+          linear-gradient(rgba(102, 192, 244, 0.09) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(102, 192, 244, 0.09) 1px, transparent 1px),
+          radial-gradient(circle at 28% 22%, rgba(102, 192, 244, 0.16), transparent 55%),
+          linear-gradient(180deg, #171a21 0%, #1b2838 100%);
+        background-size: 128px 128px, 128px 128px, 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+      }
+
+      #projects-view[data-active-fx="workshop"] #project-fx-layer::before {
+        content: "";
+        right: 5%;
+        bottom: 8%;
+        width: min(65vw, 680px);
+        height: 220px;
+        background-color: rgba(102, 192, 244, 0.14);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='8.78 12 423.221 102'%3E%3Cpath fill='rgba(102,192,244,0.14)' d='M432 33.4h-2v-5l-2 3.3h-1l-1-3.3v5h-2v-8.5h2l2 4.6 2-4.6h2v8.5zm-9-7h-2v7h-2v-7h-2v-1.5h6v1.5zm-11 31.5h-6V38.7l-7 12.5h-4l-6-12.5v19.2h-7v-33h7l8 17.8 9-17.8h6v33zm-39 0h-7l-2-5.8h-11l-2 5.8h-7l12-33h5l12 33zm-10-11.3l-4-12-4 12h8zm-29 11.3h-22v-33h22v5.7h-15v7.8h13v5.7h-13v8.1h15v5.7zm-32-27.3h-8v27.3h-7V30.6h-9v-5.7h24v5.7zm-32 17.6c0 6.8-6 9.9-12 10-6 0-10-1.4-12-4.4l4-4.1c2 1.8 4 2.8 8 2.8s6-1.4 6-4.1c0-2.5-2-3.6-4-4l-4-.5c-6-.8-9-3.9-9-9.3 0-3 1-5.4 3-7.3 2-1.8 5-2.7 8-2.7 5 0 8 1.3 11 3.8l-4 4.1c-2-1.5-4-2.3-7-2.3-3 .2-5 1.3-5 4.2 0 2.3 2 3.4 4 3.6l4 .6c5 .6 9 4 9 9.6zm-51-6c0 9-8 16.3-17 16.3s-16-7.3-16-16.3c0-8.9 7-16.2 16-16.2s17 7.3 17 16.2zM202 12c-16 0-30 13.4-30 30.1l-19 27.1c-1-.101-1-.2-2-.2-4 0-8 1.2-12 3.2L53.6 37.8C51.3 27.6 42.2 20 31.4 20 19 20 8.78 30.2 8.78 42.7 8.78 55.1 19 65.3 31.4 65.3c4.301 0 8.2-1.1 11.601-3.2l86 34.4c2 10.5 11 17.5 22 17.5s21-9 22-20.1l29-21.2c17 0 31-13.6 31-30.4C233 25.6 219 12 202 12zm0 10c12 0 21 9.1 21 20.3 0 11.3-9 20.4-21 20.4-11 0-20-9.1-20-20.4 0-11.2 9-20.3 20-20.3zM31.4 26c6.4 0 12 3.5 14.801 8.8L37.9 31.5c-6.7-2.4-14.1.9-16.8 7.5-2.6 6.7.4 14.2 6.9 17.1l7 2.8c-1.101.3-2.3.4-3.601.4-9.199 0-16.6-7.4-16.6-16.6C14.8 33.4 22.2 26 31.4 26zM151 75c9 0 16 7.5 16 16.7 0 9.3-7 16.3-16 16.3-7 0-12-3-15-8.5 3 1.5 5 2.5 8 3.5 7 3 14-1 17-7.4 2-6.199 0-14.699-7-17.399l-7-2.8c1-.201 3-.401 4-.401z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        -webkit-mask: url('steam.svg') no-repeat center / contain;
+        mask: url('steam.svg') no-repeat center / contain;
+        animation: steamLogoFloat 7s ease-in-out infinite alternate;
+      }
+
+      @keyframes steamLogoFloat {
+        0%   { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(0, -14px, 0); }
+      }
+
+      #projects-view[data-active-fx="workshop"] #project-fx-layer::after {
+        content: "GMOD // SOURCE ENGINE // LUA 5.1 // PHYS_PROP";
+        bottom: 26px;
+        left: 24px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+        color: #66c0f4;
+        white-space: nowrap;
+      }
+
+      #projects-view[data-active-fx="plantinar"] #project-fx-layer {
+        background-color: #2e2e50;
+        background-image:
+          linear-gradient(180deg, rgba(255, 94, 87, 0.85) 0px, rgba(255, 94, 87, 0.85) 72px, transparent 72px, transparent calc(100% - 48px), rgba(255, 94, 87, 0.85) calc(100% - 48px), rgba(255, 94, 87, 0.85) 100%),
+          radial-gradient(circle at 20% 35%, rgba(255, 94, 87, 0.18), transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 50%);
+      }
+
+      #projects-view[data-active-fx="plantinar"] #project-fx-layer::before {
+        content: "";
+        left: 50%;
+        top: 72px;
+        bottom: 48px;
+        width: 4px;
+        transform: translateX(-50%);
+        background:
+          radial-gradient(circle at 50% 18%, #ff5e57 0 7px, transparent 8px),
+          radial-gradient(circle at 50% 50%, #ff5e57 0 7px, transparent 8px),
+          radial-gradient(circle at 50% 82%, #ff5e57 0 7px, transparent 8px),
+          rgba(255, 255, 255, 0.16);
+        background-repeat: no-repeat;
+        box-shadow: 0 0 14px rgba(255, 94, 87, 0.45);
+      }
+
+      #projects-view[data-active-fx="plantinar"] #project-fx-layer::after {
+        content: "C.A. EL PLANTINAR // #2E2E50 · #FF5E57";
+        bottom: 58px;
+        right: 32px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.22em;
+        color: rgba(255, 94, 87, 0.55);
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+        white-space: nowrap;
+      }
+
+      #projects-view.fx-on .projects-title,
+      #projects-view.fx-on .projects-eyebrow,
+      #projects-view.fx-on .projects-group-label,
+      #projects-view.fx-on .back-btn,
+      #projects-view.fx-on .see-more-btn {
+        color: #f5e6c8;
+        border-color: rgba(255, 255, 255, 0.22);
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+      }
+
+      #projects-view.fx-on[data-active-fx="tarifa"] .projects-title em    { color: #fde047; }
+      #projects-view.fx-on[data-active-fx="rogue"] .projects-title em     { color: #f59e0b; }
+      #projects-view.fx-on[data-active-fx="freeki"] .projects-title em    { color: #2dd4bf; }
+      #projects-view.fx-on[data-active-fx="balatro"] .projects-title em   { color: #f0c040; }
+      #projects-view.fx-on[data-active-fx="cyber"] .projects-title em     { color: #00ffe7; text-shadow: 0 0 18px rgba(0, 255, 231, 0.6); }
+      #projects-view.fx-on[data-active-fx="nextjs"] .projects-title em    { color: #ffffff; }
+      #projects-view.fx-on[data-active-fx="workshop"] .projects-title em  { color: #66c0f4; }
+      #projects-view.fx-on[data-active-fx="plantinar"] .projects-title em { color: #ff5e57; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4); }
+
+      #projects-view.fx-on .project-card:not(.fx-focused) {
+        opacity: 0.38;
+        filter: saturate(0.55);
+        transform: scale(0.985);
+      }
+
+      #projects-view.fx-on .project-card.fx-focused {
+        transform: translateY(-6px) scale(1.015);
+        border-color: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45);
       }
 
       .projects-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 28px;
-        align-items: start;
+        align-items: stretch;
       }
 
       @media (max-width: 820px) {
@@ -1099,6 +1429,7 @@
         text-transform: uppercase;
         color: var(--muted);
         margin-bottom: 12px;
+        transition: color 0.4s ease;
       }
 
       .projects-title {
@@ -1106,27 +1437,33 @@
         font-size: clamp(1.8rem, 5vw, 2.6rem);
         line-height: 1.1;
         color: var(--ink);
+        transition: color 0.4s ease;
       }
 
       .projects-title em {
         font-style: italic;
         color: var(--green);
+        transition: color 0.4s ease;
       }
 
       .project-card {
         border: 1px solid var(--border);
-        border-radius: 4px;
+        border-radius: 6px;
         overflow: hidden;
         background: var(--white);
-        transition: box-shadow 0.2s var(--ease-out), transform 0.2s var(--ease-out),
+        transition: box-shadow 0.25s var(--ease-out), transform 0.25s var(--ease-out),
+                    opacity 0.35s ease, filter 0.35s ease,
                     background-color 0.55s var(--ease-theme),
                     border-color 0.55s var(--ease-theme);
         position: relative;
+        display: flex;
+        flex-direction: column;
+        contain: layout paint;
       }
 
       .project-card:hover {
-        box-shadow: 0 8px 40px rgba(45,106,79,0.1);
-        transform: translateY(-3px);
+        box-shadow: 0 10px 40px rgba(45,106,79,0.12);
+        transform: translateY(-4px);
       }
 
       .project-card-accent {
@@ -1134,46 +1471,195 @@
         background: linear-gradient(90deg, var(--green) 0%, var(--green-light) 100%);
       }
 
-      .project-preview {
+      .project-media {
+        position: relative;
         width: 100%;
-        height: 200px;
-        border: none;
-        display: block;
+        height: 210px;
+        overflow: hidden;
         background: var(--green-pale);
+        display: block;
+        border-bottom: 1px solid var(--border);
+        isolation: isolate;
+        contain: layout paint;
+      }
+
+      .project-media::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: radial-gradient(circle at 50% 50%, rgba(82, 183, 136, 0.08) 0%, transparent 75%), var(--green-pale);
+        transition: opacity 0.4s ease;
         pointer-events: none;
       }
 
-      .project-preview-overlay {
+      .project-media::after {
+        content: "▶ PASAR EL RATÓN PARA PREVIEW EN VIVO";
         position: absolute;
-        top: 3px;
-        left: 0;
-        right: 0;
-        height: 200px;
-        cursor: pointer;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         z-index: 2;
+        font-family: "DM Mono", monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 8px 14px;
+        border-radius: 4px;
+        border: 1px dashed var(--border);
+        background: rgba(255, 255, 255, 0.65);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        white-space: nowrap;
+        pointer-events: none;
+        transition: opacity 0.35s ease, transform 0.35s ease;
       }
 
-      .project-card.iframe-pending .project-preview-overlay::after {
-        content: "▶ demo en vivo";
+      [data-theme="dark"] .project-media::after {
+        background: rgba(15, 21, 18, 0.75);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: #a8b8ae;
+      }
+
+      .project-media.is-loading::after {
+        content: "CARGANDO PREVIEW...";
+        animation: loadPulse 0.9s ease-in-out infinite alternate;
+      }
+
+      @keyframes loadPulse {
+        from { opacity: 0.55; transform: translate(-50%, -50%) scale(0.98); }
+        to   { opacity: 1;    transform: translate(-50%, -50%) scale(1.02); }
+      }
+
+      .project-media.is-ready::before,
+      .project-media.is-ready::after {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .project-preview {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1280px;
+        height: 800px;
+        border: 0;
+        transform: scale(var(--iframe-scale, 0.41));
+        transform-origin: 0 0;
+        pointer-events: none;
+        background: #fff;
+        opacity: 0;
+        z-index: 1;
+        transition: opacity 0.4s ease, transform 0.5s var(--ease-out);
+      }
+
+      .project-preview.is-loaded {
+        opacity: 1;
+      }
+
+      .project-card:hover .project-preview {
+        transform: scale(calc(var(--iframe-scale, 0.41) * 1.03));
+      }
+
+      .project-thumb-img {
         position: absolute;
         inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        transition: transform 0.5s var(--ease-out);
+      }
+
+      .project-card:hover .project-thumb-img {
+        transform: scale(1.04);
+      }
+
+      .project-media-link {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: block;
+        text-decoration: none;
+      }
+
+      .project-media-link:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: -4px;
+      }
+
+      .project-badges-overlay {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 4;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+        max-width: calc(100% - 24px);
+        pointer-events: none;
+      }
+
+      .project-badge {
         font-family: "DM Mono", monospace;
-        font-size: 0.72rem;
-        letter-spacing: 0.18em;
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--green);
+        padding: 4px 9px;
+        border-radius: 3px;
+        background: rgba(10, 14, 12, 0.62);
+        color: #eef2ec;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      }
+
+      .project-badge--accent {
+        background: rgba(20, 52, 38, 0.7);
+        color: #d8f3dc;
+        border-color: rgba(116, 198, 157, 0.55);
+      }
+
+      .project-media-cta {
+        position: absolute;
+        bottom: 10px;
+        left: 12px;
+        z-index: 4;
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(238, 242, 236, 0.92);
+        background: rgba(10, 14, 12, 0.7);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        padding: 3px 8px;
+        border-radius: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .project-card:hover .project-media-cta,
+      .project-media-link:focus-visible .project-media-cta {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .project-body {
         padding: 22px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
       }
 
       .project-number {
         font-size: 0.6rem;
-        letter-spacing: 0.28em;
+        letter-spacing: 0.24em;
         text-transform: uppercase;
         color: var(--green);
         margin-bottom: 8px;
@@ -1189,10 +1675,9 @@
 
       .project-desc {
         font-size: 0.8rem;
-        line-height: 1.8;
+        line-height: 1.75;
         color: var(--text-secondary);
         margin-bottom: 18px;
-        max-width: 420px;
       }
 
       .project-tags {
@@ -1200,10 +1685,11 @@
         flex-wrap: wrap;
         gap: 6px;
         margin-bottom: 20px;
+        margin-top: auto;
       }
 
       .project-tag {
-        font-size: 0.68rem;
+        font-size: 0.66rem;
         color: var(--green);
         border: 1px solid var(--border);
         padding: 3px 10px;
@@ -1297,18 +1783,6 @@
         opacity: 0;
       }
 
-      .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
       .projects-group-label {
         font-size: 0.7rem;
         letter-spacing: 0.3em;
@@ -1317,6 +1791,7 @@
         margin-bottom: 22px;
         padding-bottom: 10px;
         border-bottom: 1px solid var(--border);
+        transition: color 0.4s ease, border-color 0.4s ease;
       }
 
       .see-more-wrap {
@@ -1438,6 +1913,42 @@
 
       .switch input:checked ~ .on {
         opacity: 1;
+      }
+
+      @media (max-width: 600px) {
+        body { padding: 30px 20px; }
+        #projects-view { padding: 40px 20px; }
+
+        h1 { font-size: 2.2rem; }
+        .projects-title { font-size: 1.8rem; }
+
+        .links-section,
+        .project-links {
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+
+        .project-body {
+          padding: 16px 18px 20px;
+        }
+
+        .project-media {
+          height: 190px;
+        }
+
+        .music-player {
+          bottom: 20px;
+          right: 20px;
+        }
+        .music-btn {
+          width: 46px;
+          height: 46px;
+        }
+
+        .section-label,
+        footer {
+          font-size: 0.75rem;
+        }
       }
     </style>
     <script>
@@ -1624,6 +2135,10 @@
     </main>
 
     <section id="projects-view" aria-label="Lista de proyectos" aria-hidden="true">
+      <canvas id="balatro-bg-canvas" aria-hidden="true"></canvas>
+	  <div id="project-fx-layer" aria-hidden="true"></div>
+      <div class="balatro-scanlines" aria-hidden="true"></div>
+
       <div class="projects-inner">
 
         <button class="back-btn" id="backBtn">← Volver al portfolio</button>
@@ -1637,32 +2152,30 @@
 
         <div class="projects-grid">
 
-          <article class="project-card">
+          <article class="project-card" data-fx="tarifa">
             <div class="project-card-accent" aria-hidden="true"></div>
-            <a href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" aria-label="Ver Tarifa House en una nueva pestaña">
-              <div class="project-preview-overlay" aria-hidden="true"></div>
-              <iframe
-                class="project-preview"
-                data-src="https://tarifahouse.com/"
-                title="Tarifa House · vista previa"
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin"
-                referrerpolicy="no-referrer"
-                tabindex="-1"
-              ></iframe>
-            </a>
+            <div class="project-media">
+              <iframe class="project-preview" data-src="https://tarifahouse.com/" title="Vista previa en vivo de Tarifa House" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+              <div class="project-badges-overlay">
+                <span class="project-badge project-badge--accent">100/100 LIGHTHOUSE</span>
+                <span class="project-badge">-50% PESO</span>
+              </div>
+              <a class="project-media-link" href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" aria-label="Ver Tarifa House en una nueva pestaña">
+                <span class="project-media-cta">Abrir web en producción ↗</span>
+              </a>
+            </div>
             <div class="project-body">
-              <p class="project-number">Web corporativa · Segundo cliente real</p>
+              <p class="project-number">Web corporativa · Cliente real en producción</p>
               <h3 class="project-name">Tarifa House</h3>
               <p class="project-desc">
-                Web para una empresa de hostelería de casas en Tarifa, mi segundo cliente real, desarrollada bajo sus condiciones. Diseño responsive y propio en HTML, CSS y JavaScript, combinando maquetación a medida con integración de recursos y componentes web. Destaca por un rendimiento impecable logrando una puntuación de 100/100 en las cuatro métricas de Google Lighthouse.
+                Plataforma completa de alquiler vacacional de 8 páginas diseñada y entregada en 1 semana bajo especificaciones del cliente. Optimización de recursos que redujo el peso total un 50% (de 40 MB a 20 MB), selector multi-idioma y 100/100 en las cuatro métricas de Google Lighthouse.
               </p>
               <div class="project-tags">
                 <span class="project-tag">HTML5</span>
-                <span class="project-tag">CSS</span>
+                <span class="project-tag">CSS3</span>
                 <span class="project-tag">JavaScript</span>
                 <span class="project-tag">Performance</span>
-                <span class="project-tag">Responsive</span>
+                <span class="project-tag">Multi-idioma</span>
               </div>
               <div class="project-links">
                 <a href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
@@ -1670,39 +2183,96 @@
             </div>
           </article>
 
-          <article class="project-card">
+          <article class="project-card" data-fx="freeki">
             <div class="project-card-accent" aria-hidden="true"></div>
-            <a href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" aria-label="Ver RogueGambit en una nueva pestaña">
-              <div class="project-preview-overlay" aria-hidden="true"></div>
-              <iframe
-                class="project-preview"
-                data-src="https://geuguis.github.io/RogueGambit/"
-                title="RogueGambit · vista previa"
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin"
-                referrerpolicy="no-referrer"
-                tabindex="-1"
-              ></iframe>
-            </a>
+            <div class="project-media">
+              <iframe class="project-preview" data-src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" title="Vista previa en vivo de Freekiland 3D" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+              <div class="project-badges-overlay">
+                <span class="project-badge project-badge--accent">98/100 LIGHTHOUSE</span>
+                <span class="project-badge">SQL + CATÁLOGO 3D</span>
+              </div>
+              <a class="project-media-link" href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
+                <span class="project-media-cta">Explorar proyecto ↗</span>
+              </a>
+            </div>
             <div class="project-body">
-              <p class="project-number">Juego web · Proyecto personal</p>
-              <h3 class="project-name">RogueGambit</h3>
+              <p class="project-number">Web corporativa · Prácticas en empresa</p>
+              <h3 class="project-name">Freekiland 3D</h3>
               <p class="project-desc">
-                Roguelike por turnos sobre un tablero de ajedrez 5x5: mueves al héroe jugando
-                cartas que imitan piezas (peón, caballo, torre...) y cada movimiento es a la vez
-                tu ataque. Mejoras el mazo entre niveles, con enemigos de IA propia y un jefe final.
-                Hecho en JavaScript puro, sin frameworks ni build.
+                Web corporativa desarrollada en un equipo de 4 personas para una empresa de impresión y modelado 3D. Catálogo 3D interactivo, carrito de solicitud, flujo colaborativo con Git/GitHub y persistencia mediante consultas SQL. Auditoría Google Lighthouse: 97 rendimiento, 100 accesibilidad, 96 buenas prácticas y 100 SEO.
               </p>
               <div class="project-tags">
-                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">JavaScript ES6+</span>
+                <span class="project-tag">SQL</span>
                 <span class="project-tag">HTML5</span>
-                <span class="project-tag">CSS</span>
-                <span class="project-tag">Web Audio</span>
-                <span class="project-tag">Roguelike</span>
+                <span class="project-tag">CSS3</span>
+                <span class="project-tag">Git</span>
+              </div>
+              <div class="project-links">
+                <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-fx="rogue">
+            <div class="project-card-accent" aria-hidden="true"></div>
+            <div class="project-media">
+              <iframe class="project-preview" data-src="https://geuguis.github.io/RogueGambit/" title="Vista previa en vivo de RogueGambit" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+              <div class="project-badges-overlay">
+                <span class="project-badge project-badge--accent">0 DEPENDENCIAS</span>
+                <span class="project-badge">IA PROCEDURAL</span>
+              </div>
+              <a class="project-media-link" href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" aria-label="Jugar a RogueGambit en una nueva pestaña">
+                <span class="project-media-cta">Jugar en el navegador ↗</span>
+              </a>
+            </div>
+            <div class="project-body">
+              <p class="project-number">Juego web · Arquitectura en Vanilla JS</p>
+              <h3 class="project-name">RogueGambit</h3>
+              <p class="project-desc">
+                Roguelike táctico por turnos sobre un tablero dinámico 5x5: mueves al héroe jugando cartas que imitan piezas de ajedrez y cada movimiento es a la vez tu ataque. Construcción de mazos, patrones de IA procedural, jefe final y síntesis de audio en tiempo real con Web Audio API.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">JavaScript Puro</span>
+                <span class="project-tag">HTML5 Canvas</span>
+                <span class="project-tag">Web Audio API</span>
+                <span class="project-tag">IA Procedural</span>
               </div>
               <div class="project-links">
                 <a href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
                 <a href="https://github.com/geuguis/RogueGambit" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" id="balatro-project-card" data-fx="balatro">
+            <div class="project-card-accent" aria-hidden="true"></div>
+            <div class="project-media">
+              <iframe class="project-preview" data-src="https://geuguis.github.io/LandingPage-003/" title="Vista previa en vivo de la Landing Page Temática Balatro" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+              <div class="project-badges-overlay">
+                <span class="project-badge project-badge--accent">HOVER INTERACTIVO</span>
+                <span class="project-badge">WEBGL SHADER</span>
+              </div>
+              <a class="project-media-link" href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
+                <span class="project-media-cta">Ver landing interactiva ↗</span>
+              </a>
+            </div>
+            <div class="project-body">
+              <p class="project-number">Landing page · Encargo a medida</p>
+              <h3 class="project-name">Landing Page Temática Balatro</h3>
+              <p class="project-desc">
+                Portfolio gamificado realizado para un compañero de DAM con estética y mecánicas inspiradas en Balatro: shader WebGL hipnótico en segundo plano, tarjetas con física 3D, efectos policromados y microinteracciones a medida.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">HTML5</span>
+                <span class="project-tag">CSS3</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">WebGL Shader</span>
+              </div>
+              <div class="project-links">
+                <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
@@ -1716,68 +2286,27 @@
         </div>
 
         <div id="all-projects-anchor" class="all-projects-section">
-          <p class="projects-group-label">Todos los proyectos</p>
+          <p class="projects-group-label">Más proyectos y demos</p>
 
           <div class="projects-grid">
 
-            <article class="project-card">
+            <article class="project-card" data-fx="nextjs">
               <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  data-src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/"
-                  title="Freekiland 3D · vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
-              <div class="project-body">
-                <p class="project-number">Web corporativa · Cliente real</p>
-                <h3 class="project-name">Freekiland 3D</h3>
-                <p class="project-desc">
-                  Web corporativa desarrollada durante mis prácticas formativas para Freekiland 3D,
-                  empresa de impresión y prototipado 3D. Diseño responsive con secciones de
-                  servicios, productos y contacto, pensada para presentar la marca y captar
-                  clientes potenciales.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS</span>
-                  <span class="project-tag">JavaScript</span>
-                  <span class="project-tag">Responsive</span>
-                  <span class="project-tag">Prácticas</span>
+              <div class="project-media">
+                <iframe class="project-preview" data-src="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" title="Vista previa en vivo del Portfolio con Next.js" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+                <div class="project-badges-overlay">
+                  <span class="project-badge project-badge--accent">RENDER 3D</span>
+                  <span class="project-badge">NEXT.JS 15</span>
                 </div>
-                <div class="project-links">
-                  <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
-                </div>
+                <a class="project-media-link" href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" aria-label="Ver Portfolio Next.js + Three.js en una nueva pestaña">
+                  <span class="project-media-cta">Abrir demo 3D ↗</span>
+                </a>
               </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" aria-label="Ver Portfolio Next.js + Three.js en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  data-src="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/"
-                  title="Portfolio Next.js + Three.js · vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
               <div class="project-body">
                 <p class="project-number">Demo · Next.js + Three.js</p>
                 <h3 class="project-name">Portfolio con Next.js</h3>
                 <p class="project-desc">
-                  Portfolio construido con Next.js 15 y Three.js para renderizado 3D en navegador.
-                  La integración de un motor 3D en un portfolio aporta una profundidad visual inusual y llamativa.
-                  Diseño sobrio con Tailwind CSS y Shadcn/UI: modo oscuro, accesibilidad y rendimiento Vercel-first.
+                  Portfolio construido con Next.js 15 y Three.js para renderizado 3D en navegador. Diseño sobrio con Tailwind CSS y Shadcn/UI, soporte de modo oscuro, accesibilidad y arquitectura orientada a rendimiento.
                 </p>
                 <div class="project-tags">
                   <span class="project-tag">Next.js 15</span>
@@ -1793,28 +2322,23 @@
               </div>
             </article>
 
-            <article class="project-card">
+            <article class="project-card" data-fx="cyber">
               <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Cyberpunk WebGL en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  data-src="https://geuguis.github.io/Demo-LandingPage002/"
-                  title="Landing Page Cyberpunk WebGL · vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
+              <div class="project-media">
+                <iframe class="project-preview" data-src="https://geuguis.github.io/Demo-LandingPage002/" title="Vista previa en vivo de la Landing Page Cyberpunk" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+                <div class="project-badges-overlay">
+                  <span class="project-badge project-badge--accent">GLSL SHADERS</span>
+                  <span class="project-badge">60 FPS GPU</span>
+                </div>
+                <a class="project-media-link" href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Cyberpunk WebGL en una nueva pestaña">
+                  <span class="project-media-cta">Probar shader en vivo ↗</span>
+                </a>
+              </div>
               <div class="project-body">
                 <p class="project-number">Demo · WebGL + Vanilla JS</p>
                 <h3 class="project-name">Landing Page Cyberpunk</h3>
                 <p class="project-desc">
-                  Demo experimental de ingeniería frontend pura. El fondo líquido y las ondas al clic se calculan
-                  directamente en la GPU mediante shaders GLSL. Estética HUD con elementos de interfaz vivos:
-                  coordenadas, reloj y estado del sistema. Cursor y seguimiento de luz optimizados a mano con
-                  requestAnimationFrame para control total sobre hardware y estética, sin framework.
+                  Demo experimental de ingeniería frontend pura. El fondo líquido y las ondas al clic se calculan directamente en la GPU mediante shaders GLSL. Estética HUD con telemetría en vivo optimizada con requestAnimationFrame sin frameworks.
                 </p>
                 <div class="project-tags">
                   <span class="project-tag">WebGL</span>
@@ -1830,64 +2354,29 @@
               </div>
             </article>
 
-            <article class="project-card">
+            <article class="project-card" data-fx="workshop">
               <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  data-src="https://geuguis.github.io/LandingPage-003/"
-                  title="Landing Page Temática Balatro · vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
-              <div class="project-body">
-                <p class="project-number">Landing page · Encargo personal</p>
-                <h3 class="project-name">Landing Page Temática Balatro</h3>
-                <p class="project-desc">
-                  Landing realizada para un compañero de DAM con temática inspirada en el videojuego Balatro.
-                  Visualmente original con toque retro y friki, assets propios y de la comunidad, y efectos
-                  interactivos a medida.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS</span>
-                  <span class="project-tag">JavaScript</span>
-                  <span class="project-tag">Responsive</span>
+              <div class="project-media is-ready">
+                <img class="project-thumb-img" src="img/workshop.webp" alt="Steam Workshop · vista previa" loading="lazy" decoding="async" />
+                <div class="project-badges-overlay">
+                  <span class="project-badge project-badge--accent">LUA SCRIPTING</span>
+                  <span class="project-badge">CÓDIGO LEGADO</span>
                 </div>
-                <div class="project-links">
-                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
-                </div>
+                <a class="project-media-link" href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" aria-label="Ver mis proyectos de modding en Steam Workshop">
+                  <span class="project-media-cta">Abrir Steam Workshop ↗</span>
+                </a>
               </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" aria-label="Ver mis proyectos de modding en Steam Workshop">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <img
-                  class="project-preview"
-                  src="img/workshop.webp"
-                  alt="Steam Workshop · vista previa"
-                  loading="lazy"
-                  style="object-fit: cover;"
-                />
-              </a>
               <div class="project-body">
                 <p class="project-number">Modding · Game Dev</p>
-                <h3 class="project-name">Steam Workshop: Mods & Minijuegos</h3>
+                <h3 class="project-name">Steam Workshop: Mods &amp; Minijuegos</h3>
                 <p class="project-desc">
-                  Desarrollo de modificaciones y modos de juego desde cero mediante Scripting (normalmente vía Lua). El trabajo incluye la programación de mecánicas personalizadas, interfaces (UI) y cálculos de físicas, además de la refactorización y optimización de código legado para revivir proyectos rotos (ej: GarryWare), sumado a un aprendizaje continuo de nuevas técnicas y herramientas.
+                  Desarrollo de modificaciones y modos de juego desde cero mediante scripting en Lua. Incluye programación de mecánicas personalizadas, interfaces HUD, físicas y refactorización de código legado para recuperar proyectos complejos como GarryWare.
                 </p>
                 <div class="project-tags">
                   <span class="project-tag">Lua</span>
                   <span class="project-tag">Scripting</span>
                   <span class="project-tag">Refactorización</span>
-                  <span class="project-tag">UI & HUD</span>
+                  <span class="project-tag">UI &amp; HUD</span>
                   <span class="project-tag">Modding</span>
                 </div>
                 <div class="project-links">
@@ -1896,31 +2385,27 @@
               </div>
             </article>
 
-            <article class="project-card">
+            <article class="project-card" data-fx="plantinar">
               <div class="project-card-accent" aria-hidden="true"></div>
-              <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Club Atlético El Plantinar en una nueva pestaña">
-                <div class="project-preview-overlay" aria-hidden="true"></div>
-                <iframe
-                  class="project-preview"
-                  data-src="https://geuguis.github.io/Primer-reto-web/"
-                  title="Club Atlético El Plantinar · vista previa"
-                  loading="lazy"
-                  sandbox="allow-scripts"
-                  referrerpolicy="no-referrer"
-                  tabindex="-1"
-                ></iframe>
-              </a>
+              <div class="project-media">
+                <iframe class="project-preview" data-src="https://geuguis.github.io/Primer-reto-web/" title="Vista previa en vivo del Club Atlético El Plantinar" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+                <div class="project-badges-overlay">
+                  <span class="project-badge project-badge--accent">MAQUETACIÓN PURO CSS</span>
+                  <span class="project-badge">0 FRAMEWORKS</span>
+                </div>
+                <a class="project-media-link" href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Club Atlético El Plantinar en una nueva pestaña">
+                  <span class="project-media-cta">Abrir sitio web ↗</span>
+                </a>
+              </div>
               <div class="project-body">
                 <p class="project-number">Web deportiva · Proyecto personal</p>
                 <h3 class="project-name">Club Atlético El Plantinar</h3>
                 <p class="project-desc">
-                  Sitio completo para un club deportivo de barrio: presentación del
-                  equipo, galería y sección de contacto. Maquetación desde cero en
-                  HTML5 y CSS puro, sin frameworks ni dependencias.
+                  Sitio completo para un club deportivo de barrio: presentación del equipo, galería y sección de contacto. Maquetación desde cero en HTML5 y CSS puro, sin frameworks ni dependencias externas.
                 </p>
                 <div class="project-tags">
                   <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS</span>
+                  <span class="project-tag">CSS3</span>
                   <span class="project-tag">Responsive</span>
                 </div>
                 <div class="project-links">
@@ -1936,7 +2421,7 @@
       </div>
     </section>
 
-	<div class="music-player" id="musicPlayer">
+    <div class="music-player" id="musicPlayer">
       <span class="music-label" id="musicLabel">gorillaz · el mañana</span>
       <button class="music-btn" id="musicBtn" title="Reproducir El Mañana (Instrumental)" aria-label="Reproducir música: Gorillaz - El Mañana (Instrumental)">
         <div class="vinyl-tonearm">
@@ -1959,10 +2444,6 @@
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <audio id="myAudio" src="Gorillaz - El Mañana (Instrumental).mp3" loop preload="none"></audio>
-
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-    <audio id="myAudio" src="piano.mp3" loop preload="none"></audio>
 
     <script>
       (function() {
@@ -2211,10 +2692,10 @@
 
     <script>
       (function () {
-        const btn        = document.getElementById('musicBtn');
-        const label      = document.getElementById('musicLabel');
-        const audio      = document.getElementById('myAudio');
-        const overlay    = document.getElementById('entry-overlay');
+        const btn           = document.getElementById('musicBtn');
+        const label         = document.getElementById('musicLabel');
+        const audio         = document.getElementById('myAudio');
+        const overlay       = document.getElementById('entry-overlay');
         const openProjects  = document.getElementById('openProjects');
         const backBtn       = document.getElementById('backBtn');
         const portfolioView = document.getElementById('portfolio-view');
@@ -2224,8 +2705,6 @@
         const toast         = document.getElementById('toast');
 
         audio.volume = 0.15;
-
-        let playing = false;
 
         if (portfolioView && 'inert' in HTMLElement.prototype) {
           portfolioView.inert = true;
@@ -2272,8 +2751,7 @@
           });
         }
 
-		function setPlayingUI(isPlaying) {
-          playing = isPlaying;
+        function setPlayingUI(isPlaying) {
           if (isPlaying) {
             label.textContent = 'pause';
             btn.classList.add('playing');
@@ -2298,8 +2776,7 @@
         function tryPlay() {
           const promise = audio.play();
           if (promise && typeof promise.then === 'function') {
-            promise.catch(function (error) {
-              console.log('Audio bloqueado por el navegador:', error);
+            promise.catch(function () {
               setPlayingUI(false);
             });
           }
@@ -2330,12 +2807,15 @@
             if ('inert' in HTMLElement.prototype) projectsView.inert = false;
             projectsView.classList.add('visible');
             projectsView.setAttribute('aria-hidden', 'false');
+            if (window.triggerProjectsReveal) window.triggerProjectsReveal();
+            if (window.loadProjectPreviews) window.loadProjectPreviews();
             backBtn.focus();
           }, 600);
         }
 
         function hideProjects(pushState) {
           if (!projectsView.classList.contains('visible')) return;
+          if (window.stopBalatroAmbience) window.stopBalatroAmbience();
           projectsView.classList.remove('visible');
           projectsView.setAttribute('aria-hidden', 'true');
           if ('inert' in HTMLElement.prototype) projectsView.inert = true;
@@ -2369,6 +2849,11 @@
             hideProjects(false);
           }
         });
+
+        if (location.hash === '#proyectos') {
+          revealPortfolio();
+          showProjects(false);
+        }
 
         if (seeMoreBtn) {
           seeMoreBtn.addEventListener('click', function () {
@@ -2501,105 +2986,439 @@
         dock.addEventListener('mouseleave', reset);
       })();
 
-      (function () {
-        var view = document.getElementById('projects-view');
-        var openBtn = document.getElementById('openProjects');
-        if (!view || !openBtn) return;
-        if (!('IntersectionObserver' in window)) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+(function () {
+        const projectsView = document.getElementById('projects-view');
+        const canvas = document.getElementById('balatro-bg-canvas');
+        const cards = document.querySelectorAll('.project-card[data-fx]');
+        if (!projectsView || !canvas || !cards.length) return;
 
-        var cards = Array.prototype.slice.call(view.querySelectorAll('.project-card'));
-        if (!cards.length) return;
+        const gl = canvas.getContext('webgl', { powerPreference: 'low-power', antialias: false });
+        let shaderReady = false;
+        let uRes = null;
+        let uTime = null;
+        let uMode = null;
+        let currentShaderMode = 0;
+        let rafId = null;
+        let stopTimer = null;
+        const startTime = Date.now();
 
-        cards.forEach(function (c) { c.classList.add('pre-reveal'); });
+        function initUnifiedShader() {
+          if (shaderReady || !gl || prefersReducedMotion) return;
 
-        var started = false;
-        openBtn.addEventListener('click', function () {
-          if (started) return;
-          started = true;
-          requestAnimationFrame(function () {
-            requestAnimationFrame(observe);
-          });
+          const vsSource = `
+            attribute vec2 position;
+            void main() { gl_Position = vec4(position, 0.0, 1.0); }
+          `;
+
+          const fsSource = `
+            precision mediump float;
+            uniform vec2 iResolution;
+            uniform float iTime;
+            uniform int uMode;
+
+            vec4 balatroEffect(vec2 screenSize, vec2 screen_coords) {
+              float pixel_size = length(screenSize.xy) / 900.0;
+              vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / length(screenSize.xy);
+              float uv_len = length(uv);
+              float speed = 301.8;
+              float new_pixel_angle = atan(uv.y, uv.x) + speed - 20.0 * (0.25 * uv_len + 0.75);
+              vec2 mid = (screenSize.xy / length(screenSize.xy)) / 2.0;
+              uv = vec2(uv_len * cos(new_pixel_angle) + mid.x, uv_len * sin(new_pixel_angle) + mid.y) - mid;
+              uv *= 30.0;
+              float loop_speed = iTime * 7.0;
+              vec2 uv2 = vec2(uv.x + uv.y, uv.x + uv.y);
+              for(int i = 0; i < 5; i++) {
+                uv2 += sin(max(uv.x, uv.y)) + uv;
+                uv  += 0.5 * vec2(cos(5.1123314 + 0.353 * uv2.y + loop_speed * 0.131121), sin(uv2.x - 0.113 * loop_speed));
+                uv  -= cos(uv.x + uv.y) - sin(uv.x * 0.711 - uv.y);
+              }
+              float contrast_mod = 2.325;
+              float paint_res = min(2.0, max(0.0, length(uv) * 0.035 * contrast_mod));
+              float c1p = max(0.0, 1.0 - contrast_mod * abs(1.0 - paint_res));
+              float c2p = max(0.0, 1.0 - contrast_mod * abs(paint_res));
+              float c3p = 1.0 - min(1.0, c1p + c2p);
+              vec4 col1 = vec4(0.75, 0.1, 0.08, 1.0);
+              vec4 col2 = vec4(0.05, 0.12, 0.22, 1.0);
+              vec4 col3 = vec4(0.06, 0.04, 0.03, 1.0);
+              float light = 0.15 * max(c1p * 5.0 - 4.0, 0.0) + 0.35 * max(c2p * 5.0 - 4.0, 0.0);
+              return 0.075 * col1 + 0.925 * (col1 * c1p + col2 * c2p + vec4(c3p * col3.rgb, c3p)) + light;
+            }
+
+            float noise(vec2 p){
+              return smoothstep(-0.5, 80.9, sin((p.x - p.y) * 55.0) * sin(p.y * 204.0)) - 0.4;
+            }
+            float fabric(vec2 p){
+              mat2 m = mat2(50.6, 0.2, 70.2, -0.6);
+              float f = 0.2 * noise(p);
+              f += -90.3 * noise(p = m * p);
+              f += -0.1 * noise(p = m * p);
+              return f + 0.1 * noise(m * p);
+            }
+            float silk(vec2 uv, float t){
+              float s = sin(5.0 * (uv.x + uv.y + cos(2.0 * uv.x + 5.0 * uv.y)) + sin(19.0 * (uv.x + uv.y)) - t);
+              s = 0.7 + 1.2 * (s * s * 0.05 + s);
+              s *= 400.8 - 19.1 * fabric(uv * min(iResolution.x, iResolution.y) * 0.0006);
+              return s * 0.8 + 0.5;
+            }
+            float silkd(vec2 uv, float t){
+              float xy = uv.x + uv.y;
+              float d = (-1.0 * (1.0 - 2.0 * sin(20.0 * uv.x - 5.0 * uv.y)) + 14.0 * cos(12.0 * xy)) *
+                        cos(5.0 * (cos(-84.0 * uv.x + 54.0 * uv.y) + xy) + sin(-1.0 * xy) - t);
+              return 0.1 * d * (sign(d) * -2.0);
+            }
+            vec4 cyberEffect(vec2 res, vec2 coord) {
+              float mr = min(res.x, res.y);
+              vec2 uv = coord / mr;
+              float t = iTime;
+              uv.y += 0.0008 * sin(uv.x - t);
+              float s = sqrt(max(0.0, silk(uv, t)));
+              float d = silkd(uv, t);
+              vec3 c = vec3(s);
+              c += 0.7 * vec3(1.0, -0.83, -4.6) * d;
+              c *= 1.0 - max(0.0, 1.8 * d);
+              c = pow(max(vec3(0.0), c), vec3(0.52, 0.5, 0.4));
+              float luma = dot(c, vec3(0.299, 0.587, 0.114));
+              float wave = smoothstep(0.18, 0.92, luma);
+              vec3 finalCol = mix(vec3(0.02, 0.02, 0.04), vec3(0.92, 0.95, 0.98), wave * 0.42);
+              return vec4(finalCol, 1.0);
+            }
+
+            void main() {
+              if (uMode == 2) {
+                gl_FragColor = cyberEffect(iResolution, gl_FragCoord.xy);
+              } else {
+                gl_FragColor = balatroEffect(iResolution, gl_FragCoord.xy);
+              }
+            }
+          `;
+
+          function compile(type, source) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, source);
+            gl.compileShader(s);
+            return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+          }
+
+          const vs = compile(gl.VERTEX_SHADER, vsSource);
+          const fs = compile(gl.FRAGMENT_SHADER, fsSource);
+          if (!vs || !fs) return;
+
+          const program = gl.createProgram();
+          gl.attachShader(program, vs);
+          gl.attachShader(program, fs);
+          gl.linkProgram(program);
+          gl.useProgram(program);
+
+          const buf = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+          const posLoc = gl.getAttribLocation(program, 'position');
+          gl.enableVertexAttribArray(posLoc);
+          gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+          uRes  = gl.getUniformLocation(program, 'iResolution');
+          uTime = gl.getUniformLocation(program, 'iTime');
+          uMode = gl.getUniformLocation(program, 'uMode');
+          shaderReady = true;
+          resizeShader();
+        }
+
+        function resizeShader() {
+          if (!gl) return;
+          const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('resize', function () {
+          if (shaderReady) resizeShader();
         });
 
-        function observe() {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) return;
-              var card = entry.target;
-              var sibs = Array.prototype.slice
-                .call(card.parentElement.children)
-                .filter(function (el) { return el.classList.contains('project-card'); });
-              var delay = Math.min(sibs.indexOf(card), 5) * 70;
-              card.animate(
-                [
-                  { opacity: 0, transform: 'translateY(24px)' },
-                  { opacity: 1, transform: 'translateY(0)' }
-                ],
-                { duration: 550, delay: delay, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'backwards' }
-              );
-              card.classList.remove('pre-reveal');
-              io.unobserve(card);
-            });
-          }, { root: view, threshold: 0.12 });
-
-          cards.forEach(function (c) { io.observe(c); });
+        function renderLoop() {
+          if (!shaderReady || !currentShaderMode) {
+            rafId = null;
+            return;
+          }
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+          gl.uniform1f(uTime, (Date.now() - startTime) / 1000.0);
+          gl.uniform1i(uMode, currentShaderMode);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+          rafId = requestAnimationFrame(renderLoop);
         }
+
+        const FADE_MS = 650;
+        let shaderStopTimer = null;
+
+        function stopShader() {
+          currentShaderMode = 0;
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        }
+
+        let audioCtx = null;
+        let masterGain = null;
+        let osc1 = null;
+        let osc2 = null;
+        let lfo = null;
+        let filter = null;
+        let audioSuspendTimer = null;
+
+        const SOUND_PRESETS = {
+          balatro:   { t1: 'sawtooth', t2: 'triangle', f1: 55,    f2: 110.4,  lfo: 3.2, cutoff: 145, vol: 0.042 },
+          rogue:     { t1: 'triangle', t2: 'sine',     f1: 73.42, f2: 110,    lfo: 1.2, cutoff: 190, vol: 0.045 },
+          tarifa:    { t1: 'sine',     t2: 'sine',     f1: 130.81,f2: 164.81, lfo: 0.6, cutoff: 360, vol: 0.032 },
+          cyber:     { t1: 'sawtooth', t2: 'sawtooth', f1: 43.65, f2: 87.31,  lfo: 6.5, cutoff: 260, vol: 0.038 },
+          freeki:    { t1: 'sine',     t2: 'triangle', f1: 98,    f2: 196,    lfo: 2.4, cutoff: 320, vol: 0.035 },
+          nextjs:    { t1: 'sine',     t2: 'triangle', f1: 65.41, f2: 130.81, lfo: 1.8, cutoff: 175, vol: 0.035 },
+          workshop:  { t1: 'triangle', t2: 'sawtooth', f1: 61.74, f2: 123.47, lfo: 2.8, cutoff: 165, vol: 0.035 },
+          plantinar: { t1: 'sine',     t2: 'triangle', f1: 82.41, f2: 123.47, lfo: 1.1, cutoff: 200, vol: 0.030 }
+        };
+
+        function playAmbienceTone(fxType) {
+          if (prefersReducedMotion) return;
+          const preset = SOUND_PRESETS[fxType] || SOUND_PRESETS.balatro;
+          try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            if (!audioCtx) audioCtx = new AudioCtx();
+            clearTimeout(audioSuspendTimer);
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            if (!masterGain) {
+              osc1 = audioCtx.createOscillator();
+              osc2 = audioCtx.createOscillator();
+              lfo  = audioCtx.createOscillator();
+              const lfoGain = audioCtx.createGain();
+              filter        = audioCtx.createBiquadFilter();
+              masterGain    = audioCtx.createGain();
+
+              lfoGain.gain.setValueAtTime(24, audioCtx.currentTime);
+              filter.type = 'lowpass';
+              filter.Q.setValueAtTime(3.0, audioCtx.currentTime);
+              masterGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+
+              lfo.connect(lfoGain);
+              lfoGain.connect(filter.frequency);
+              osc1.connect(filter);
+              osc2.connect(filter);
+              filter.connect(masterGain);
+              masterGain.connect(audioCtx.destination);
+
+              osc1.start();
+              osc2.start();
+              lfo.start();
+            }
+
+            const now = audioCtx.currentTime;
+            osc1.type = preset.t1;
+            osc2.type = preset.t2;
+
+            osc1.frequency.cancelScheduledValues(now);
+            osc1.frequency.setValueAtTime(preset.f1 * 0.9, now);
+            osc1.frequency.exponentialRampToValueAtTime(preset.f1, now + 0.3);
+
+            osc2.frequency.cancelScheduledValues(now);
+            osc2.frequency.setValueAtTime(preset.f2, now);
+
+            lfo.frequency.cancelScheduledValues(now);
+            lfo.frequency.setValueAtTime(preset.lfo, now);
+            filter.frequency.cancelScheduledValues(now);
+            filter.frequency.setTargetAtTime(preset.cutoff, now, 0.15);
+
+            masterGain.gain.cancelScheduledValues(now);
+            masterGain.gain.setValueAtTime(Math.max(0.0001, masterGain.gain.value), now);
+            masterGain.gain.linearRampToValueAtTime(preset.vol, now + 0.4);
+          } catch (e) {}
+        }
+
+        function stopAmbienceTone() {
+          if (!audioCtx || !masterGain) return;
+          try {
+            const now = audioCtx.currentTime;
+            masterGain.gain.cancelScheduledValues(now);
+            masterGain.gain.setValueAtTime(Math.max(0.0001, masterGain.gain.value), now);
+            masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+            clearTimeout(audioSuspendTimer);
+            audioSuspendTimer = setTimeout(function () {
+              if (audioCtx && audioCtx.state === 'running' && !projectsView.classList.contains('fx-on')) {
+                audioCtx.suspend();
+              }
+            }, 800);
+          } catch (e) {}
+        }
+
+        function activateCardFx(card) {
+          const fx = card.getAttribute('data-fx');
+          if (!fx) return;
+
+          clearTimeout(stopTimer);
+          cards.forEach(function (c) { c.classList.toggle('fx-focused', c === card); });
+          projectsView.setAttribute('data-active-fx', fx);
+          projectsView.classList.add('fx-on');
+
+          if (fx === 'balatro' || fx === 'cyber') {
+            clearTimeout(shaderStopTimer);
+            initUnifiedShader();
+            currentShaderMode = fx === 'cyber' ? 2 : 1;
+            if (shaderReady && !rafId) {
+              renderLoop();
+            }
+          } else if (currentShaderMode) {
+            clearTimeout(shaderStopTimer);
+            shaderStopTimer = setTimeout(function () {
+              const active = projectsView.getAttribute('data-active-fx');
+              if (active !== 'balatro' && active !== 'cyber') stopShader();
+            }, FADE_MS);
+          }
+
+          playAmbienceTone(fx);
+        }
+
+        function deactivateCardFx() {
+          projectsView.classList.remove('fx-on');
+          cards.forEach(function (c) { c.classList.remove('fx-focused'); });
+          stopAmbienceTone();
+
+          clearTimeout(stopTimer);
+          stopTimer = setTimeout(function () {
+            if (!projectsView.classList.contains('fx-on')) {
+              projectsView.removeAttribute('data-active-fx');
+              clearTimeout(shaderStopTimer);
+              stopShader();
+            }
+          }, FADE_MS);
+        }
+
+        window.stopBalatroAmbience = deactivateCardFx;
+
+        cards.forEach(function (card) {
+          card.addEventListener('pointerenter', function () { activateCardFx(card); });
+          card.addEventListener('pointerleave', deactivateCardFx);
+          card.addEventListener('focusin', function () { activateCardFx(card); });
+          card.addEventListener('focusout', function (e) {
+            if (!card.contains(e.relatedTarget)) {
+              deactivateCardFx();
+            }
+          });
+        });
       })();
 
       (function () {
-        var frames = Array.prototype.slice.call(
-          document.querySelectorAll('iframe.project-preview[data-src]')
-        );
-        if (!frames.length) return;
-        var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const projectsView = document.getElementById('projects-view');
+        if (!projectsView) return;
+        const BASE_WIDTH = 1280;
+        const cards = Array.prototype.slice.call(projectsView.querySelectorAll('.project-card'));
+        const medias = Array.prototype.slice.call(projectsView.querySelectorAll('.project-media'));
+        const frameMedias = medias.filter(function (m) { return m.querySelector('.project-preview[data-src]'); });
+        const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-        function load(frame) {
-          if (!frame.getAttribute('data-src')) return;
-          frame.src = frame.getAttribute('data-src');
-          frame.removeAttribute('data-src');
-          var card = frame.closest('.project-card');
-          if (card) card.classList.remove('iframe-pending');
+        function fitPreview(media) {
+          const frame = media.querySelector('.project-preview');
+          if (!frame) return;
+          const w = media.clientWidth;
+          const h = media.clientHeight;
+          if (!w || !h) return;
+          const scale = w / BASE_WIDTH;
+          media.style.setProperty('--iframe-scale', scale.toFixed(5));
+          frame.style.height = Math.ceil(h / scale) + 'px';
         }
 
-        frames.forEach(function (frame) {
-          var card = frame.closest('.project-card');
-          if (!card) return;
-          card.classList.add('iframe-pending');
-          if (canHover) {
-            card.addEventListener('pointerenter', function () { load(frame); }, { once: true });
+        if ('ResizeObserver' in window) {
+          const ro = new ResizeObserver(function (entries) {
+            entries.forEach(function (entry) { fitPreview(entry.target); });
+          });
+          frameMedias.forEach(function (m) { ro.observe(m); });
+        } else {
+          window.addEventListener('resize', function () { frameMedias.forEach(fitPreview); });
+        }
+        frameMedias.forEach(fitPreview);
+
+        function loadPreview(media) {
+          if (!media) return;
+          const frame = media.querySelector('.project-preview[data-src]');
+          if (!frame || frame.dataset.loaded) return;
+          frame.dataset.loaded = '1';
+          media.classList.add('is-loading');
+          fitPreview(media);
+          frame.addEventListener('load', function () {
+            frame.classList.add('is-loaded');
+            media.classList.remove('is-loading');
+            media.classList.add('is-ready');
+          }, { once: true });
+          frame.src = frame.dataset.src;
+        }
+
+        function unloadPreview(media) {
+          if (!media) return;
+          const frame = media.querySelector('.project-preview');
+          if (!frame || !frame.dataset.loaded) return;
+          delete frame.dataset.loaded;
+          frame.removeAttribute('src');
+          frame.classList.remove('is-loaded');
+          media.classList.remove('is-ready');
+          media.classList.remove('is-loading');
+        }
+
+        cards.forEach(function (card) {
+          const media = card.querySelector('.project-media');
+          if (!media) return;
+          const onActivate = function () {
+            loadPreview(media);
+          };
+          card.addEventListener('pointerenter', onActivate);
+          card.addEventListener('focusin', onActivate);
+          if (!isFinePointer) {
+            card.addEventListener('touchstart', onActivate, { passive: true });
           }
         });
 
-        if (!canHover) {
-          if ('IntersectionObserver' in window) {
-            var view = document.getElementById('projects-view');
-            var io = new IntersectionObserver(function (entries) {
-              entries.forEach(function (entry) {
-                var frame = entry.target.querySelector('iframe.project-preview');
-                if (!frame) return;
-                if (entry.isIntersecting) {
-                  var src = frame.getAttribute('data-src') || frame.getAttribute('data-saved-src');
-                  if (src && !frame.getAttribute('src')) {
-                    frame.src = src;
-                    frame.setAttribute('data-saved-src', src);
-                    frame.removeAttribute('data-src');
-                    entry.target.classList.remove('iframe-pending');
-                  }
-                } else if (frame.getAttribute('src')) {
-                  frame.removeAttribute('src');
-                  entry.target.classList.add('iframe-pending');
-                }
-              });
-            }, { root: view, threshold: 0.25 });
-            frames.forEach(function (frame) {
-              var card = frame.closest('.project-card');
-              if (card) io.observe(card);
+        if (!isFinePointer && 'IntersectionObserver' in window) {
+          const touchObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              const media = entry.target.querySelector('.project-media');
+              if (!media) return;
+              if (entry.isIntersecting) {
+                loadPreview(media);
+              } else {
+                unloadPreview(media);
+              }
             });
-          } else {
-            frames.forEach(load);
-          }
+          }, { root: projectsView, threshold: 0.65 });
+          cards.forEach(function (card) {
+            if (card.querySelector('.project-preview[data-src]')) {
+              touchObserver.observe(card);
+            }
+          });
         }
+
+        window.loadProjectPreviews = function () {
+          frameMedias.forEach(fitPreview);
+        };
+
+        window.triggerProjectsReveal = function () {
+          if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+            cards.forEach(function (c) { c.classList.remove('pre-reveal'); });
+            return;
+          }
+          const obs = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                const card = entry.target;
+                card.classList.remove('pre-reveal');
+                card.style.animation = 'cardIn 0.55s var(--ease-out) forwards';
+                observer.unobserve(card);
+              }
+            });
+          }, { root: projectsView, rootMargin: '60px', threshold: 0.1 });
+          cards.forEach(function (c) {
+            c.classList.add('pre-reveal');
+            obs.observe(c);
+          });
+        };
       })();
 
       (function () {
