@@ -330,6 +330,47 @@
 
       h1 em { font-style: italic; color: var(--green); }
 
+      .hero-title-wrap {
+        position: relative;
+        width: 100%;
+        margin: 8px 0 12px -6px;
+        padding: 18px 6px 4px;
+      }
+
+      @media (min-width: 601px) {
+        .hero-title-wrap h1 {
+          white-space: nowrap;
+        }
+      }
+
+      .hero-title-wrap h1 {
+        margin-bottom: 0;
+        transition: opacity 0.25s ease;
+      }
+
+      .hero-title-wrap.garden-ready h1 {
+        opacity: 0;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      #hero-garden-canvas {
+        position: absolute;
+        left: -24px;
+        top: -32px;
+        width: calc(100% + 48px);
+        height: calc(100% + 56px);
+        pointer-events: auto;
+        cursor: pointer;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+
+      .hero-title-wrap.garden-ready #hero-garden-canvas {
+        opacity: 1;
+      }
+
       .name-break { display: block; }
 
       .role {
@@ -2091,7 +2132,10 @@
       <div class="wrapper">
         <header class="header">
           <p class="eyebrow">Portfolio · <span class="js-year">2026</span></p>
-          <h1><em>Guillermo Eugui Sánchez</em></h1>
+          <div class="hero-title-wrap" id="heroTitleWrap">
+            <h1><em>Guillermo Eugui Sánchez</em></h1>
+            <canvas id="hero-garden-canvas" aria-hidden="true"></canvas>
+          </div>
           <p class="role">Back-End Developer · Técnico Superior en DAM · Sevilla</p>
           <p class="availability" aria-label="Estado: disponible para prácticas en empresas">Disponible para prácticas</p>
         </header>
@@ -2913,6 +2957,7 @@
               portfolioView.inert = false;
             }
             if (window.startFlowers) window.startFlowers();
+            if (window.bloomHeroGarden) window.bloomHeroGarden(0);
             return;
           }
 
@@ -2960,6 +3005,7 @@
               overlay.classList.add('hidden');
               entryBird.classList.remove('flying');
               curtainAnimating = false;
+              if (window.bloomHeroGarden) window.bloomHeroGarden(2000);
             }
           }
 
@@ -2968,7 +3014,7 @@
 
         setTimeout(function () {
           if (location.hash !== '#proyectos') revealPortfolio(false);
-        }, prefersReducedMotion ? 200 : 1100);
+        }, prefersReducedMotion ? 200 : 2100);
         overlay.addEventListener('click', function () { revealPortfolio(false); });
         document.addEventListener('keydown', function () { revealPortfolio(false); }, { once: true });
 
@@ -3753,7 +3799,773 @@
           }, { once: true });
         });
       })();
+    </script>
 
+    <script>
+      (function () {
+        const wrap = document.getElementById('heroTitleWrap');
+        const cv = document.getElementById('hero-garden-canvas');
+        if (!wrap || !cv || prefersReducedMotion) return;
+
+        const g = cv.getContext('2d');
+        const FONT = 'italic 400';
+        const FAMILY = '"DM Serif Display", Georgia, serif';
+        let W = 0;
+        let H = 0;
+        let dpr = 1;
+        let S = 42;
+        let letters = [];
+        let flies = [];
+        let perch = [];
+        let fa = {};
+        let mx = null;
+        let my = null;
+        let rafId = null;
+        let lastActive = 0;
+        let started = false;
+        let gardenBirth = 0;
+
+        function getPalette() {
+          const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            return {
+              red: '#74c69d',
+              blue: '#40916c',
+              line: '#0f1512',
+              text: '#52b788',
+              vein: '#0f1512'
+            };
+          }
+          return {
+            red: '#52b788',
+            blue: '#1b4332',
+            line: '#d8f3dc',
+            text: '#2d6a4f',
+            vein: '#f9faf7'
+          };
+        }
+
+        function rng(seed) {
+          let s = seed | 0;
+          return function () {
+            s = (s + 0x6D2B79F5) | 0;
+            let t = Math.imul(s ^ (s >>> 15), 1 | s);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        function eo(t) {
+          if (t <= 0) return 0;
+          if (t >= 1) return 1;
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        function spr(t, k, w) {
+          if (t <= 0) return 0;
+          return 1 - Math.exp(-t * (k || 7)) * Math.cos(t * (w || 16));
+        }
+
+        function bez(a, b, c, d, n) {
+          const P = [];
+          for (let i = 0; i <= n; i++) {
+            const t = i / n;
+            const u = 1 - t;
+            P.push([
+              u * u * u * a[0] + 3 * u * u * t * b[0] + 3 * u * t * t * c[0] + t * t * t * d[0],
+              u * u * u * a[1] + 3 * u * u * t * b[1] + 3 * u * t * t * c[1] + t * t * t * d[1]
+            ]);
+          }
+          return P;
+        }
+
+        function at(P, u) {
+          const n = P.length;
+          const i = Math.min(n - 2, Math.max(1, Math.round(u * (n - 1))));
+          return [P[i], Math.atan2(P[i + 1][1] - P[i - 1][1], P[i + 1][0] - P[i - 1][0])];
+        }
+
+        function path(c, p, closed) {
+          const n = p.length;
+          if (n < 2) return;
+          const m = function (a, b) { return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; };
+          if (closed) {
+            const s = m(p[n - 1], p[0]);
+            c.moveTo(s[0], s[1]);
+            for (let i = 0; i < n; i++) {
+              const q = m(p[i], p[(i + 1) % n]);
+              c.quadraticCurveTo(p[i][0], p[i][1], q[0], q[1]);
+            }
+            c.closePath();
+          } else {
+            c.moveTo(p[0][0], p[0][1]);
+            for (let i = 1; i < n - 1; i++) {
+              const q = m(p[i], p[i + 1]);
+              c.quadraticCurveTo(p[i][0], p[i][1], q[0], q[1]);
+            }
+            c.lineTo(p[n - 1][0], p[n - 1][1]);
+          }
+        }
+
+        function vine(base, dir, len, amp, waves, ph, bend, n) {
+          const steps = n || 32;
+          const P = [[base[0], base[1]]];
+          const step = len / steps;
+          let x = base[0];
+          let y = base[1];
+          for (let i = 1; i <= steps; i++) {
+            const u = i / steps;
+            const a = dir + bend * u + amp * Math.sin(u * Math.PI * waves + ph) * Math.min(1, u * 3);
+            x += Math.cos(a) * step;
+            y += Math.sin(a) * step;
+            P.push([x, y]);
+          }
+          return P;
+        }
+
+        function curl(P, sign, rad) {
+          const n = P.length;
+          const e = P[n - 1];
+          const a = Math.atan2(e[1] - P[n - 2][1], e[0] - P[n - 2][0]);
+          const c = [e[0] - Math.sin(a) * sign * rad, e[1] + Math.cos(a) * sign * rad];
+          const a0 = Math.atan2(e[1] - c[1], e[0] - c[0]);
+          for (let i = 1; i <= 12; i++) {
+            const u = i / 12;
+            const t = a0 + sign * u * Math.PI * 1.6;
+            const rr = rad * (1 - 0.5 * u);
+            P.push([c[0] + Math.cos(t) * rr, c[1] + Math.sin(t) * rr]);
+          }
+          return P;
+        }
+
+        function weave(r, startLayer) {
+          const cuts = [];
+          const nc = 1 + Math.floor(r() * 2);
+          for (let i = 0; i < nc; i++) cuts.push(0.2 + r() * 0.65);
+          cuts.sort(function (a, b) { return a - b; });
+          const segs = [];
+          let u0 = 0;
+          let layer = startLayer;
+          for (let k = 0; k < cuts.length; k++) {
+            const c = cuts[k];
+            if (c <= u0) continue;
+            segs.push({ u0: u0, u1: c, layer: layer });
+            u0 = c;
+            layer = 1 - layer;
+          }
+          segs.push({ u0: u0, u1: 1, layer: layer });
+          return segs;
+        }
+
+        function layerAt(segs, u) {
+          for (let i = 0; i < segs.length; i++) {
+            if (u >= segs[i].u0 && u <= segs[i].u1) return segs[i].layer;
+          }
+          return segs[segs.length - 1].layer;
+        }
+
+        function growBranch(r, E, nid, p, o) {
+          const tip = o.tip || (r() < p.roseP ? 'rose' : r() < 0.45 ? 'fan' : r() < 0.65 ? 'leaf' : 'curl');
+          let P = o.pts || vine(o.base, o.dir, o.len, (0.3 + r() * 0.35) * p.curvy, 1 + r() * 1.4, r() * 6.28, (r() - 0.5) * 1.1, 30);
+          if (tip === 'curl') P = curl(P, r() < 0.5 ? -1 : 1, 0.045 + r() * 0.04);
+          const segs = weave(r, o.layer0 != null ? o.layer0 : (r() < 0.6 ? 0 : 1));
+          const dur = Math.max(300, (o.len || 0.7) * 580);
+          const thorns = [];
+          const nt = Math.floor(r() * 2);
+          for (let i = 0; i < nt; i++) thorns.push({ u: 0.2 + r() * 0.6, s: r() < 0.5 ? -1 : 1 });
+          E.push({ t: 'stem', id: nid(), pts: P, segs: segs, d0: o.d0, dur: dur, w: o.depth ? 0.8 : 1, thorns: thorns });
+
+          const nl = Math.floor(r() * 2.2 * p.leafy);
+          let sd = r() < 0.5 ? -1 : 1;
+          for (let i = 0; i < nl; i++) {
+            const u = 0.25 + r() * 0.55;
+            const qa = at(P, u);
+            sd = -sd;
+            E.push({
+              t: 'leaf',
+              id: nid(),
+              x: qa[0][0],
+              y: qa[0][1],
+              a: qa[1] + sd * (0.55 + r() * 0.45),
+              L: (0.13 + r() * 0.16) * (o.depth ? 0.78 : 1),
+              bend: (r() - 0.5) * 1.1,
+              layer: layerAt(segs, u),
+              d0: o.d0 + dur * u
+            });
+          }
+
+          const tpa = at(P, 1);
+          const tp = tpa[0];
+          const ta = tpa[1];
+          const td = o.d0 + dur * 0.82;
+          const tl = layerAt(segs, 1);
+
+          if (tip === 'rose') {
+            const R = (0.12 + r() * 0.11) * p.big * (o.depth ? 0.75 : 1);
+            const overBody = tp[1] > -0.68 && tp[1] < 0.08;
+            const layer = overBody ? 0 : (r() < 0.45 ? 1 : tl);
+            E.push({ t: 'rose', id: nid(), x: tp[0], y: tp[1], R: R, rot: (r() - 0.5), ph1: r() * 6.28, ph2: r() * 6.28, turns: 1.7 + r() * 0.8, layer: layer, d0: td });
+          } else if (tip === 'fan') {
+            const spread = 0.55 + r() * 0.25;
+            for (let j = 0; j < 2; j++) {
+              E.push({ t: 'leaf', id: nid(), x: tp[0], y: tp[1], a: ta + (j - 0.5) * spread, L: 0.16 + r() * 0.15, bend: (j - 0.5) * 0.7, layer: tl, d0: td + j * 55 });
+            }
+          } else if (tip === 'leaf') {
+            E.push({ t: 'leaf', id: nid(), x: tp[0], y: tp[1], a: ta + (r() - 0.5) * 0.3, L: 0.15 + r() * 0.14, bend: r() - 0.5, layer: tl, d0: td });
+          }
+        }
+
+        function buildGardenLayout() {
+          const h1 = wrap.querySelector('h1');
+          const rect = wrap.getBoundingClientRect();
+          if (!rect.width || !h1) return;
+
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          W = rect.width + 48;
+          H = rect.height + 56;
+          cv.width = Math.round(W * dpr);
+          cv.height = Math.round(H * dpr);
+
+          const computed = window.getComputedStyle(h1);
+          S = parseFloat(computed.fontSize) || 44;
+          const lineH = parseFloat(computed.lineHeight) || S * 1.1;
+
+          g.font = `${FONT} ${S}px ${FAMILY}`;
+          const textStr = 'Guillermo Eugui Sánchez';
+          const rawWords = textStr.split(' ');
+          const maxLineW = rect.width;
+          const lines = [];
+          let currentLine = '';
+
+          for (let i = 0; i < rawWords.length; i++) {
+            const test = currentLine ? currentLine + ' ' + rawWords[i] : rawWords[i];
+            if (g.measureText(test).width > maxLineW && currentLine) {
+              lines.push(currentLine);
+              currentLine = rawWords[i];
+            } else {
+              currentLine = test;
+            }
+          }
+          if (currentLine) lines.push(currentLine);
+
+          letters = [];
+          let uid = 1;
+          const padX = 24;
+          const padY = 32 + 18;
+
+          lines.forEach(function (lineStr, lineIdx) {
+            const baseY = padY + lineIdx * lineH + S * 0.82;
+            let prevLetter = null;
+            let wordSeed = (lineIdx + 1) * 4177;
+            let wi = 0;
+
+            for (let i = 0; i < lineStr.length; i++) {
+              const ch = lineStr[i];
+              const xStart = padX + g.measureText(lineStr.slice(0, i)).width;
+              const cw = g.measureText(ch).width;
+              if (ch === ' ') {
+                prevLetter = null;
+                wordSeed = (uid + 5) * 7919;
+                wi = 0;
+                continue;
+              }
+
+              const l = {
+                ch: ch,
+                id: uid++,
+                x: xStart + cw / 2,
+                y: baseY,
+                w: cw / S,
+                ws: wordSeed,
+                wi: wi++,
+                prev: prevLetter,
+                birth: gardenBirth + uid * 32,
+                els: []
+              };
+
+              const r = rng(l.ws ^ Math.imul(l.wi + 1, 2654435761));
+              const p = { roseP: 0.42, leafy: 0.65, lean: (r() - 0.5) * 0.45, big: 0.82, curvy: 0.85, w: l.w };
+              let k0 = 0;
+              const nid = function () { return l.id * 100 + (k0++); };
+              const inX = function () { return (r() - 0.5) * l.w * 0.6; };
+
+              if (r() < 0.68 || l.wi === 0) {
+                growBranch(r, l.els, nid, p, {
+                  base: [inX(), -0.18 - r() * 0.32],
+                  dir: -Math.PI / 2 + p.lean + (r() - 0.5) * 0.65,
+                  len: 0.48 + r() * 0.36,
+                  d0: 30,
+                  tip: l.wi === 0 ? 'rose' : null
+                });
+              }
+
+              if (r() < 0.28) {
+                growBranch(r, l.els, nid, p, {
+                  base: [inX(), -0.08 - r() * 0.25],
+                  dir: Math.PI / 2 + (r() - 0.5) * 0.75,
+                  len: 0.28 + r() * 0.24,
+                  d0: 120
+                });
+              }
+
+              if (l.prev && r() < 0.42) {
+                const px = -(l.prev.w + l.w) / 2;
+                const a = [inX(), -0.12 - r() * 0.45];
+                const b = [px + (r() - 0.5) * 0.2, -0.12 - r() * 0.45];
+                const bulge = (r() < 0.55 ? -1 : 1) * (0.32 + r() * 0.3);
+                const dx = b[0] - a[0];
+                const P = bez(a, [a[0] + dx * 0.15, a[1] + bulge], [b[0] - dx * 0.15, b[1] + bulge * 0.9], b, 28);
+                growBranch(r, l.els, nid, p, {
+                  pts: P,
+                  len: Math.abs(dx) + Math.abs(bulge),
+                  d0: 80,
+                  tip: r() < 0.5 ? 'curl' : 'leaf'
+                });
+              }
+
+              letters.push(l);
+              prevLetter = l;
+            }
+          });
+        }
+
+        function strokeRange(P, a, b, col, w) {
+          const n = P.length - 1;
+          const ia = a * n;
+          const ib = b * n;
+          const lerpPt = function (t) {
+            const i = Math.min(n - 1, Math.floor(t));
+            const f = t - i;
+            return [P[i][0] + (P[i + 1][0] - P[i][0]) * f, P[i][1] + (P[i + 1][1] - P[i][1]) * f];
+          };
+          const pts = [lerpPt(ia)];
+          for (let i = Math.floor(ia) + 1; i < ib; i++) pts.push(P[i]);
+          pts.push(lerpPt(ib));
+          if (pts.length >= 2) {
+            g.beginPath();
+            path(g, pts, false);
+            g.strokeStyle = col;
+            g.lineWidth = w;
+            g.lineCap = 'round';
+            g.lineJoin = 'round';
+            g.stroke();
+          }
+        }
+
+        function drawLeaf(bx, by, a, L, bend, C) {
+          if (L < 0.5) return;
+          const ca = Math.cos(a);
+          const sa = Math.sin(a);
+          const px = -sa;
+          const py = ca;
+          const ax = function (u) {
+            const b = Math.sin(Math.PI * u) * bend * 0.15 * L;
+            return [bx + ca * u * L + px * b, by + sa * u * L + py * b];
+          };
+          const hw = function (u) { return L * 0.18 * Math.sin(Math.PI * Math.pow(u, 0.8)); };
+          const N = 10;
+          const s1 = [];
+          const s2 = [];
+          for (let i = 0; i <= N; i++) {
+            const u = i / N;
+            const c = ax(u);
+            const w = hw(u);
+            s1.push([c[0] + px * w, c[1] + py * w]);
+            s2.push([c[0] - px * w, c[1] - py * w]);
+          }
+          const tip = ax(1);
+          const base = ax(0);
+          const poly = [base].concat(s1.slice(1, N), [tip, tip], s2.slice(1, N).reverse(), [base]);
+          g.beginPath();
+          path(g, poly, true);
+          g.fillStyle = C.blue;
+          g.fill();
+
+          if (L > 5) {
+            const v = [];
+            for (let i = 0; i <= 6; i++) v.push(ax(0.08 + 0.72 * i / 6));
+            g.beginPath();
+            path(g, v, false);
+            g.strokeStyle = C.vein;
+            g.lineWidth = Math.max(0.7, L * 0.03);
+            g.stroke();
+          }
+        }
+
+        function drawRose(cx, cy, R, rot, e, a, tl, C) {
+          const cr = Math.cos(rot);
+          const sr = Math.sin(rot);
+          const tm = tl ? Math.hypot(tl[0], tl[1]) : 0;
+          const ux = tm ? tl[0] / tm : 0;
+          const uy = tm ? tl[1] / tm : 0;
+          const sq = -0.26 * tm;
+
+          const T = function (x, y, z) {
+            let dx = x * cr - y * sr;
+            let dy = x * sr + y * cr;
+            if (tm) {
+              const k = (dx * ux + dy * uy) * sq;
+              dx += k * ux + tl[0] * R * (z || 0);
+              dy += k * uy + tl[1] * R * (z || 0);
+            }
+            return [cx + dx, cy + dy];
+          };
+
+          const P = [
+            [0, -0.36, 0.56, 0.54, 0, 0, 0],
+            [-0.5, -0.06, 0.6, 0.6, -0.35, 0, 0],
+            [0.52, -0.06, 0.6, 0.6, 0.35, 0, 0],
+            [-0.42, 0.3, 0.62, 0.48, 0.2, 0.12, 1],
+            [0.47, 0.3, 0.62, 0.48, -0.2, 0.12, 1],
+            [0.05, 0.42, 0.56, 0.38, 0, 0.14, 0]
+          ];
+          const lw = Math.max(0.8, R * 0.05);
+          const st = 75;
+
+          P.forEach(function (q, i) {
+            const s = spr((a - i * st) / 1000, 8, 14);
+            if (s <= 0.001) return;
+            const open = (1 - Math.min(1, s)) * (q[0] < 0 ? 0.5 : -0.5);
+            const ang = q[4] + open;
+            const ca = Math.cos(ang);
+            const sa = Math.sin(ang);
+            const pt = function (th) {
+              const rr = 1 + 0.08 * Math.sin(3 * th + e.ph1 + i) + 0.04 * Math.sin(5 * th + e.ph2);
+              const lx = Math.cos(th) * q[2] * rr;
+              const ly = Math.sin(th) * q[3] * rr;
+              const px = q[0] + lx * ca - ly * sa;
+              const py = q[1] + lx * sa + ly * ca;
+              return T(px * s * R, (0.5 + (py - 0.5) * s) * R, q[5]);
+            };
+            const pts = [];
+            for (let k = 0; k < 20; k++) pts.push(pt(k / 20 * Math.PI * 2));
+            g.beginPath();
+            path(g, pts, true);
+            g.fillStyle = C.red;
+            g.fill();
+
+            if (q[6] && R >= 8 && s > 0.4) {
+              const arc = [];
+              for (let k = 0; k <= 10; k++) arc.push(pt(Math.PI * (1.18 + 0.64 * k / 10)));
+              strokeRange(arc, 0, Math.min(1, (s - 0.4) / 0.5), C.line, lw * 0.8);
+            }
+          });
+
+          const fr = eo((a - P.length * st - 60) / 480);
+          if (fr > 0 && R > 3) {
+            const sp = [];
+            const turns = Math.min(e.turns, 1.35);
+            for (let i = 0; i <= 45; i++) {
+              const u = i / 45;
+              const th = e.ph1 + u * turns * Math.PI * 2;
+              const rr = R * (0.08 + 0.56 * u);
+              sp.push(T(Math.cos(th) * rr * 1.05, Math.sin(th) * rr * 0.72 - 0.12 * R, 0.32 - 0.22 * u));
+            }
+            strokeRange(sp, 0, fr, C.line, lw);
+          }
+        }
+
+        function faceTurn(e, x, y) {
+          let wx = 0;
+          let wy = 0;
+          if (mx != null) {
+            const dx = mx - x;
+            const dy = my - y;
+            const d = Math.hypot(dx, dy);
+            const reach = 220;
+            if (d < reach && d > 0.001) {
+              const w = 1 - d / reach;
+              const s = w * w * (3 - 2 * w) * Math.min(1, d / 35);
+              wx = dx / d * s;
+              wy = dy / d * s;
+            }
+          }
+          const c = fa[e.id] || [0, 0];
+          c[0] += (wx - c[0]) * 0.12;
+          c[1] += (wy - c[1]) * 0.12;
+          fa[e.id] = c;
+          return c;
+        }
+
+        function spawnButterfly(cx, cy) {
+          if (flies.length >= 2) return;
+          const best = perch.length ? perch[Math.floor(Math.random() * perch.length)] : null;
+          flies.push({
+            x: cx < W / 2 ? -20 : W + 20,
+            y: cy - 20,
+            vx: 0,
+            vy: 0,
+            st: best ? 'fly' : 'wander',
+            pid: best ? best.id : null,
+            hx: cx,
+            hy: cy,
+            t0: performance.now(),
+            ph: 0,
+            sz: Math.max(8, S * 0.22),
+            seed: Math.random() * 50,
+            ang: 0,
+            open: 1
+          });
+        }
+
+        function drawButterflies(now, C) {
+          const byId = {};
+          for (let i = 0; i < perch.length; i++) byId[perch[i].id] = perch[i];
+          flies = flies.filter(function (f) {
+            const t = (now - f.t0) / 1000;
+            let tx = f.hx;
+            let ty = f.hy;
+            if (f.st === 'fly' || f.st === 'sit') {
+              const p = byId[f.pid];
+              if (p && t < 3.6) {
+                tx = p.x;
+                ty = p.y - p.R * 0.55;
+              } else {
+                f.st = 'leave';
+                f.ex = f.x < W / 2 ? -40 : W + 40;
+                f.ey = -30;
+              }
+            }
+            if (f.st === 'leave') {
+              tx = f.ex;
+              ty = f.ey;
+            }
+            if (f.st === 'sit') {
+              f.x += (tx - f.x) * 0.25;
+              f.y += (ty - f.y) * 0.25;
+              f.open = 0.25 + 0.65 * Math.abs(Math.cos(t * 4));
+            } else {
+              const dx = tx - f.x;
+              const dy = ty - f.y;
+              const d = Math.hypot(dx, dy) || 1;
+              f.x += (dx / d) * 2.8;
+              f.y += (dy / d) * 2.8 + Math.sin(t * 14) * 0.8;
+              f.open = Math.abs(Math.cos(t * 16));
+              if (f.st === 'fly' && d < 6) f.st = 'sit';
+              if (f.st === 'leave' && (f.x < -35 || f.x > W + 35 || f.y < -35)) return false;
+            }
+
+            const ca = Math.cos(f.ang);
+            const sa = Math.sin(f.ang);
+            const T = function (px, py) { return [f.x + (px * ca - py * sa) * f.sz, f.y + (px * sa + py * ca) * f.sz]; };
+            const wing = function (wcx, wcy, rx, ry, a, side) {
+              const pts = [];
+              const c = Math.cos(a);
+              const sn = Math.sin(a);
+              for (let k = 0; k < 14; k++) {
+                const th = k / 14 * Math.PI * 2;
+                const lx = Math.cos(th) * rx;
+                const ly = Math.sin(th) * ry;
+                pts.push(T(side * (wcx + lx * c - ly * sn) * (0.15 + 0.85 * f.open), wcy + lx * sn + ly * c));
+              }
+              return pts;
+            };
+            [-1, 1].forEach(function (sd) {
+              g.beginPath();
+              path(g, wing(0.46, 0.28, 0.36, 0.3, 0.5, sd), true);
+              g.fillStyle = C.red;
+              g.fill();
+              g.beginPath();
+              path(g, wing(0.55, -0.32, 0.55, 0.36, -0.55, sd), true);
+              g.fillStyle = C.red;
+              g.fill();
+            });
+            return true;
+          });
+        }
+
+        function renderGarden(now) {
+          g.setTransform(dpr, 0, 0, dpr, 0, 0);
+          g.clearRect(0, 0, W, H);
+          const C = getPalette();
+          perch = [];
+
+          for (let i = 0; i < letters.length; i++) {
+            const l = letters[i];
+            let tx = 0;
+            let ty = 0;
+            if (mx != null) {
+              const dx = mx - l.x;
+              const dy = my - (l.y - S * 0.5);
+              const d = Math.hypot(dx, dy);
+              const reach = 180;
+              if (d < reach && d > 1) {
+                const w = 1 - d / reach;
+                const s = w * w * (3 - 2 * w);
+                tx = dx / d * s;
+                ty = dy / d * s;
+              }
+            }
+            const c = l.lean || (l.lean = [0, 0]);
+            c[0] += (tx - c[0]) * 0.1;
+            c[1] += (ty - c[1]) * 0.1;
+          }
+
+          const wpt = function (l, x, y) {
+            if (l.lean) {
+              const hh = Math.min(2.2, Math.max(0, (l.y - y) / S));
+              const f = hh * hh * 0.5 + hh * 0.5;
+              x += l.lean[0] * S * 0.11 * f;
+              y += l.lean[1] * S * 0.055 * f;
+            }
+            return [x, y];
+          };
+
+          const drawLayer = function (layer) {
+            for (let i = 0; i < letters.length; i++) {
+              const l = letters[i];
+              const age = now - l.birth;
+              if (age <= 0) continue;
+              for (let j = 0; j < l.els.length; j++) {
+                const e = l.els[j];
+                if (e.t === 'stem') {
+                  const fr = eo((age - e.d0) / e.dur);
+                  if (fr <= 0) continue;
+                  const P = e.pts.map(function (p) { return wpt(l, l.x + p[0] * S, l.y + p[1] * S); });
+                  for (let k = 0; k < e.segs.length; k++) {
+                    const sg = e.segs[k];
+                    if (sg.layer !== layer) continue;
+                    const b = Math.min(sg.u1, fr);
+                    if (b <= sg.u0) continue;
+                    strokeRange(P, sg.u0, b, C.blue, S * 0.025 * (e.w || 1));
+                  }
+                  for (let k = 0; k < e.thorns.length; k++) {
+                    const th = e.thorns[k];
+                    if (fr > th.u && layerAt(e.segs, th.u) === layer) {
+                      const pa = at(P, th.u);
+                      const d = pa[1] + th.s * 2.3;
+                      const L = S * 0.048;
+                      strokeRange([pa[0], [pa[0][0] + Math.cos(d) * L, pa[0][1] + Math.sin(d) * L]], 0, 1, C.blue, S * 0.022);
+                    }
+                  }
+                } else if (e.layer === layer) {
+                  if (e.t === 'leaf') {
+                    const sc = spr((age - e.d0) / 1000, 7, 15);
+                    if (sc <= 0) continue;
+                    const p = wpt(l, l.x + e.x * S, l.y + e.y * S);
+                    drawLeaf(p[0], p[1], e.a, e.L * S * sc, e.bend, C);
+                  } else if (e.t === 'rose') {
+                    const a = age - e.d0;
+                    if (a < 0) continue;
+                    const p = wpt(l, l.x + e.x * S, l.y + e.y * S);
+                    const tl = faceTurn(e, p[0], p[1]);
+                    if (a > 600) perch.push({ id: e.id, x: p[0], y: p[1], R: e.R * S });
+                    drawRose(p[0], p[1], e.R * S, e.rot + (tl ? tl[0] * 0.22 : 0), e, a, tl, C);
+                  }
+                }
+              }
+            }
+          };
+
+          drawLayer(0);
+          g.font = `${FONT} ${S}px ${FAMILY}`;
+          g.textAlign = 'center';
+          g.textBaseline = 'alphabetic';
+          g.fillStyle = C.text;
+          for (let i = 0; i < letters.length; i++) {
+            const l = letters[i];
+            g.fillText(l.ch, l.x, l.y);
+          }
+          drawLayer(1);
+
+          if (flies.length) drawButterflies(now, C);
+        }
+
+        function tick(now) {
+          const projectsView = document.getElementById('projects-view');
+          if (projectsView && projectsView.classList.contains('visible')) {
+            rafId = null;
+            return;
+          }
+          renderGarden(now);
+          if (now - lastActive < 2200 || flies.length > 0) {
+            rafId = requestAnimationFrame(tick);
+          } else {
+            rafId = null;
+          }
+        }
+
+        function wakeGarden(durationBoost) {
+          if (!started) return;
+          lastActive = performance.now() + (durationBoost || 0);
+          if (!rafId) {
+            rafId = requestAnimationFrame(tick);
+          }
+        }
+
+        window.initHeroGarden = function () {
+          if (started) return;
+          const run = function () {
+            if (started) return;
+            started = true;
+            gardenBirth = Infinity;
+            buildGardenLayout();
+            wrap.classList.add('garden-ready');
+            renderGarden(performance.now());
+          };
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(run).catch(run);
+          } else {
+            run();
+          }
+        };
+
+        window.bloomHeroGarden = function (delayMs) {
+          if (!started) window.initHeroGarden();
+          const delay = typeof delayMs === 'number' ? delayMs : 2000;
+          gardenBirth = performance.now() + delay;
+          for (let i = 0; i < letters.length; i++) {
+            letters[i].birth = gardenBirth + letters[i].id * 32;
+          }
+          wakeGarden(delay + 3500);
+        };
+
+        window.startHeroGarden = function (delayMs) {
+          window.initHeroGarden();
+          window.bloomHeroGarden(delayMs);
+        };
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(window.initHeroGarden).catch(window.initHeroGarden);
+        } else {
+          window.initHeroGarden();
+        };
+
+        cv.addEventListener('pointermove', function (e) {
+          const r = cv.getBoundingClientRect();
+          mx = e.clientX - r.left;
+          my = e.clientY - r.top;
+          wakeGarden(0);
+        }, { passive: true });
+
+        cv.addEventListener('pointerleave', function () {
+          mx = null;
+          my = null;
+          wakeGarden(0);
+        }, { passive: true });
+
+        cv.addEventListener('click', function (e) {
+          const r = cv.getBoundingClientRect();
+          spawnButterfly(e.clientX - r.left, e.clientY - r.top);
+          wakeGarden(2500);
+        });
+
+        window.addEventListener('resize', function () {
+          if (!started) return;
+          buildGardenLayout();
+          wakeGarden(0);
+        }, { passive: true });
+
+        const themeInput = document.getElementById('theme-switch');
+        if (themeInput) {
+          themeInput.addEventListener('change', function () {
+            wakeGarden(300);
+          });
+        }
+      })();
+    </script>
+
+    <script>
       (function () {
         var input = document.getElementById('theme-switch');
         if (!input) return;
