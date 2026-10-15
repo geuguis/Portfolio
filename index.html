@@ -118,79 +118,117 @@
       #entry-overlay {
         position: fixed;
         inset: 0;
-        background-color: var(--white);
+        background-color: transparent;
         z-index: 999;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 0;
-        transition: opacity 1s ease, visibility 1s,
-                    background-color 0.55s var(--ease-theme),
-                    color 0.55s var(--ease-theme);
         overflow: hidden;
+        pointer-events: all;
       }
 
       #entry-overlay.hidden {
-        opacity: 0;
+        pointer-events: none;
         visibility: hidden;
       }
 
-      #entry-overlay::before {
-        content: "";
-        position: absolute;
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(82,183,136,0.13) 0%, transparent 68%);
-        pointer-events: none;
-        animation: glowPulse 4s ease-in-out infinite;
-      }
-
-      @keyframes glowPulse {
-        0%, 100% { transform: scale(1); opacity: 0.7; }
-        50%       { transform: scale(1.12); opacity: 1; }
-      }
-
-      #entry-overlay::after {
-        content: "";
+      #entry-curtain-svg {
         position: absolute;
         inset: 0;
-        background-image:
-          linear-gradient(rgba(82,183,136,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(82,183,136,0.04) 1px, transparent 1px);
-        background-size: 48px 48px;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
         pointer-events: none;
+      }
+
+      #entry-curtain-path {
+        fill: #2d6a4f;
+        transition: fill 0.55s var(--ease-theme);
+      }
+
+      [data-theme="dark"] #entry-curtain-path {
+        fill: #1b4332;
+      }
+
+      .entry-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.35s ease, transform 0.45s var(--ease-out);
+      }
+
+      #entry-overlay.pulling .entry-content {
+        opacity: 0;
+        transform: translateX(40px) scale(0.96);
+      }
+
+      #entry-bird {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        width: 86px;
+        height: 86px;
+        z-index: 1001;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate3d(-140px, -50%, 0);
+        will-change: transform, opacity;
+        filter: drop-shadow(-8px 10px 18px rgba(0, 0, 0, 0.28));
+      }
+
+      #entry-bird.flying {
+        opacity: 1;
+      }
+
+      .bird-wing-top {
+        transform-origin: 48px 46px;
+        animation: birdFlapTop 0.22s ease-in-out infinite alternate;
+      }
+
+      .bird-wing-bottom {
+        transform-origin: 48px 50px;
+        animation: birdFlapBottom 0.22s ease-in-out infinite alternate;
+      }
+
+      @keyframes birdFlapTop {
+        0%   { transform: rotate(-28deg) scaleY(0.9); }
+        100% { transform: rotate(32deg) scaleY(1.05); }
+      }
+
+      @keyframes birdFlapBottom {
+        0%   { transform: rotate(22deg) scaleY(0.85); }
+        100% { transform: rotate(-25deg) scaleY(1); }
       }
 
       .entry-name {
         font-family: "DM Serif Display", serif;
         font-size: clamp(2rem, 5vw, 2.8rem);
-        color: var(--ink);
+        color: #f9faf7;
         letter-spacing: -0.01em;
         line-height: 1.1;
         text-align: center;
         margin-bottom: 6px;
         opacity: 0;
         transform: translateY(14px);
-        animation: overlayFadeUp 0.9s ease forwards 0.2s;
-        position: relative;
-        z-index: 1;
+        animation: overlayFadeUp 0.7s ease forwards 0.15s;
       }
 
-      .entry-name em { font-style: italic; color: var(--green); }
+      .entry-name em { font-style: italic; color: #b7e4c7; }
 
       .entry-tagline {
         font-family: "DM Mono", monospace;
         font-size: 0.65rem;
         letter-spacing: 0.26em;
         text-transform: uppercase;
-        color: var(--muted);
+        color: #d8f3dc;
         margin-bottom: 40px;
         opacity: 0;
-        animation: overlayFadeUp 0.9s ease forwards 0.45s;
-        position: relative;
-        z-index: 1;
+        animation: overlayFadeUp 0.7s ease forwards 0.3s;
       }
 
       .entry-divider {
@@ -199,9 +237,11 @@
         margin-bottom: 40px;
         opacity: 0;
         overflow: visible;
-        animation: dividerGrow 0.8s ease forwards 0.65s;
-        position: relative;
-        z-index: 1;
+        animation: dividerGrow 0.6s ease forwards 0.45s;
+      }
+
+      .entry-divider .wave-svg path {
+        stroke: #95d5b2;
       }
 
       @keyframes dividerGrow {
@@ -217,7 +257,7 @@
         position: absolute;
         inset: 0;
         pointer-events: none;
-        z-index: 0;
+        z-index: 1;
       }
 
       body::before {
@@ -1996,13 +2036,34 @@
   </div>
 
   <div id="entry-overlay">
+    <svg id="entry-curtain-svg" preserveAspectRatio="none" aria-hidden="true">
+      <path id="entry-curtain-path" d="M 0 0 L 99999 0 L 99999 99999 L 0 99999 Z"></path>
+    </svg>
     <canvas id="overlay-particles" aria-hidden="true"></canvas>
-    <p class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></p>
-    <p class="entry-tagline">Desarrollo · Código · Diseño</p>
-    <div class="entry-divider" aria-hidden="true">
-      <div class="wave-hit"></div>
-      <svg class="wave-svg" aria-hidden="true"><path></path></svg>
+    <div class="entry-content">
+      <p class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></p>
+      <p class="entry-tagline">Desarrollo · Código · Diseño</p>
+      <div class="entry-divider" aria-hidden="true">
+        <div class="wave-hit"></div>
+        <svg class="wave-svg" aria-hidden="true"><path></path></svg>
+      </div>
     </div>
+    <svg id="entry-bird" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M 0 46 Q 14 48 26 45" stroke="#b7e4c7" stroke-width="2" stroke-dasharray="3 2" />
+      <circle cx="2" cy="46" r="3.5" fill="#d8f3dc" />
+      <g class="bird-wing-bottom">
+        <path d="M 46 48 C 36 64, 22 72, 14 66 C 22 54, 34 46, 48 46 Z" fill="#40916c" />
+      </g>
+      <path d="M 20 46 C 34 36, 56 35, 74 43 C 82 46, 88 45, 94 46 C 86 52, 74 56, 54 55 C 38 54, 26 52, 12 56 L 18 49 L 10 45 Z" fill="#52b788" />
+      <path d="M 52 39 C 64 38, 76 41, 84 46 C 74 51, 62 52, 48 49 Z" fill="#74c69d" />
+      <g class="bird-wing-top">
+        <path d="M 44 45 C 34 20, 18 8, 8 14 C 16 30, 30 42, 54 45 Z" fill="#95d5b2" />
+        <path d="M 46 45 C 38 26, 26 16, 18 20 C 24 32, 34 41, 52 45 Z" fill="#d8f3dc" opacity="0.65" />
+      </g>
+      <circle cx="80" cy="44" r="2.2" fill="#0f1512" />
+      <circle cx="80.7" cy="43.4" r="0.7" fill="#f9faf7" />
+      <polygon points="90,43 105,46 90,50" fill="#f0c040" />
+    </svg>
   </div>
 
     <canvas id="flowers-canvas" aria-hidden="true"></canvas>
@@ -2497,7 +2558,7 @@
         resize();
         window.addEventListener('resize', resize);
 
-        const colors = ['#52b788','#2d6a4f','#b7e4c7','#8a9e91','#d8f3dc'];
+        const colors = ['#95d5b2','#b7e4c7','#d8f3dc','#74c69d','#52b788'];
 
         function makeParticle() {
           const a = 0.08 + Math.random() * 0.18;
@@ -2804,18 +2865,91 @@
           }
         }
 
-        function revealPortfolio() {
-          if (overlay.classList.contains('hidden')) return;
-          overlay.classList.add('hidden');
+        let curtainAnimating = false;
+        const curtainPath = document.getElementById('entry-curtain-path');
+        const entryBird   = document.getElementById('entry-bird');
+
+        function setInitialCurtain() {
+          if (!curtainPath) return;
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          curtainPath.setAttribute('d', `M 0 0 L ${w} 0 L ${w} ${h} L 0 ${h} Z`);
+        }
+
+        setInitialCurtain();
+        window.addEventListener('resize', function () {
+          if (!curtainAnimating && !overlay.classList.contains('hidden')) {
+            setInitialCurtain();
+          }
+        });
+
+        function revealPortfolio(instant) {
+          if (overlay.classList.contains('hidden') || curtainAnimating) return;
+
+          if (instant === true || prefersReducedMotion || !curtainPath || !entryBird) {
+            overlay.classList.add('hidden');
+            if (portfolioView && 'inert' in HTMLElement.prototype) {
+              portfolioView.inert = false;
+            }
+            if (window.startFlowers) window.startFlowers();
+            return;
+          }
+
+          curtainAnimating = true;
+          overlay.classList.add('pulling');
+          entryBird.classList.add('flying');
+
           if (portfolioView && 'inert' in HTMLElement.prototype) {
             portfolioView.inert = false;
           }
           if (window.startFlowers) window.startFlowers();
+
+          const duration = 1250;
+          const start = performance.now();
+
+          const HOOK_OFFSET = 1.6;
+
+          function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          }
+
+          function step(now) {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const raw = Math.min(1, (now - start) / duration);
+            const p = easeInOutCubic(raw);
+
+            const hookX = -100 + p * (w + 120);
+
+            const bend   = Math.sin(raw * Math.PI) * Math.min(220, w * 0.22);
+            const edgeX  = Math.max(0, hookX - bend);
+            const ctrlX  = 2 * hookX - edgeX; // el punto medio de la curva Q cae justo en hookX
+
+            const d = `M ${edgeX} 0 L ${w} 0 L ${w} ${h} L ${edgeX} ${h} Q ${ctrlX} ${h * 0.5} ${edgeX} 0 Z`;
+            curtainPath.setAttribute('d', d);
+
+            const bobY = Math.sin(raw * Math.PI * 5) * 14;
+            const tilt = Math.cos(raw * Math.PI * 5) * 6 - 4;
+            const birdX = hookX - HOOK_OFFSET;
+            entryBird.style.transform = `translate3d(${birdX}px, calc(-50% + ${bobY}px), 0) rotate(${tilt}deg)`;
+
+            if (raw < 1) {
+              requestAnimationFrame(step);
+            } else {
+              overlay.classList.add('hidden');
+              entryBird.classList.remove('flying');
+              curtainAnimating = false;
+            }
+          }
+
+          requestAnimationFrame(step);
         }
 
-        setTimeout(revealPortfolio, prefersReducedMotion ? 200 : 1100);
-        overlay.addEventListener('click', revealPortfolio);
-        document.addEventListener('keydown', revealPortfolio, { once: true });
+        setTimeout(function () {
+          if (location.hash !== '#proyectos') revealPortfolio(false);
+        }, prefersReducedMotion ? 200 : 2000);
+        overlay.addEventListener('click', function () { revealPortfolio(false); });
+        document.addEventListener('keydown', function () { revealPortfolio(false); }, { once: true });
 
         function showProjects(pushState) {
           if (projectsView.classList.contains('visible')) return;
@@ -2873,7 +3007,7 @@
         });
 
         if (location.hash === '#proyectos') {
-          revealPortfolio();
+          revealPortfolio(true);
           showProjects(false);
         }
 
