@@ -52,7 +52,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" /></noscript>
     <style>
       :root {
         --white: #f9faf7;
@@ -60,7 +62,7 @@
         --green-light: #52b788;
         --green-pale: #d8f3dc;
         --ink: #1a1a1a;
-        --muted: #5d7468;
+        --muted: #3b5246;
         --border: #ddeae0;
         --text-secondary: #4a4a4a;
         --on-accent: #f9faf7;
@@ -75,7 +77,7 @@
         --green-light: #74c69d;
         --green-pale: #18231d;
         --ink: #eef2ec;
-        --muted: #8fa89a;
+        --muted: #a3bdb0;
         --border: #28382f;
         --text-secondary: #c4cfc8;
         --on-accent: #0f1512;
@@ -305,9 +307,8 @@
 
       .header {
         margin-bottom: 48px;
-        opacity: 0;
-        transform: translateY(18px);
-        animation: fadeUp 0.7s ease forwards 0.1s;
+        opacity: 1;
+        transform: none;
       }
 
       .eyebrow {
@@ -344,9 +345,9 @@
         width: 220px;
         height: 1px;
         margin: 32px 0;
-        opacity: 0;
+        opacity: 1;
+        transform: none;
         overflow: visible;
-        animation: fadeUp 0.6s ease forwards 0.3s;
       }
       .wave-hit {
         position: absolute;
@@ -383,14 +384,14 @@
         letter-spacing: -0.01em;
         color: var(--text-secondary);
         max-width: 400px;
-        opacity: 0;
-        animation: fadeUp 0.6s ease forwards 0.45s;
+        opacity: 1;
+        transform: none;
       }
 
       .skills-section {
         margin-top: 40px;
-        opacity: 0;
-        animation: fadeUp 0.6s ease forwards 0.6s;
+        opacity: 1;
+        transform: none;
       }
 
       .section-label {
@@ -566,8 +567,8 @@
 
       .cert-section {
         margin-top: 40px;
-        opacity: 0;
-        animation: fadeUp 0.6s ease forwards 0.75s;
+        opacity: 1;
+        transform: none;
       }
 
       .cert-card {
@@ -677,8 +678,8 @@
         gap: 24px;
         align-items: center;
         flex-wrap: wrap;
-        opacity: 0;
-        animation: fadeUp 0.6s ease forwards 0.88s;
+        opacity: 1;
+        transform: none;
       }
 
       .dock {
@@ -764,8 +765,8 @@
         font-size: 0.7rem;
         color: var(--muted);
         letter-spacing: 0.14em;
-        opacity: 0;
-        animation: fadeUp 0.5s ease forwards 1.05s;
+        opacity: 1;
+        transform: none;
       }
 
       .music-player {
@@ -890,8 +891,11 @@
       .vinyl-cover {
         position: absolute;
         inset: 0;
-        background-size: cover;
-        background-position: center;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
         opacity: 0.9;
         transition: opacity 0.3s;
       }
@@ -1034,8 +1038,10 @@
         justify-content: flex-start;
         padding: 60px 24px 80px;
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
         transition: opacity 0.65s ease,
+                    visibility 0s linear 0.65s,
                     background-color 0.55s var(--ease-theme),
                     color 0.55s var(--ease-theme);
         overflow-y: auto;
@@ -1043,7 +1049,12 @@
 
       #projects-view.visible {
         opacity: 1;
+        visibility: visible;
         pointer-events: all;
+        transition: opacity 0.65s ease,
+                    visibility 0s linear 0s,
+                    background-color 0.55s var(--ease-theme),
+                    color 0.55s var(--ease-theme);
       }
 
       #projects-view::before {
@@ -2030,8 +2041,8 @@
     <label class="switch" title="Cambiar tema claro/oscuro">
       <input type="checkbox" id="theme-switch" role="switch" aria-label="Activar modo oscuro">
       <span class="slider"></span>
-      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" alt="" aria-hidden="true">
-      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" alt="" aria-hidden="true">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" alt="" width="34" height="34" aria-hidden="true">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" alt="" width="34" height="34" aria-hidden="true">
     </label>
   </div>
 
@@ -2091,69 +2102,69 @@
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-0">Lenguajes</p>
                 <ul class="stack-dock stack-dock--wrap" aria-labelledby="sg-0">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/dart.svg" alt="Dart" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/kotlin.svg" alt="Kotlin" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Dart-Dark.svg" alt="Dart" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Kotlin-Dark.svg" alt="Kotlin" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-1">Web</p>
                 <ul class="stack-dock" aria-labelledby="sg-1">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-2">Móvil y motores</p>
                 <ul class="stack-dock" aria-labelledby="sg-2">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/flutter.svg" alt="Flutter" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/android.svg" alt="Android" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/unity.svg" alt="Unity" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Flutter-Dark.svg" alt="Flutter" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android</span><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='60' fill='%23242938'/%3E%3Cg fill='%233DDC84'%3E%3Cpath d='M78 112a50 50 0 0 1 100 0z'/%3E%3Crect x='78' y='118' width='100' height='72' rx='10'/%3E%3Crect x='54' y='118' width='18' height='56' rx='9'/%3E%3Crect x='184' y='118' width='18' height='56' rx='9'/%3E%3Crect x='98' y='176' width='18' height='42' rx='9'/%3E%3Crect x='140' y='176' width='18' height='42' rx='9'/%3E%3C/g%3E%3Cpath d='M98 72L86 54M158 72L170 54' stroke='%233DDC84' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='108' cy='93' r='6' fill='%23242938'/%3E%3Ccircle cx='148' cy='93' r='6' fill='%23242938'/%3E%3C/svg%3E" alt="Android" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Unity-Dark.svg" alt="Unity" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-3">Bases de datos</p>
                 <ul class="stack-dock" aria-labelledby="sg-3">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-4">IDEs</p>
                 <ul class="stack-dock" aria-labelledby="sg-4">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/androidstudio.svg" alt="Android Studio" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/AndroidStudio-Dark.svg" alt="Android Studio" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-5">Versiones y DevOps</p>
                 <ul class="stack-dock" aria-labelledby="sg-5">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/docker.svg" alt="Docker" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Docker.svg" alt="Docker" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-6">Terminal y sistemas</p>
                 <ul class="stack-dock" aria-labelledby="sg-6">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/linux.svg" alt="Linux" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Linux-Dark.svg" alt="Linux" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-7">Utilidades</p>
                 <ul class="stack-dock" aria-labelledby="sg-7">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" loading="lazy"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" loading="lazy"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
             </div>
@@ -2174,7 +2185,7 @@
             <span class="cert-arrow" aria-hidden="true">↗</span>
           </a>
           <div class="cert-card cert-wip" role="group" aria-label="MongoDB, certificación en preparación">
-            <span class="cert-badge"><img src="https://cdn.jsdelivr.net/gh/syvixor/skills-icons/icons/mongodb.svg" alt="" width="44" height="44" loading="lazy"></span>
+            <span class="cert-badge"><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MongoDB.svg" alt="" width="44" height="44" loading="lazy"></span>
             <span class="cert-info">
               <span class="cert-title">MongoDB <span class="wip-pill"><span class="wip-dot" aria-hidden="true"></span>WIP</span></span>
               <span class="cert-meta">Estudiando para conseguir la certificación</span>
@@ -2514,7 +2525,7 @@
           </div>
         </div>
         <div class="vinyl-disc">
-          <div class="vinyl-cover" style="background-image: url('img/disc-cover.jpg')"></div>
+          <img src="img/disc-cover.jpg" alt="" width="50" height="50" loading="lazy" decoding="async" class="vinyl-cover" />
           <div class="vinyl-grooves"></div>
           <div class="vinyl-glare"></div>
           <div class="vinyl-center">
@@ -2597,7 +2608,9 @@
           raf = requestAnimationFrame(drawParticles);
         }
 
-        drawParticles();
+        raf = requestAnimationFrame(function () {
+          raf = requestAnimationFrame(drawParticles);
+        });
 
         const overlay = document.getElementById('entry-overlay');
 
@@ -2904,7 +2917,7 @@
           }
           if (window.startFlowers) window.startFlowers();
 
-          const duration = 1250;
+          const duration = 1050;
           const start = performance.now();
 
           const HOOK_OFFSET = 1.6;
@@ -2923,7 +2936,7 @@
 
             const bend   = Math.sin(raw * Math.PI) * Math.min(220, w * 0.22);
             const edgeX  = Math.max(0, hookX - bend);
-            const ctrlX  = 2 * hookX - edgeX; // el punto medio de la curva Q cae justo en hookX
+            const ctrlX  = 2 * hookX - edgeX;
 
             const d = `M ${edgeX} 0 L ${w} 0 L ${w} ${h} L ${edgeX} ${h} Q ${ctrlX} ${h * 0.5} ${edgeX} 0 Z`;
             curtainPath.setAttribute('d', d);
@@ -2947,7 +2960,7 @@
 
         setTimeout(function () {
           if (location.hash !== '#proyectos') revealPortfolio(false);
-        }, prefersReducedMotion ? 200 : 2000);
+        }, prefersReducedMotion ? 200 : 1100);
         overlay.addEventListener('click', function () { revealPortfolio(false); });
         document.addEventListener('keydown', function () { revealPortfolio(false); }, { once: true });
 
@@ -2972,6 +2985,7 @@
         function hideProjects(pushState) {
           if (!projectsView.classList.contains('visible')) return;
           if (window.stopBalatroAmbience) window.stopBalatroAmbience();
+          if (window.unloadProjectPreviews) window.unloadProjectPreviews();
           projectsView.classList.remove('visible');
           projectsView.setAttribute('aria-hidden', 'true');
           if ('inert' in HTMLElement.prototype) projectsView.inert = true;
@@ -3042,9 +3056,14 @@
           var x = 0.5;
           var time = Math.PI / 2;
           var reqId = null;
+          var width = 220;
+
+          function measure() {
+            width = container.getBoundingClientRect().width || 220;
+          }
 
           function setPath(prog) {
-            var w = container.getBoundingClientRect().width;
+            var w = width;
             path.setAttributeNS(
               null,
               'd',
@@ -3075,6 +3094,7 @@
           }
 
           hit.addEventListener('mouseenter', function () {
+            measure();
             if (reqId) {
               cancelAnimationFrame(reqId);
               reqId = null;
@@ -3092,6 +3112,7 @@
           hit.addEventListener('mouseleave', animateOut);
 
           window.addEventListener('resize', function () {
+            measure();
             setPath(progress);
           });
 
@@ -3581,24 +3602,22 @@
           frame.style.height = Math.ceil(h / scale) + 'px';
         }
 
-        if ('ResizeObserver' in window) {
-          const ro = new ResizeObserver(function (entries) {
-            entries.forEach(function (entry) { fitPreview(entry.target); });
-          });
-          frameMedias.forEach(function (m) { ro.observe(m); });
-        } else {
-          window.addEventListener('resize', function () { frameMedias.forEach(fitPreview); });
+        let previewsReady = false;
+        let hasScrolledProjects = false;
+
+        function isProjectsOpen() {
+          return projectsView.classList.contains('visible');
         }
-        frameMedias.forEach(fitPreview);
 
         function loadPreview(media) {
-          if (!media) return;
+          if (!media || !isProjectsOpen()) return;
           const frame = media.querySelector('.project-preview[data-src]');
           if (!frame || frame.dataset.loaded) return;
           frame.dataset.loaded = '1';
           media.classList.add('is-loading');
           fitPreview(media);
           frame.addEventListener('load', function () {
+            if (!frame.dataset.loaded) return;
             frame.classList.add('is-loaded');
             media.classList.remove('is-loading');
             media.classList.add('is-ready');
@@ -3621,6 +3640,7 @@
           const media = card.querySelector('.project-media');
           if (!media) return;
           const onActivate = function () {
+            if (!previewsReady || !isProjectsOpen()) return;
             loadPreview(media);
           };
           card.addEventListener('pointerenter', onActivate);
@@ -3630,34 +3650,60 @@
           }
         });
 
-        if (!isFinePointer && 'IntersectionObserver' in window) {
-          let hasScrolledProjects = false;
-          projectsView.addEventListener('scroll', function () {
-            hasScrolledProjects = true;
-          }, { passive: true, once: true });
+        projectsView.addEventListener('scroll', function () {
+          if (isProjectsOpen()) hasScrolledProjects = true;
+        }, { passive: true });
 
-          const touchObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              const card = entry.target;
-              const media = card.querySelector('.project-media');
-              if (entry.isIntersecting) {
-                if (media) loadPreview(media);
-                if (hasScrolledProjects && window.activateProjectFx) {
-                  window.activateProjectFx(card);
-                }
-              } else if (media) {
-                unloadPreview(media);
-              }
+        function initPreviews() {
+          if (previewsReady) return;
+          previewsReady = true;
+
+          if ('ResizeObserver' in window) {
+            const ro = new ResizeObserver(function (entries) {
+              if (!isProjectsOpen()) return;
+              entries.forEach(function (entry) { fitPreview(entry.target); });
             });
-          }, { root: projectsView, threshold: 0.68 });
+            frameMedias.forEach(function (m) { ro.observe(m); });
+          } else {
+            window.addEventListener('resize', function () {
+              if (isProjectsOpen()) frameMedias.forEach(fitPreview);
+            });
+          }
 
-          cards.forEach(function (card) {
-            touchObserver.observe(card);
-          });
+          if (!isFinePointer && 'IntersectionObserver' in window) {
+            const touchObserver = new IntersectionObserver(function (entries) {
+              if (!projectsView.classList.contains('visible') || !hasScrolledProjects) return;
+              entries.forEach(function (entry) {
+                const card = entry.target;
+                const media = card.querySelector('.project-media');
+                if (entry.isIntersecting) {
+                  if (media) loadPreview(media);
+                  if (window.activateProjectFx) {
+                    window.activateProjectFx(card);
+                  }
+                } else if (media) {
+                  unloadPreview(media);
+                }
+              });
+            }, { root: projectsView, threshold: 0.68 });
+
+            cards.forEach(function (card) {
+              touchObserver.observe(card);
+            });
+          }
         }
 
         window.loadProjectPreviews = function () {
-          frameMedias.forEach(fitPreview);
+          if (!isProjectsOpen()) return;
+          initPreviews();
+          requestAnimationFrame(function () {
+            if (isProjectsOpen()) frameMedias.forEach(fitPreview);
+          });
+        };
+
+        window.unloadProjectPreviews = function () {
+          hasScrolledProjects = false;
+          frameMedias.forEach(unloadPreview);
         };
 
         window.triggerProjectsReveal = function () {
@@ -3683,13 +3729,11 @@
       })();
 
       (function () {
-        document.querySelectorAll('.s-icon img').forEach(function(img) {
-          img.addEventListener('error', function() {
-            var src = img.getAttribute('src');
-            if (src.endsWith('-Dark.svg')) {
-              img.src = src.replace('-Dark.svg', '.svg');
-            } else if (src.endsWith('.svg') && !src.endsWith('-Dark.svg')) {
-              img.src = src.replace('.svg', '-Dark.svg');
+        var fallbackSvg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"%3E%3Crect width="256" height="256" rx="60" fill="%23242938"/%3E%3C/svg%3E';
+        document.querySelectorAll('.s-icon img').forEach(function (img) {
+          img.addEventListener('error', function () {
+            if (img.src !== fallbackSvg) {
+              img.src = fallbackSvg;
             }
           }, { once: true });
         });
