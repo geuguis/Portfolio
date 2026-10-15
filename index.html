@@ -439,6 +439,19 @@
         align-items: center;
         justify-content: center;
         cursor: default;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      .s-icon.is-active { z-index: 2; }
+      .s-icon.is-active img { transform: scale(1.5); }
+      .s-icon.is-active + .s-icon img { transform: scale(1.33); }
+      .s-icon.is-active + .s-icon + .s-icon img { transform: scale(1.17); }
+      .s-icon:has(+ .s-icon.is-active) img { transform: scale(1.33); }
+      .s-icon:has(+ .s-icon + .s-icon.is-active) img { transform: scale(1.17); }
+      .s-icon.is-active .s-name {
+        opacity: 1;
+        transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
       }
 
       @media (hover: hover) and (pointer: fine) {
@@ -493,7 +506,7 @@
         border-radius: 6px;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.2s ease;
+        transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
       @media (max-width: 600px) {
@@ -1516,6 +1529,12 @@
         transition: opacity 0.35s ease, transform 0.35s ease;
       }
 
+      @media (hover: none), (pointer: coarse) {
+        .project-media::after {
+          content: "▶ TOCAR PARA VER PREVIEW Y ATMÓSFERA";
+        }
+      }
+
       [data-theme="dark"] .project-media::after {
         background: rgba(15, 21, 18, 0.75);
         border-color: rgba(255, 255, 255, 0.14);
@@ -1558,7 +1577,8 @@
         opacity: 1;
       }
 
-      .project-card:hover .project-preview {
+      .project-card:hover .project-preview,
+      .project-card.fx-focused .project-preview {
         transform: scale(calc(var(--iframe-scale, 0.41) * 1.03));
       }
 
@@ -1572,7 +1592,8 @@
         transition: transform 0.5s var(--ease-out);
       }
 
-      .project-card:hover .project-thumb-img {
+      .project-card:hover .project-thumb-img,
+      .project-card.fx-focused .project-thumb-img {
         transform: scale(1.04);
       }
 
@@ -1645,6 +1666,7 @@
       }
 
       .project-card:hover .project-media-cta,
+      .project-card.fx-focused .project-media-cta,
       .project-media-link:focus-visible .project-media-cta {
         opacity: 1;
         transform: translateY(0);
@@ -2136,7 +2158,7 @@
 
     <section id="projects-view" aria-label="Lista de proyectos" aria-hidden="true">
       <canvas id="balatro-bg-canvas" aria-hidden="true"></canvas>
-	  <div id="project-fx-layer" aria-hidden="true"></div>
+      <div id="project-fx-layer" aria-hidden="true"></div>
       <div class="balatro-scanlines" aria-hidden="true"></div>
 
       <div class="projects-inner">
@@ -2986,7 +3008,73 @@
         dock.addEventListener('mouseleave', reset);
       })();
 
-(function () {
+      (function () {
+        var stackContainer = document.querySelector('.dock-stack');
+        var icons = Array.prototype.slice.call(document.querySelectorAll('.s-icon'));
+        if (!stackContainer || !icons.length) return;
+
+        var activeIcon = null;
+        var touchStartY = 0;
+
+        function setActiveIcon(icon) {
+          if (activeIcon === icon) return;
+          if (activeIcon) {
+            activeIcon.classList.remove('is-active');
+          }
+          activeIcon = icon;
+          if (activeIcon) {
+            activeIcon.classList.add('is-active');
+          }
+        }
+
+        function clearActiveIcon() {
+          if (activeIcon) {
+            activeIcon.classList.remove('is-active');
+            if (document.activeElement === activeIcon) {
+              activeIcon.blur();
+            }
+            activeIcon = null;
+          }
+        }
+
+        stackContainer.addEventListener('touchstart', function (e) {
+          var t = e.touches[0];
+          if (!t) return;
+          touchStartY = t.clientY;
+          var icon = e.target.closest('.s-icon');
+          if (icon) {
+            setActiveIcon(icon);
+          } else {
+            clearActiveIcon();
+          }
+        }, { passive: true });
+
+        stackContainer.addEventListener('touchmove', function (e) {
+          var t = e.touches[0];
+          if (!t) return;
+          if (Math.abs(t.clientY - touchStartY) > 12) {
+            clearActiveIcon();
+            return;
+          }
+          var el = document.elementFromPoint(t.clientX, t.clientY);
+          var icon = el ? el.closest('.s-icon') : null;
+          if (icon) {
+            setActiveIcon(icon);
+          } else {
+            clearActiveIcon();
+          }
+        }, { passive: true });
+
+        document.addEventListener('touchstart', function (e) {
+          if (!e.target.closest('.s-icon')) {
+            clearActiveIcon();
+          }
+        }, { passive: true });
+
+        window.addEventListener('scroll', clearActiveIcon, { passive: true });
+      })();
+
+      (function () {
         const projectsView = document.getElementById('projects-view');
         const canvas = document.getElementById('balatro-bg-canvas');
         const cards = document.querySelectorAll('.project-card[data-fx]');
@@ -3000,6 +3088,7 @@
         let currentShaderMode = 0;
         let rafId = null;
         let stopTimer = null;
+        let activeCardEl = null;
         const startTime = Date.now();
 
         function initUnifiedShader() {
@@ -3252,8 +3341,12 @@
         }
 
         function activateCardFx(card) {
+          if (!card) return;
           const fx = card.getAttribute('data-fx');
           if (!fx) return;
+
+          if (activeCardEl === card && projectsView.classList.contains('fx-on')) return;
+          activeCardEl = card;
 
           clearTimeout(stopTimer);
           cards.forEach(function (c) { c.classList.toggle('fx-focused', c === card); });
@@ -3279,6 +3372,7 @@
         }
 
         function deactivateCardFx() {
+          activeCardEl = null;
           projectsView.classList.remove('fx-on');
           cards.forEach(function (c) { c.classList.remove('fx-focused'); });
           stopAmbienceTone();
@@ -3293,11 +3387,21 @@
           }, FADE_MS);
         }
 
+        window.activateProjectFx = activateCardFx;
         window.stopBalatroAmbience = deactivateCardFx;
 
         cards.forEach(function (card) {
-          card.addEventListener('pointerenter', function () { activateCardFx(card); });
-          card.addEventListener('pointerleave', deactivateCardFx);
+          card.addEventListener('pointerenter', function (e) {
+            if (e.pointerType === 'touch') return;
+            activateCardFx(card);
+          });
+          card.addEventListener('pointerleave', function (e) {
+            if (e.pointerType === 'touch') return;
+            deactivateCardFx();
+          });
+          card.addEventListener('touchstart', function () {
+            activateCardFx(card);
+          }, { passive: true });
           card.addEventListener('focusin', function () { activateCardFx(card); });
           card.addEventListener('focusout', function (e) {
             if (!card.contains(e.relatedTarget)) {
@@ -3305,6 +3409,22 @@
             }
           });
         });
+
+        projectsView.addEventListener('touchmove', function (e) {
+          const t = e.touches[0];
+          if (!t) return;
+          const el = document.elementFromPoint(t.clientX, t.clientY);
+          const card = el ? el.closest('.project-card[data-fx]') : null;
+          if (card) {
+            activateCardFx(card);
+          }
+        }, { passive: true });
+
+        projectsView.addEventListener('touchstart', function (e) {
+          if (!e.target.closest('.project-card[data-fx]')) {
+            deactivateCardFx();
+          }
+        }, { passive: true });
       })();
 
       (function () {
@@ -3377,21 +3497,28 @@
         });
 
         if (!isFinePointer && 'IntersectionObserver' in window) {
+          let hasScrolledProjects = false;
+          projectsView.addEventListener('scroll', function () {
+            hasScrolledProjects = true;
+          }, { passive: true, once: true });
+
           const touchObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
-              const media = entry.target.querySelector('.project-media');
-              if (!media) return;
+              const card = entry.target;
+              const media = card.querySelector('.project-media');
               if (entry.isIntersecting) {
-                loadPreview(media);
-              } else {
+                if (media) loadPreview(media);
+                if (hasScrolledProjects && window.activateProjectFx) {
+                  window.activateProjectFx(card);
+                }
+              } else if (media) {
                 unloadPreview(media);
               }
             });
-          }, { root: projectsView, threshold: 0.65 });
+          }, { root: projectsView, threshold: 0.68 });
+
           cards.forEach(function (card) {
-            if (card.querySelector('.project-preview[data-src]')) {
-              touchObserver.observe(card);
-            }
+            touchObserver.observe(card);
           });
         }
 
