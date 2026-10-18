@@ -97,6 +97,8 @@
         clip: rect(0, 0, 0, 0);
         white-space: nowrap;
         border: 0;
+        color: #1a1a1a;
+        background-color: #f9faf7;
       }
 
       .theme-anim body,
@@ -104,6 +106,7 @@
       .theme-anim #projects-view,
       .theme-anim .dock-stack,
       .theme-anim .cert-card,
+      .theme-anim .cert-toggle,
       .theme-anim .project-card,
       .theme-anim .dock,
       .theme-anim .dock-item {
@@ -152,6 +155,7 @@
       }
 
       #entry-overlay.hidden {
+        display: none;
         pointer-events: none;
         visibility: hidden;
       }
@@ -250,10 +254,12 @@
         color: #d8f3dc;
         margin-bottom: 40px;
         opacity: 0;
+        transform: translateY(14px);
         animation: overlayFadeUp 0.7s ease forwards 0.3s;
       }
 
       .entry-divider {
+        position: relative;
         width: 220px;
         height: 1px;
         margin-bottom: 40px;
@@ -272,6 +278,7 @@
       }
 
       @keyframes overlayFadeUp {
+        from { opacity: 0; transform: translateY(14px); }
         to { opacity: 1; transform: translateY(0); }
       }
 
@@ -365,11 +372,10 @@
 
       .hero-title-wrap h1 {
         margin-bottom: 0;
-        transition: opacity 0.25s ease;
       }
 
       .hero-title-wrap.garden-ready h1 {
-        opacity: 0;
+        clip-path: inset(50%);
         pointer-events: none;
         user-select: none;
       }
@@ -554,7 +560,7 @@
       .s-icon:has(+ .s-icon.is-active) img { transform: scale(1.33); }
       .s-icon:has(+ .s-icon + .s-icon.is-active) img { transform: scale(1.17); }
       .s-icon.is-active .s-name {
-        opacity: 1;
+        clip-path: inset(-20%);
         transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
       }
 
@@ -566,7 +572,7 @@
         .s-icon:has(+ .s-icon:hover) img { transform: scale(1.33); }
         .s-icon:has(+ .s-icon + .s-icon:hover) img { transform: scale(1.17); }
         .s-icon:hover .s-name {
-          opacity: 1;
+          clip-path: inset(-20%);
           transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
         }
       }
@@ -591,7 +597,7 @@
       }
       .s-icon:focus-visible img { transform: scale(1.3); }
       .s-icon:focus-visible .s-name {
-        opacity: 1;
+        clip-path: inset(-20%);
         transform: translateX(-50%) translateY(calc(var(--icon-size) * -0.5));
       }
 
@@ -608,9 +614,9 @@
         border: 1px solid var(--border);
         padding: 3px 8px;
         border-radius: 6px;
-        opacity: 0;
+        clip-path: inset(50%);
         pointer-events: none;
-        transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: clip-path 0.18s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
       @media (max-width: 600px) {
@@ -619,20 +625,136 @@
       }
 
       #cert-label {
-        font-family: "DM Serif Display", serif;
-        font-size: 1.5rem;
+        margin: 0;
         font-weight: 400;
-        line-height: 1;
-        letter-spacing: -0.01em;
-        text-transform: none;
-        color: var(--green);
-        margin-bottom: 16px;
       }
 
       .cert-section {
         margin-top: 40px;
         opacity: 1;
         transform: none;
+      }
+
+      .cert-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        background: var(--green-pale);
+        border: 1px solid var(--border);
+        color: var(--ink);
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.2s var(--ease-out), border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .cert-toggle:hover {
+        transform: translateY(-2px);
+        border-color: var(--green-light);
+        box-shadow: 0 6px 20px rgba(36, 88, 64, 0.08);
+      }
+
+      .cert-toggle:active {
+        transform: translateY(0) scale(0.99);
+      }
+
+      .cert-toggle:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
+      }
+
+      .cert-toggle-left {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        min-width: 0;
+      }
+
+      .cert-toggle-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--green);
+      }
+
+      .cert-count-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: var(--white);
+        border: 1px solid var(--border);
+        font-family: "DM Mono", monospace;
+        font-size: 0.69rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .cert-toggle-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: none;
+      }
+
+      .cert-toggle-hint {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--green);
+        transition: color 0.2s ease;
+      }
+
+      .cert-chevron {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--white);
+        border: 1px solid var(--border);
+        color: var(--green);
+        transition: transform 0.3s var(--ease-out), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      }
+
+      .cert-toggle:hover .cert-chevron {
+        background: var(--green);
+        color: var(--on-accent);
+        border-color: var(--green);
+      }
+
+      .cert-toggle[aria-expanded="true"] .cert-chevron {
+        transform: rotate(180deg);
+        background: var(--green);
+        color: var(--on-accent);
+        border-color: var(--green);
+      }
+
+      .cert-panel {
+        display: none;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.32s var(--ease-out);
+      }
+
+      .cert-panel.is-visible {
+        display: grid;
+      }
+
+      .cert-panel.is-open {
+        grid-template-rows: 1fr;
+      }
+
+      .cert-panel-inner {
+        overflow: hidden;
+        min-height: 0;
       }
 
       .cert-card {
@@ -675,11 +797,13 @@
       .cert-card:hover .cert-arrow { transform: translate(2px, -2px); }
 
       @media (max-width: 600px) {
+        .cert-toggle { padding: 12px 14px; }
+        .cert-toggle-hint { display: none; }
         .cert-card { padding: 12px 14px; gap: 12px; }
         .cert-badge { width: 38px; height: 38px; }
       }
 
-      .cert-list { display: flex; flex-direction: column; gap: 12px; }
+      .cert-list { display: flex; flex-direction: column; gap: 12px; padding-top: 12px; }
 
       .cert-wip { border-style: dashed; background: transparent; }
       .wip-pill {
@@ -841,8 +965,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        opacity: 0;
-        animation: fadeUp 0.5s ease forwards 1.2s;
+        opacity: 1;
+        animation: fadeUp 0.5s ease backwards 1.2s;
       }
 
       .music-label {
@@ -851,12 +975,12 @@
         letter-spacing: 0.14em;
         color: var(--muted);
         white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.3s;
+        clip-path: inset(0 0 0 100%);
+        transition: clip-path 0.3s ease;
         pointer-events: none;
       }
 
-      .music-player:hover .music-label { opacity: 1; }
+      .music-player:hover .music-label { clip-path: inset(0); }
 
       .music-btn {
         width: 50px;
@@ -1002,6 +1126,7 @@
       }
 
       @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
 
@@ -1048,7 +1173,7 @@
         letter-spacing: 0.08em;
         padding: 10px 18px;
         border-radius: 3px;
-        opacity: 0;
+        display: none;
         pointer-events: none;
         transition: opacity 0.3s, transform 0.3s;
         z-index: 200;
@@ -1056,6 +1181,7 @@
       }
 
       .toast.visible {
+        display: block;
         opacity: 1;
         transform: translateX(-50%) translateY(0);
       }
@@ -1685,7 +1811,7 @@
         padding: 8px 14px;
         border-radius: 4px;
         border: 1px dashed var(--border);
-        background: rgba(255, 255, 255, 0.65);
+        background-color: #f3f8f4;
         -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
         white-space: nowrap;
@@ -1700,7 +1826,7 @@
       }
 
       [data-theme="dark"] .project-media::after {
-        background: rgba(15, 21, 18, 0.75);
+        background-color: #14221b;
         border-color: rgba(255, 255, 255, 0.14);
         color: #a8b8ae;
       }
@@ -1717,7 +1843,7 @@
 
       .project-media.is-ready::before,
       .project-media.is-ready::after {
-        opacity: 0;
+        display: none;
         pointer-events: none;
       }
 
@@ -1825,15 +1951,15 @@
         padding: 3px 8px;
         border-radius: 3px;
         border: 1px solid rgba(255, 255, 255, 0.12);
-        opacity: 0;
+        clip-path: inset(50%);
         transform: translateY(4px);
-        transition: opacity 0.25s ease, transform 0.25s ease;
+        transition: clip-path 0.2s ease, transform 0.25s ease;
       }
 
       .project-card:hover .project-media-cta,
       .project-card.fx-focused .project-media-cta,
       .project-media-link:focus-visible .project-media-cta {
-        opacity: 1;
+        clip-path: inset(-20%);
         transform: translateY(0);
       }
 
@@ -2028,12 +2154,12 @@
         top: 20px;
         right: 20px;
         z-index: 1000;
-        opacity: 0;
-        transform: translateY(-10px);
-        animation: themeToggleIn 0.9s var(--ease-out) forwards 0.3s;
+        opacity: 1;
+        animation: themeToggleIn 0.9s var(--ease-out) backwards 0.3s;
       }
 
       @keyframes themeToggleIn {
+        from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
       }
 
@@ -2220,69 +2346,69 @@
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-0">Lenguajes</p>
                 <ul class="stack-dock stack-dock--wrap" aria-labelledby="sg-0">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Dart-Dark.svg" alt="Dart" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Kotlin-Dark.svg" alt="Kotlin" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Dart-Dark.svg" alt="Dart" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Kotlin-Dark.svg" alt="Kotlin" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-1">Web</p>
                 <ul class="stack-dock" aria-labelledby="sg-1">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-2">Móvil y motores</p>
                 <ul class="stack-dock" aria-labelledby="sg-2">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Flutter-Dark.svg" alt="Flutter" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android</span><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='60' fill='%23242938'/%3E%3Cg fill='%233DDC84'%3E%3Cpath d='M78 112a50 50 0 0 1 100 0z'/%3E%3Crect x='78' y='118' width='100' height='72' rx='10'/%3E%3Crect x='54' y='118' width='18' height='56' rx='9'/%3E%3Crect x='184' y='118' width='18' height='56' rx='9'/%3E%3Crect x='98' y='176' width='18' height='42' rx='9'/%3E%3Crect x='140' y='176' width='18' height='42' rx='9'/%3E%3C/g%3E%3Cpath d='M98 72L86 54M158 72L170 54' stroke='%233DDC84' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='108' cy='93' r='6' fill='%23242938'/%3E%3Ccircle cx='148' cy='93' r='6' fill='%23242938'/%3E%3C/svg%3E" alt="Android" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Unity-Dark.svg" alt="Unity" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Flutter-Dark.svg" alt="Flutter" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Android</span><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='60' fill='%23242938'/%3E%3Cg fill='%233DDC84'%3E%3Cpath d='M78 112a50 50 0 0 1 100 0z'/%3E%3Crect x='78' y='118' width='100' height='72' rx='10'/%3E%3Crect x='54' y='118' width='18' height='56' rx='9'/%3E%3Crect x='184' y='118' width='18' height='56' rx='9'/%3E%3Crect x='98' y='176' width='18' height='42' rx='9'/%3E%3Crect x='140' y='176' width='18' height='42' rx='9'/%3E%3C/g%3E%3Cpath d='M98 72L86 54M158 72L170 54' stroke='%233DDC84' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='108' cy='93' r='6' fill='%23242938'/%3E%3Ccircle cx='148' cy='93' r='6' fill='%23242938'/%3E%3C/svg%3E" alt="Android" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Unity-Dark.svg" alt="Unity" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-3">Bases de datos</p>
                 <ul class="stack-dock" aria-labelledby="sg-3">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-4">IDEs</p>
                 <ul class="stack-dock" aria-labelledby="sg-4">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/AndroidStudio-Dark.svg" alt="Android Studio" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/AndroidStudio-Dark.svg" alt="Android Studio" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-5">Versiones y DevOps</p>
                 <ul class="stack-dock" aria-labelledby="sg-5">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Docker.svg" alt="Docker" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Docker.svg" alt="Docker" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-6">Terminal y sistemas</p>
                 <ul class="stack-dock" aria-labelledby="sg-6">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Linux-Dark.svg" alt="Linux" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Linux-Dark.svg" alt="Linux" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-7">Utilidades</p>
                 <ul class="stack-dock" aria-labelledby="sg-7">
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" width="36" height="36" loading="lazy" decoding="async"></li>
-                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" width="36" height="36" loading="lazy" decoding="async"></li>
+                <li class="s-icon"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" width="36" height="36" loading="lazy" decoding="async"></li>
                 </ul>
               </div>
             </div>
@@ -2290,26 +2416,55 @@
         </section>
 
         <section class="cert-section" aria-labelledby="cert-label">
-          <h2 class="section-label" id="cert-label">Certificaciones</h2>
-          <div class="cert-list">
-          <a class="cert-card" href="https://www.datacamp.com/certificate/SQA0012337299104" target="_blank" rel="noopener noreferrer" aria-label="Ver credencial SQL Associate de DataCamp (se abre en una pestaña nueva)">
-            <span class="cert-badge"><img src="img/datacampinc_logo.jpg" alt="" width="44" height="44" loading="lazy"></span>
-            <span class="cert-info">
-              <span class="cert-title">SQL Associate</span>
-              <span class="cert-issuer">DataCamp</span>
-              <span class="cert-meta">Expedición: sept. de 2026 · Vencimiento: sept. de 2028</span>
-              <span class="cert-id">ID de la credencial: SQA0012337299104</span>
-            </span>
-            <span class="cert-arrow" aria-hidden="true">↗</span>
-          </a>
-          <div class="cert-card cert-wip" role="group" aria-label="MongoDB, certificación en preparación">
-            <span class="cert-badge"><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MongoDB.svg" alt="" width="44" height="44" loading="lazy"></span>
-            <span class="cert-info">
-              <span class="cert-title">MongoDB <span class="wip-pill"><span class="wip-dot" aria-hidden="true"></span>WIP</span></span>
-              <span class="cert-meta">Estudiando para conseguir la certificación</span>
-              <span class="wip-bar" role="progressbar" aria-label="Preparación de la certificación MongoDB en curso" aria-valuetext="En progreso"><span class="wip-fill"></span></span>
-            </span>
-          </div>
+          <h2 id="cert-label">
+            <button type="button" class="cert-toggle" id="certToggle" aria-expanded="false" aria-controls="certPanel">
+              <span class="cert-toggle-left">
+                <span class="cert-toggle-title">Certificaciones</span>
+                <span class="cert-count-badge">2 credenciales · 1 WIP</span>
+              </span>
+              <span class="cert-toggle-action" aria-hidden="true">
+                <span class="cert-toggle-hint" id="certToggleHint">Desplegar</span>
+                <span class="cert-chevron">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </span>
+            </button>
+          </h2>
+          <div class="cert-panel" id="certPanel">
+            <div class="cert-panel-inner">
+              <div class="cert-list">
+                <a class="cert-card" href="https://www.datacamp.com/certificate/SQA0012337299104" target="_blank" rel="noopener noreferrer" aria-label="Ver credencial SQL Associate de DataCamp (se abre en una pestaña nueva)">
+                  <span class="cert-badge"><img src="img/datacampinc_logo.jpg" alt="" width="44" height="44" loading="lazy"></span>
+                  <span class="cert-info">
+                    <span class="cert-title">SQL Associate</span>
+                    <span class="cert-issuer">DataCamp</span>
+                    <span class="cert-meta">Expedición: sept. de 2026 · Vencimiento: sept. de 2028</span>
+                    <span class="cert-id">ID de la credencial: SQA0012337299104</span>
+                  </span>
+                  <span class="cert-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="cert-card" href="https://openwebinars.net/cert/gjqz" target="_blank" rel="noopener noreferrer" aria-label="Ver credencial Curso de Git de OpenWebinars (se abre en una pestaña nueva)">
+                  <span class="cert-badge"><img src="img/openwebinars_logo.svg" alt="" width="44" height="44" loading="lazy"></span>
+                  <span class="cert-info">
+                    <span class="cert-title">Curso de Git</span>
+                    <span class="cert-issuer">OpenWebinars</span>
+                    <span class="cert-meta">Expedición: oct. de 2026</span>
+                    <span class="cert-id">ID de la credencial: gjqz</span>
+                  </span>
+                  <span class="cert-arrow" aria-hidden="true">↗</span>
+                </a>
+                <div class="cert-card cert-wip" role="group" aria-label="MongoDB, certificación en preparación">
+                  <span class="cert-badge"><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MongoDB.svg" alt="" width="44" height="44" loading="lazy"></span>
+                  <span class="cert-info">
+                    <span class="cert-title">MongoDB <span class="wip-pill"><span class="wip-dot" aria-hidden="true"></span>WIP</span></span>
+                    <span class="cert-meta">Estudiando para conseguir la certificación</span>
+                    <span class="wip-bar" role="progressbar" aria-label="Preparación de la certificación MongoDB en curso" aria-valuetext="En progreso"><span class="wip-fill"></span></span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -3154,6 +3309,37 @@
             });
             openProjects.focus();
           }, 650);
+        }
+
+        const certToggle = document.getElementById('certToggle');
+        const certPanel = document.getElementById('certPanel');
+        const certToggleHint = document.getElementById('certToggleHint');
+        let certHideTimer = null;
+
+        if (certToggle && certPanel) {
+          certToggle.addEventListener('click', function () {
+            const isOpen = certToggle.getAttribute('aria-expanded') === 'true';
+            clearTimeout(certHideTimer);
+            if (!isOpen) {
+              certToggle.setAttribute('aria-expanded', 'true');
+              if (certToggleHint) certToggleHint.textContent = 'Ocultar';
+              certPanel.classList.add('is-visible');
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  certPanel.classList.add('is-open');
+                });
+              });
+            } else {
+              certToggle.setAttribute('aria-expanded', 'false');
+              if (certToggleHint) certToggleHint.textContent = 'Desplegar';
+              certPanel.classList.remove('is-open');
+              certHideTimer = setTimeout(function () {
+                if (certToggle.getAttribute('aria-expanded') === 'false') {
+                  certPanel.classList.remove('is-visible');
+                }
+              }, 320);
+            }
+          });
         }
 
         openProjects.addEventListener('click', function () {
@@ -4138,21 +4324,30 @@
 
           g.font = `${FONT} ${S}px ${FAMILY}`;
           const textStr = 'Guillermo Eugui Sánchez';
-          const rawWords = textStr.split(' ');
           const maxLineW = rect.width;
           const lines = [];
-          let currentLine = '';
 
-          for (let i = 0; i < rawWords.length; i++) {
-            const test = currentLine ? currentLine + ' ' + rawWords[i] : rawWords[i];
-            if (g.measureText(test).width > maxLineW && currentLine) {
-              lines.push(currentLine);
-              currentLine = rawWords[i];
-            } else {
-              currentLine = test;
+          if (computed.whiteSpace === 'nowrap') {
+            const fullW = g.measureText(textStr).width;
+            if (fullW > maxLineW && fullW > 0) {
+              S = S * (maxLineW / fullW);
+              g.font = `${FONT} ${S}px ${FAMILY}`;
             }
+            lines.push(textStr);
+          } else {
+            const rawWords = textStr.split(' ');
+            let currentLine = '';
+            for (let i = 0; i < rawWords.length; i++) {
+              const test = currentLine ? currentLine + ' ' + rawWords[i] : rawWords[i];
+              if (g.measureText(test).width > maxLineW && currentLine) {
+                lines.push(currentLine);
+                currentLine = rawWords[i];
+              } else {
+                currentLine = test;
+              }
+            }
+            if (currentLine) lines.push(currentLine);
           }
-          if (currentLine) lines.push(currentLine);
 
           letters = [];
           let uid = 1;
