@@ -58,7 +58,7 @@
     <style>
       :root {
         --white: #f9faf7;
-        --green: #2d6a4f;
+        --green: #245840;
         --green-light: #52b788;
         --green-pale: #d8f3dc;
         --ink: #1a1a1a;
@@ -84,7 +84,19 @@
       }
 
       [data-theme="dark"] .availability {
-        background: rgba(82, 183, 136, 0.12);
+        background-color: #14221b;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       .theme-anim body,
@@ -120,7 +132,7 @@
       #entry-overlay {
         position: fixed;
         inset: 0;
-        background-color: transparent;
+        background-color: #2d6a4f;
         z-index: 999;
         display: flex;
         flex-direction: column;
@@ -129,6 +141,14 @@
         gap: 0;
         overflow: hidden;
         pointer-events: all;
+      }
+
+      [data-theme="dark"] #entry-overlay {
+        background-color: #1b4332;
+      }
+
+      #entry-overlay.pulling {
+        background-color: transparent;
       }
 
       #entry-overlay.hidden {
@@ -220,11 +240,11 @@
         animation: overlayFadeUp 0.7s ease forwards 0.15s;
       }
 
-      .entry-name em { font-style: italic; color: #b7e4c7; }
+      .entry-name em { font-style: italic; color: #d8f3dc; }
 
       .entry-tagline {
         font-family: "DM Mono", monospace;
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         letter-spacing: 0.26em;
         text-transform: uppercase;
         color: #d8f3dc;
@@ -312,7 +332,7 @@
       }
 
       .eyebrow {
-        font-size: 0.68rem;
+        font-size: 0.7rem;
         font-weight: 300;
         letter-spacing: 0.22em;
         text-transform: uppercase;
@@ -437,6 +457,7 @@
 
       .section-label {
         font-size: 0.7rem;
+        font-weight: 400;
         letter-spacing: 0.28em;
         text-transform: uppercase;
         color: var(--muted);
@@ -446,6 +467,7 @@
       #stack-label {
         font-family: "DM Serif Display", serif;
         font-size: 1.5rem;
+        font-weight: 400;
         line-height: 1;
         letter-spacing: -0.01em;
         text-transform: none;
@@ -488,7 +510,7 @@
       .stack-group:first-child { grid-column: 1 / -1; }
 
       .stack-group-label {
-        font-size: 0.6rem;
+        font-size: 0.69rem;
         letter-spacing: 0.22em;
         text-transform: uppercase;
         color: var(--muted);
@@ -579,7 +601,7 @@
         left: 50%;
         transform: translateX(-50%);
         font-family: "DM Mono", monospace;
-        font-size: 0.68rem;
+        font-size: 0.69rem;
         white-space: nowrap;
         color: var(--ink);
         background: var(--white);
@@ -599,6 +621,7 @@
       #cert-label {
         font-family: "DM Serif Display", serif;
         font-size: 1.5rem;
+        font-weight: 400;
         line-height: 1;
         letter-spacing: -0.01em;
         text-transform: none;
@@ -635,7 +658,7 @@
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        color: var(--on-accent);
+        color: var(--ink);
         background: #fff;
         overflow: hidden;
         border: 1px solid var(--border);
@@ -646,7 +669,7 @@
       .cert-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
       .cert-title { font-family: "DM Serif Display", serif; font-size: 1.15rem; line-height: 1.1; }
       .cert-issuer { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
-      .cert-meta, .cert-id { font-size: 0.68rem; color: var(--muted); line-height: 1.5; }
+      .cert-meta, .cert-id { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
       .cert-id { overflow-wrap: anywhere; }
       .cert-arrow { flex: none; color: var(--green); font-size: 1.1rem; transition: transform 0.2s var(--ease-out); }
       .cert-card:hover .cert-arrow { transform: translate(2px, -2px); }
@@ -669,7 +692,7 @@
         border: 1px solid var(--green-light);
         color: var(--green);
         font-family: "DM Mono", monospace;
-        font-size: 0.58rem;
+        font-size: 0.69rem;
         letter-spacing: 0.2em;
         vertical-align: middle;
       }
@@ -824,7 +847,7 @@
 
       .music-label {
         font-family: "DM Mono", monospace;
-        font-size: 0.63rem;
+        font-size: 0.69rem;
         letter-spacing: 0.14em;
         color: var(--muted);
         white-space: nowrap;
@@ -990,8 +1013,8 @@
         padding: 5px 12px 5px 11px;
         border: 1px solid var(--green-pale);
         border-radius: 999px;
-        background: rgba(216, 243, 220, 0.45);
-        font-size: 0.62rem;
+        background-color: #eaf8ed;
+        font-size: 0.69rem;
         font-weight: 400;
         letter-spacing: 0.22em;
         text-transform: uppercase;
@@ -1487,6 +1510,46 @@
         white-space: nowrap;
       }
 
+      #projects-view[data-active-fx="catan"] #project-fx-layer {
+        background-color: #0c1926;
+        background-image:
+          radial-gradient(circle at 50% 45%, rgba(217, 119, 6, 0.24) 0%, rgba(180, 83, 9, 0.12) 38%, rgba(12, 25, 38, 0.94) 82%),
+          radial-gradient(circle at 20% 25%, rgba(14, 116, 144, 0.25) 0%, transparent 55%),
+          radial-gradient(circle at 80% 75%, rgba(22, 101, 52, 0.22) 0%, transparent 55%),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='180' viewBox='0 0 104 180'%3E%3Cg fill='none' stroke='rgba(245,158,11,0.13)' stroke-width='1.2'%3E%3Cpath d='M52 0 L104 30 L104 90 L52 120 L0 90 L0 30 Z M52 180 L52 120 M0 90 L-52 120 M104 90 L156 120'/%3E%3C/g%3E%3C/svg%3E");
+        background-size: 100% 100%, 100% 100%, 100% 100%, 104px 180px;
+        background-position: 0 0, 0 0, 0 0, 50% 50%;
+      }
+
+      #projects-view[data-active-fx="catan"] #project-fx-layer::before {
+        content: "⬡   ⬡   ⬡";
+        top: 7%;
+        left: 50%;
+        white-space: pre;
+        font-family: "DM Serif Display", Georgia, serif;
+        line-height: 1;
+        font-size: clamp(4.5rem, 14vw, 13rem);
+        color: rgba(245, 158, 11, 0.13);
+        text-shadow: 0 0 40px rgba(217, 119, 6, 0.35);
+        animation: rogueFloat 10s ease-in-out infinite alternate;
+      }
+
+      #projects-view[data-active-fx="catan"] #project-fx-layer::after {
+        content: "HEX GRAPH // (q,r) AXIAL // 19 HEX · 54 NODOS · 72 ARISTAS";
+        bottom: 26px;
+        left: 24px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+        color: rgba(251, 191, 36, 0.72);
+        text-shadow: 0 0 10px rgba(217, 119, 6, 0.45);
+        white-space: nowrap;
+      }
+
+      #projects-view.fx-on {
+        background-color: #0d1512;
+      }
+
       #projects-view.fx-on .projects-title,
       #projects-view.fx-on .projects-eyebrow,
       #projects-view.fx-on .projects-group-label,
@@ -1499,6 +1562,7 @@
 
       #projects-view.fx-on[data-active-fx="tarifa"] .projects-title em    { color: #fde047; }
       #projects-view.fx-on[data-active-fx="rogue"] .projects-title em     { color: #f59e0b; }
+      #projects-view.fx-on[data-active-fx="catan"] .projects-title em     { color: #fbbf24; }
       #projects-view.fx-on[data-active-fx="freeki"] .projects-title em    { color: #2dd4bf; }
       #projects-view.fx-on[data-active-fx="balatro"] .projects-title em   { color: #f0c040; }
       #projects-view.fx-on[data-active-fx="cyber"] .projects-title em     { color: #00ffe7; text-shadow: 0 0 18px rgba(0, 255, 231, 0.6); }
@@ -1614,8 +1678,8 @@
         transform: translate(-50%, -50%);
         z-index: 2;
         font-family: "DM Mono", monospace;
-        font-size: 0.62rem;
-        letter-spacing: 0.16em;
+        font-size: 0.69rem;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
         color: var(--muted);
         padding: 8px 14px;
@@ -1703,6 +1767,7 @@
         z-index: 3;
         display: block;
         text-decoration: none;
+        cursor: pointer;
       }
 
       .project-media-link:focus-visible {
@@ -1725,13 +1790,13 @@
 
       .project-badge {
         font-family: "DM Mono", monospace;
-        font-size: 0.58rem;
-        letter-spacing: 0.14em;
+        font-size: 0.69rem;
+        letter-spacing: 0.11em;
         text-transform: uppercase;
         padding: 4px 9px;
         border-radius: 3px;
-        background: rgba(10, 14, 12, 0.62);
-        color: #eef2ec;
+        background-color: #111815;
+        color: #f9faf7;
         border: 1px solid rgba(255, 255, 255, 0.16);
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
@@ -1739,8 +1804,8 @@
       }
 
       .project-badge--accent {
-        background: rgba(20, 52, 38, 0.7);
-        color: #d8f3dc;
+        background-color: #163829;
+        color: #e9f7ec;
         border-color: rgba(116, 198, 157, 0.55);
       }
 
@@ -1750,11 +1815,11 @@
         left: 12px;
         z-index: 4;
         font-family: "DM Mono", monospace;
-        font-size: 0.58rem;
-        letter-spacing: 0.16em;
+        font-size: 0.69rem;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: rgba(238, 242, 236, 0.92);
-        background: rgba(10, 14, 12, 0.7);
+        color: #f9faf7;
+        background-color: #111815;
         -webkit-backdrop-filter: blur(6px);
         backdrop-filter: blur(6px);
         padding: 3px 8px;
@@ -1780,8 +1845,8 @@
       }
 
       .project-number {
-        font-size: 0.6rem;
-        letter-spacing: 0.24em;
+        font-size: 0.69rem;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--green);
         margin-bottom: 8px;
@@ -1811,12 +1876,12 @@
       }
 
       .project-tag {
-        font-size: 0.66rem;
+        font-size: 0.69rem;
         color: var(--green);
         border: 1px solid var(--border);
         padding: 3px 10px;
         border-radius: 2px;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
       }
 
       .project-links {
@@ -2087,22 +2152,23 @@
   <body>
 
   <div class="theme-toggle">
-    <label class="switch" title="Cambiar tema claro/oscuro">
-      <input type="checkbox" id="theme-switch" role="switch" aria-label="Activar modo oscuro">
+    <label class="switch" for="theme-switch" title="Cambiar tema claro/oscuro">
+      <span class="sr-only">Activar modo oscuro</span>
+      <input type="checkbox" id="theme-switch" role="switch">
       <span class="slider"></span>
       <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAIG/8QAIxAAAgIABQQDAAAAAAAAAAAAAQMCBAAREiExBUFRcROBsf/EABQBAQAAAAAAAAAAAAAAAAAAAAX/xAAWEQADAAAAAAAAAAAAAAAAAAAAEiL/2gAMAwEAAhEDEQA/AMBTp03dNglMVuttjqnKQ2UPOfntkOThbqVVUJ12BKnogZQZpy+Ucc8knwePWJrWqyqEHVmrTahEBqpbBoAH1n635wt3a9mjN1p8X2pw0qVEbKB/CO/c4OphSVP/2Q==" class="off" alt="" width="34" height="34" aria-hidden="true">
       <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAQIEBf/EACMQAAEDAwQDAQEAAAAAAAAAAAQBAgUDESEAEjFBBlFhMkL/xAAUAQEAAAAAAAAAAAAAAAAAAAAF/8QAGBEAAwEBAAAAAAAAAAAAAAAAABIiMUH/2gAMAwEAAhEDEQA/AM+Bg4mS8coRccMOdNG01qVyH/kRvHPKKmMdr8uujPwUTG+NkRpw1AKWCbvHKa2zTGphc9u9p0q+rLqeMl4kSCGkYgtoE0HTahIz3bWGNanPrdyqWzn7p5ibh5CArnyZNMyVLpK0QSkt2BNXtVX+7ol1wuLJiyaHt+6Kyp//2Q==" class="on" alt="" width="34" height="34" aria-hidden="true">
     </label>
   </div>
 
-  <div id="entry-overlay">
+  <div id="entry-overlay" aria-hidden="true">
     <svg id="entry-curtain-svg" preserveAspectRatio="none" aria-hidden="true">
       <path id="entry-curtain-path" d="M 0 0 L 99999 0 L 99999 99999 L 0 99999 Z"></path>
     </svg>
     <canvas id="overlay-particles" aria-hidden="true"></canvas>
     <div class="entry-content">
-      <p class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></p>
-      <p class="entry-tagline">Desarrollo · Código · Diseño</p>
+      <div class="entry-name" id="entry-name-id">Guillermo <em>Eugui</em></div>
+      <div class="entry-tagline">Desarrollo · Código · Diseño</div>
       <div class="entry-divider" aria-hidden="true">
         <div class="wave-hit"></div>
         <svg class="wave-svg" aria-hidden="true"><path></path></svg>
@@ -2148,7 +2214,7 @@
         <p class="bio">Desarrollador de Aplicaciones Multiplataforma (DAM) en Sevilla con enfoque en Back-End (Java, Python, C#, SQL) y desarrollo móvil con Flutter, además de experiencia real llevando proyectos web a producción. En Tarifa House conseguí 100/100 en las cuatro auditorías de Google Lighthouse. Me interesan la IA y el Big Data, cuido el código mantenible y busco prácticas en empresas con incorporación inmediata.</p>
 
         <section class="skills-section" aria-labelledby="stack-label">
-          <p class="section-label" id="stack-label">Stack</p>
+          <h2 class="section-label" id="stack-label">Stack</h2>
           <div class="dock-stack">
             <div class="stack-grid">
               <div class="stack-group">
@@ -2224,7 +2290,7 @@
         </section>
 
         <section class="cert-section" aria-labelledby="cert-label">
-          <p class="section-label" id="cert-label">Certificaciones</p>
+          <h2 class="section-label" id="cert-label">Certificaciones</h2>
           <div class="cert-list">
           <a class="cert-card" href="https://www.datacamp.com/certificate/SQA0012337299104" target="_blank" rel="noopener noreferrer" aria-label="Ver credencial SQL Associate de DataCamp (se abre en una pestaña nueva)">
             <span class="cert-badge"><img src="img/datacampinc_logo.jpg" alt="" width="44" height="44" loading="lazy"></span>
@@ -2306,9 +2372,9 @@
                 <span class="project-badge project-badge--accent">100/100 LIGHTHOUSE</span>
                 <span class="project-badge">-50% PESO</span>
               </div>
-              <a class="project-media-link" href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" aria-label="Ver Tarifa House en una nueva pestaña">
+              <div class="project-media-link" aria-hidden="true">
                 <span class="project-media-cta">Abrir web en producción ↗</span>
-              </a>
+              </div>
             </div>
             <div class="project-body">
               <p class="project-number">Web corporativa · Cliente real en producción</p>
@@ -2337,9 +2403,9 @@
                 <span class="project-badge project-badge--accent">98/100 LIGHTHOUSE</span>
                 <span class="project-badge">SQL + CATÁLOGO 3D</span>
               </div>
-              <a class="project-media-link" href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Freekiland 3D en una nueva pestaña">
+              <div class="project-media-link" aria-hidden="true">
                 <span class="project-media-cta">Explorar proyecto ↗</span>
-              </a>
+              </div>
             </div>
             <div class="project-body">
               <p class="project-number">Web corporativa · Prácticas en empresa</p>
@@ -2369,9 +2435,9 @@
                 <span class="project-badge project-badge--accent">0 DEPENDENCIAS</span>
                 <span class="project-badge">IA PROCEDURAL</span>
               </div>
-              <a class="project-media-link" href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" aria-label="Jugar a RogueGambit en una nueva pestaña">
+              <div class="project-media-link" aria-hidden="true">
                 <span class="project-media-cta">Jugar en el navegador ↗</span>
-              </a>
+              </div>
             </div>
             <div class="project-body">
               <p class="project-number">Juego web · Arquitectura en Vanilla JS</p>
@@ -2392,33 +2458,34 @@
             </div>
           </article>
 
-          <article class="project-card" id="balatro-project-card" data-fx="balatro">
+          <article class="project-card" data-fx="catan">
             <div class="project-card-accent" aria-hidden="true"></div>
             <div class="project-media">
-              <iframe class="project-preview" data-src="https://geuguis.github.io/LandingPage-003/" title="Vista previa en vivo de la Landing Page Temática Balatro" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+              <iframe class="project-preview" data-src="https://geuguis.github.io/CATAN-Web/" title="Vista previa en vivo de Catán Web" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
               <div class="project-badges-overlay">
-                <span class="project-badge project-badge--accent">HOVER INTERACTIVO</span>
-                <span class="project-badge">WEBGL SHADER</span>
+                <span class="project-badge project-badge--accent">GRAFO HEXAGONAL SVG</span>
+                <span class="project-badge">0 DEPENDENCIAS</span>
               </div>
-              <a class="project-media-link" href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Temática Balatro en una nueva pestaña">
-                <span class="project-media-cta">Ver landing interactiva ↗</span>
-              </a>
+              <div class="project-media-link" aria-hidden="true">
+                <span class="project-media-cta">Jugar en el navegador ↗</span>
+              </div>
             </div>
             <div class="project-body">
-              <p class="project-number">Landing page · Encargo a medida</p>
-              <h3 class="project-name">Landing Page Temática Balatro</h3>
+              <p class="project-number">Juego de mesa web · Arquitectura en Vanilla JS</p>
+              <h3 class="project-name">Catán Web</h3>
               <p class="project-desc">
-                Portfolio gamificado realizado para un compañero de DAM con estética y mecánicas inspiradas en Balatro: shader WebGL hipnótico en segundo plano, tarjetas con física 3D, efectos policromados y microinteracciones a medida.
+                Implementación íntegra de CATÁN (5.ª Edición) construida desde cero sin librerías externas bajo arquitectura Functional Core / Imperative Shell. Tablero SVG generado como grafo planar por coordenadas axiales (19 hexágonos, 54 nodos y 72 aristas), cálculo de la Gran Ruta Comercial mediante DFS, modo Hot-Seat de 3 a 4 jugadores y suite de pruebas unitarias con node:test.
               </p>
               <div class="project-tags">
-                <span class="project-tag">HTML5</span>
-                <span class="project-tag">CSS3</span>
-                <span class="project-tag">JavaScript</span>
-                <span class="project-tag">WebGL Shader</span>
+                <span class="project-tag">JavaScript ES6+</span>
+                <span class="project-tag">SVG Dinámico</span>
+                <span class="project-tag">Algoritmos y Grafos</span>
+                <span class="project-tag">Node:test</span>
+                <span class="project-tag">HTML5 / CSS3</span>
               </div>
               <div class="project-links">
-                <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                <a href="https://geuguis.github.io/CATAN-Web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/CATAN-Web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
@@ -2436,6 +2503,37 @@
 
           <div class="projects-grid">
 
+            <article class="project-card" id="balatro-project-card" data-fx="balatro">
+              <div class="project-card-accent" aria-hidden="true"></div>
+              <div class="project-media">
+                <iframe class="project-preview" data-src="https://geuguis.github.io/LandingPage-003/" title="Vista previa en vivo de la Landing Page Temática Balatro" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
+                <div class="project-badges-overlay">
+                  <span class="project-badge project-badge--accent">HOVER INTERACTIVO</span>
+                  <span class="project-badge">WEBGL SHADER</span>
+                </div>
+                <div class="project-media-link" aria-hidden="true">
+                  <span class="project-media-cta">Ver landing interactiva ↗</span>
+                </div>
+              </div>
+              <div class="project-body">
+                <p class="project-number">Landing page · Encargo a medida</p>
+                <h3 class="project-name">Landing Page Temática Balatro</h3>
+                <p class="project-desc">
+                  Portfolio gamificado realizado para un compañero de DAM con estética y mecánicas inspiradas en Balatro: shader WebGL hipnótico en segundo plano, tarjetas con física 3D, efectos policromados y microinteracciones a medida.
+                </p>
+                <div class="project-tags">
+                  <span class="project-tag">HTML5</span>
+                  <span class="project-tag">CSS3</span>
+                  <span class="project-tag">JavaScript</span>
+                  <span class="project-tag">WebGL Shader</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+
             <article class="project-card" data-fx="nextjs">
               <div class="project-card-accent" aria-hidden="true"></div>
               <div class="project-media">
@@ -2444,9 +2542,9 @@
                   <span class="project-badge project-badge--accent">RENDER 3D</span>
                   <span class="project-badge">NEXT.JS 15</span>
                 </div>
-                <a class="project-media-link" href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" aria-label="Ver Portfolio Next.js + Three.js en una nueva pestaña">
+                <div class="project-media-link" aria-hidden="true">
                   <span class="project-media-cta">Abrir demo 3D ↗</span>
-                </a>
+                </div>
               </div>
               <div class="project-body">
                 <p class="project-number">Demo · Next.js + Three.js</p>
@@ -2476,9 +2574,9 @@
                   <span class="project-badge project-badge--accent">GLSL SHADERS</span>
                   <span class="project-badge">60 FPS GPU</span>
                 </div>
-                <a class="project-media-link" href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" aria-label="Ver Landing Page Cyberpunk WebGL en una nueva pestaña">
+                <div class="project-media-link" aria-hidden="true">
                   <span class="project-media-cta">Probar shader en vivo ↗</span>
-                </a>
+                </div>
               </div>
               <div class="project-body">
                 <p class="project-number">Demo · WebGL + Vanilla JS</p>
@@ -2508,9 +2606,9 @@
                   <span class="project-badge project-badge--accent">LUA SCRIPTING</span>
                   <span class="project-badge">CÓDIGO LEGADO</span>
                 </div>
-                <a class="project-media-link" href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" aria-label="Ver mis proyectos de modding en Steam Workshop">
+                <div class="project-media-link" aria-hidden="true">
                   <span class="project-media-cta">Abrir Steam Workshop ↗</span>
-                </a>
+                </div>
               </div>
               <div class="project-body">
                 <p class="project-number">Modding · Game Dev</p>
@@ -2539,9 +2637,9 @@
                   <span class="project-badge project-badge--accent">MAQUETACIÓN PURO CSS</span>
                   <span class="project-badge">0 FRAMEWORKS</span>
                 </div>
-                <a class="project-media-link" href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" aria-label="Ver Club Atlético El Plantinar en una nueva pestaña">
+                <div class="project-media-link" aria-hidden="true">
                   <span class="project-media-cta">Abrir sitio web ↗</span>
-                </a>
+                </div>
               </div>
               <div class="project-body">
                 <p class="project-number">Web deportiva · Proyecto personal</p>
@@ -3475,6 +3573,7 @@
         const SOUND_PRESETS = {
           balatro:   { t1: 'sawtooth', t2: 'triangle', f1: 55,    f2: 110.4,  lfo: 3.2, cutoff: 145, vol: 0.042 },
           rogue:     { t1: 'triangle', t2: 'sine',     f1: 73.42, f2: 110,    lfo: 1.2, cutoff: 190, vol: 0.045 },
+          catan:     { t1: 'triangle', t2: 'sine',     f1: 98.00, f2: 146.83, lfo: 0.9, cutoff: 240, vol: 0.038 },
           tarifa:    { t1: 'sine',     t2: 'sine',     f1: 130.81,f2: 164.81, lfo: 0.6, cutoff: 360, vol: 0.032 },
           cyber:     { t1: 'sawtooth', t2: 'sawtooth', f1: 43.65, f2: 87.31,  lfo: 6.5, cutoff: 260, vol: 0.038 },
           freeki:    { t1: 'sine',     t2: 'triangle', f1: 98,    f2: 196,    lfo: 2.4, cutoff: 320, vol: 0.035 },
@@ -3607,6 +3706,13 @@
         window.stopBalatroAmbience = deactivateCardFx;
 
         cards.forEach(function (card) {
+          const mediaLink = card.querySelector('.project-media-link');
+          const primaryLink = card.querySelector('.project-link.primary');
+          if (mediaLink && primaryLink) {
+            mediaLink.addEventListener('click', function () {
+              window.open(primaryLink.href, '_blank', 'noopener,noreferrer');
+            });
+          }
           card.addEventListener('pointerenter', function (e) {
             if (e.pointerType === 'touch') return;
             activateCardFx(card);
