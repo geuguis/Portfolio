@@ -83,10 +83,6 @@
         --on-accent: #0f1512;
       }
 
-      [data-theme="dark"] .availability {
-        background-color: #14221b;
-      }
-
       .sr-only {
         position: absolute;
         width: 1px;
@@ -1128,37 +1124,6 @@
       @keyframes fadeUp {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
-      }
-
-      .availability {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 16px;
-        padding: 5px 12px 5px 11px;
-        border: 1px solid var(--green-pale);
-        border-radius: 999px;
-        background-color: #eaf8ed;
-        font-size: 0.69rem;
-        font-weight: 400;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--green);
-      }
-
-      .availability::before {
-        content: "";
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--green-light);
-        animation: pulse-dot 2.2s ease-out infinite;
-      }
-
-      @keyframes pulse-dot {
-        0%   { box-shadow: 0 0 0 0 rgba(82,183,136,0.65); }
-        70%  { box-shadow: 0 0 0 7px rgba(82,183,136,0); }
-        100% { box-shadow: 0 0 0 0 rgba(82,183,136,0); }
       }
 
       .toast {
@@ -2263,6 +2228,245 @@
           font-size: 0.75rem;
         }
       }
+
+      .availability-cluster {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        margin-top: 20px;
+        max-width: 460px;
+      }
+      .avail-badge {
+        --rot: 0deg;
+        --sc: 1;
+        --hy: 0px;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 11px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 8px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.69rem;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        background-color: var(--green-pale);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 6px rgba(27, 67, 50, 0.05);
+        transform: translate3d(0, var(--hy), 0) rotate(var(--rot)) scale(var(--sc));
+        transition: transform 0.38s var(--ease-out), background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.3s ease, box-shadow 0.35s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .avail-badge--primary {
+        background-color: var(--green);
+        color: var(--on-accent);
+        border-color: var(--green);
+      }
+      .avail-badge--subtle {
+        background-color: var(--white);
+        color: var(--muted);
+        border-color: var(--border);
+      }
+      .avail-badge--outline {
+        background-color: transparent;
+        color: var(--green);
+        border: 1px dashed var(--green-light);
+      }
+      .avail-badge-text {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .avail-badge.is-hovered,
+      .avail-badge:focus-visible {
+        --rot: 0deg !important;
+        --sc: 1.05;
+        --hy: -3px;
+        z-index: 10 !important;
+        border-color: var(--green-light);
+        box-shadow: 0 8px 20px rgba(36, 88, 64, 0.12);
+        outline: none;
+      }
+      .avail-badge.is-clicked {
+        --rot: 0deg !important;
+        --sc: 1.08;
+        --hy: -4px;
+        z-index: 15 !important;
+        background-color: var(--green);
+        color: var(--on-accent);
+        border-color: var(--green);
+        box-shadow: 0 10px 24px rgba(36, 88, 64, 0.18);
+      }
+      .avail-badge.is-dimmed {
+        --sc: 0.96;
+        opacity: 0.58;
+      }
+      .avail-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--on-accent);
+        animation: pulse-dot 2.2s ease-out infinite;
+      }
+      .avail-badge:not(.avail-badge--primary):not(.is-clicked) .avail-dot {
+        background-color: var(--green-light);
+      }
+      @keyframes pulse-dot {
+        0% { box-shadow: 0 0 0 0 rgba(82, 183, 136, 0.65); }
+        70% { box-shadow: 0 0 0 6px rgba(82, 183, 136, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(82, 183, 136, 0); }
+      }
+      .qr-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 950;
+        background-color: rgba(15, 21, 18, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.35s var(--ease-out), visibility 0s linear 0.35s;
+      }
+      .qr-modal.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        transition: opacity 0.35s var(--ease-out), visibility 0s linear 0s;
+      }
+      .qr-modal-card {
+        position: relative;
+        width: 100%;
+        max-width: 460px;
+        background: #f6f1e7;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.32);
+        transform: translateY(16px) scale(0.97);
+        transition: transform 0.35s var(--ease-out);
+        display: flex;
+        flex-direction: column;
+      }
+      [data-theme="dark"] .qr-modal-card {
+        background: #141d18;
+      }
+      .qr-modal.is-open .qr-modal-card {
+        transform: translateY(0) scale(1);
+      }
+      .qr-modal-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 10;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--ink);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.16s var(--ease-out);
+      }
+      .qr-modal-close:hover,
+      .qr-modal-close:focus-visible {
+        background: var(--green);
+        color: var(--on-accent);
+        border-color: var(--green);
+        outline: none;
+      }
+      .qr-canvas-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        max-height: 420px;
+        background-color: #f6f1e7;
+        cursor: pointer;
+        overflow: hidden;
+        user-select: none;
+      }
+      [data-theme="dark"] .qr-canvas-wrap {
+        background-color: #141d18;
+      }
+      .qr-canvas-wrap canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+      }
+      .qr-modal-footer {
+        padding: 12px 16px;
+        border-top: 1px solid var(--border);
+        background: var(--green-pale);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .qr-target-select {
+        flex: 1;
+        min-width: 0;
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--ink);
+        font-family: "DM Mono", monospace;
+        font-size: 0.71rem;
+        outline: none;
+        cursor: pointer;
+      }
+      .qr-target-select:focus-visible {
+        border-color: var(--green);
+      }
+      .qr-download-btn {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 8px;
+        border: 1px solid var(--green);
+        background: var(--green);
+        color: var(--on-accent);
+        font-family: "DM Mono", monospace;
+        font-size: 0.71rem;
+        letter-spacing: 0.05em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.16s var(--ease-out);
+      }
+      .qr-download-btn:hover {
+        opacity: 0.92;
+      }
+      .qr-download-btn:active {
+        transform: scale(0.97);
+      }
+      @media (max-width: 600px) {
+        .qr-canvas-wrap {
+          max-height: 340px;
+        }
+        .qr-modal-footer {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .qr-download-btn {
+          width: 100%;
+        }
+      }
     </style>
     <script>
       (function () {
@@ -2329,7 +2533,23 @@
             <canvas id="hero-garden-canvas" aria-hidden="true"></canvas>
           </div>
           <p class="role">Back-End Developer · Técnico Superior en DAM · Sevilla</p>
-          <p class="availability" aria-label="Estado: disponible para prácticas en empresas">Disponible para prácticas</p>
+          <div class="availability-cluster" id="availabilityCluster" role="group" aria-label="Disponibilidad y modalidades de trabajo">
+            <div class="avail-badge avail-badge--primary" style="--rot: -1deg;" tabindex="0" role="button">
+              <span class="avail-badge-text"><span class="avail-dot" aria-hidden="true"></span>Disponible para prácticas</span>
+            </div>
+            <div class="avail-badge" style="--rot: 0.8deg;" tabindex="0" role="button">
+              <span class="avail-badge-text">Presencial · Sevilla</span>
+            </div>
+            <div class="avail-badge avail-badge--subtle" style="--rot: -0.9deg;" tabindex="0" role="button">
+              <span class="avail-badge-text">Híbrido</span>
+            </div>
+            <div class="avail-badge avail-badge--subtle" style="--rot: 1.1deg;" tabindex="0" role="button">
+              <span class="avail-badge-text">Remoto</span>
+            </div>
+            <div class="avail-badge avail-badge--outline" style="--rot: -0.6deg;" tabindex="0" role="button">
+              <span class="avail-badge-text">Incorporación inmediata</span>
+            </div>
+          </div>
         </header>
 
         <div class="divider" aria-hidden="true">
@@ -2488,6 +2708,17 @@
                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
               </svg>
             </a>
+            <button class="dock-item" id="qrTreeBtn" type="button" aria-label="Abrir código QR 3D del portfolio" title="Árbol QR 3D">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="3" height="3"/>
+                <path d="M21 14h-3v3"/>
+                <path d="M18 21h3v-3"/>
+                <path d="M14 21h1"/>
+              </svg>
+            </button>
           </div>
           <button class="projects-trigger" id="openProjects" aria-controls="projects-view" aria-expanded="false">
             Proyectos <span class="arrow" aria-hidden="true">→</span>
@@ -2838,6 +3069,29 @@
           </div>
         </div>
       </button>
+    </div>
+
+    <div class="qr-modal" id="qrTreeModal" role="dialog" aria-modal="true" aria-label="Código QR 3D" aria-hidden="true">
+      <div class="qr-modal-card">
+        <button type="button" class="qr-modal-close" id="qrModalClose" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="qr-canvas-wrap" id="qrCanvasWrap"></div>
+        <div class="qr-modal-footer">
+          <select class="qr-target-select" id="qrTargetSelect" aria-label="Seleccionar destino del QR">
+            <option value="https://geuguis.github.io/Portfolio/" data-name="QR-Portfolio-Guillermo-Eugui">Portfolio · Web</option>
+            <option value="https://www.linkedin.com/in/guillermoeuguisanchez/" data-name="QR-LinkedIn-Guillermo-Eugui">LinkedIn · Guillermo Eugui</option>
+            <option value="https://github.com/geuguis" data-name="QR-GitHub-Guillermo-Eugui">GitHub · @geuguis</option>
+          </select>
+          <button type="button" class="qr-download-btn" id="qrDownloadBtn">
+            <span>Descargar</span>
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -4903,6 +5157,629 @@
           applyTheme(input.checked, true);
           try { localStorage.setItem('theme-v2', input.checked ? 'dark' : 'light'); } catch (e) {}
         });
+      })();
+    </script>
+    <script>
+      (function () {
+        const cluster = document.getElementById('availabilityCluster');
+        if (cluster) {
+          const badges = Array.prototype.slice.call(cluster.querySelectorAll('.avail-badge'));
+          let hoveredEl = null;
+          let clickedEl = null;
+
+          function syncBadges() {
+            badges.forEach(function (b) {
+              const isHov = b === hoveredEl;
+              const isClk = b === clickedEl;
+              const isDim = hoveredEl !== null && !isHov && !isClk;
+              b.classList.toggle('is-hovered', isHov);
+              b.classList.toggle('is-clicked', isClk);
+              b.classList.toggle('is-dimmed', isDim);
+            });
+          }
+
+          badges.forEach(function (badge) {
+            badge.addEventListener('pointerenter', function (e) {
+              if (e.pointerType === 'touch') return;
+              hoveredEl = badge;
+              syncBadges();
+            });
+            badge.addEventListener('pointerleave', function (e) {
+              if (e.pointerType === 'touch') return;
+              if (hoveredEl === badge) hoveredEl = null;
+              syncBadges();
+            });
+            badge.addEventListener('click', function () {
+              clickedEl = clickedEl === badge ? null : badge;
+              syncBadges();
+            });
+            badge.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                clickedEl = clickedEl === badge ? null : badge;
+                syncBadges();
+              }
+            });
+          });
+        }
+      })();
+
+      (function () {
+        const openBtn = document.getElementById('qrTreeBtn');
+        const modal = document.getElementById('qrTreeModal');
+        const closeBtn = document.getElementById('qrModalClose');
+        const canvasWrap = document.getElementById('qrCanvasWrap');
+        const downloadBtn = document.getElementById('qrDownloadBtn');
+        const targetSelect = document.getElementById('qrTargetSelect');
+        const themeSwitch = document.getElementById('theme-switch');
+
+        if (!openBtn || !modal || !canvasWrap) return;
+
+        let libsLoaded = false;
+        let libsLoading = false;
+        let engineInitialized = false;
+        let isModalOpen = false;
+        let isFlat = false;
+        let progress = 0;
+        let animFrom = 0;
+        let animTo = 0;
+        let animStartTime = 0;
+        const ANIM_DURATION = 1650;
+        let rafId = null;
+
+        let scene, camera, renderer, treeGroup, ambientLight, dirLight, hemiLight;
+        let leafMesh, grassMesh, tileMesh, trunkGroup, basePlinth;
+        const leafData = [];
+        const grassData = [];
+        let dummy = null;
+        let currentFrustum = 46;
+
+        function loadScript(src) {
+          return new Promise(function (resolve, reject) {
+            const s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+          });
+        }
+
+        function ensureLibraries() {
+          if (libsLoaded) return Promise.resolve();
+          if (libsLoading) {
+            return new Promise(function (resolve) {
+              const check = setInterval(function () {
+                if (libsLoaded) {
+                  clearInterval(check);
+                  resolve();
+                }
+              }, 50);
+            });
+          }
+          libsLoading = true;
+          return Promise.all([
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js'),
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+          ]).then(function () {
+            libsLoaded = true;
+            libsLoading = false;
+          });
+        }
+
+        function seededRandom(x, z, seed) {
+          const n = Math.sin(x * 127.1 + z * 311.7 + (seed || 1) * 43.7) * 43758.5453;
+          return n - Math.floor(n);
+        }
+
+        function isDarkMode() {
+          return document.documentElement.getAttribute('data-theme') === 'dark';
+        }
+
+        function getThemeColors() {
+          return {
+            sceneBg: isDarkMode() ? 0x141d18 : 0xf6f1e7,
+            leafPalette: [
+              new THREE.Color(0x1f5229),
+              new THREE.Color(0x2d6a36),
+              new THREE.Color(0x3d8244),
+              new THREE.Color(0x529954),
+              new THREE.Color(0x6ab065),
+              new THREE.Color(0x184220)
+            ],
+            tilePalette: [
+              new THREE.Color(0xf4efe4),
+              new THREE.Color(0xefe9dc),
+              new THREE.Color(0xf7f3e9)
+            ]
+          };
+        }
+
+        function initEngine() {
+          if (engineInitialized) return;
+          engineInitialized = true;
+          dummy = new THREE.Object3D();
+
+          const w = canvasWrap.clientWidth || 420;
+          const h = canvasWrap.clientHeight || 420;
+          const aspect = w / h;
+
+          scene = new THREE.Scene();
+          scene.background = new THREE.Color(getThemeColors().sceneBg);
+
+          camera = new THREE.OrthographicCamera(
+            -currentFrustum * aspect / 2,
+            currentFrustum * aspect / 2,
+            currentFrustum / 2,
+            -currentFrustum / 2,
+            0.1,
+            1000
+          );
+
+          renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+          renderer.setSize(w, h);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+          canvasWrap.appendChild(renderer.domElement);
+
+          ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+          scene.add(ambientLight);
+
+          hemiLight = new THREE.HemisphereLight(0xfef9ef, 0x1b4332, 0.38);
+          scene.add(hemiLight);
+
+          dirLight = new THREE.DirectionalLight(0xfff6e5, 0.82);
+          dirLight.position.set(28, 52, 24);
+          scene.add(dirLight);
+
+          treeGroup = new THREE.Group();
+          scene.add(treeGroup);
+
+          buildQRTree(targetSelect.value);
+          updateSceneTransition(progress);
+        }
+
+        function getCanopyHeight(dx, dz, canopyRadius, c, r, s) {
+          const clusters = [
+            { cx: 0, cz: 0, rad: canopyRadius * 0.78, baseY: 9.2, h: 7.8 },
+            { cx: -canopyRadius * 0.34, cz: -canopyRadius * 0.28, rad: canopyRadius * 0.58, baseY: 7.4, h: 6.2 },
+            { cx: canopyRadius * 0.36, cz: -canopyRadius * 0.24, rad: canopyRadius * 0.56, baseY: 7.8, h: 6.0 },
+            { cx: -canopyRadius * 0.3, cz: canopyRadius * 0.34, rad: canopyRadius * 0.58, baseY: 7.2, h: 6.4 },
+            { cx: canopyRadius * 0.32, cz: canopyRadius * 0.32, rad: canopyRadius * 0.56, baseY: 7.5, h: 5.8 }
+          ];
+
+          let maxTop = 6.5;
+          let minBottom = 5.2;
+
+          for (let i = 0; i < clusters.length; i++) {
+            const cl = clusters[i];
+            const dist = Math.hypot(dx - cl.cx, dz - cl.cz);
+            if (dist < cl.rad) {
+              const u = dist / cl.rad;
+              const sphereProfile = Math.sqrt(Math.max(0, 1 - u * u));
+              const top = cl.baseY + sphereProfile * cl.h;
+              const bottom = cl.baseY - sphereProfile * 2.2;
+              if (top > maxTop) maxTop = top;
+              if (bottom < minBottom) minBottom = bottom;
+            }
+          }
+
+          const layerT = seededRandom(c, r, s * 17 + 5);
+          return minBottom + Math.pow(layerT, 0.72) * (maxTop - minBottom);
+        }
+
+        function buildQRTree(url) {
+          if (!treeGroup) return;
+          while (treeGroup.children.length > 0) {
+            const obj = treeGroup.children[0];
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) obj.material.dispose();
+            treeGroup.remove(obj);
+          }
+          leafData.length = 0;
+          grassData.length = 0;
+
+          const qr = window.qrcode(4, 'M');
+          qr.addData(url || 'https://geuguis.github.io/Portfolio/');
+          qr.make();
+
+          const gridSize = qr.getModuleCount();
+          const quietZone = 2;
+          const totalGrid = gridSize + quietZone * 2;
+          const halfTotal = totalGrid / 2;
+          const canopyRadius = gridSize * 0.45;
+
+          currentFrustum = totalGrid * 1.32;
+          resizeRenderer();
+
+          const leafGeo = new THREE.BoxGeometry(1, 1, 1);
+          const grassGeo = new THREE.BoxGeometry(1, 1, 1);
+          const tileGeo = new THREE.BoxGeometry(1, 1, 1);
+
+          const leafMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+          const grassMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+          const tileMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+
+          let leafCount = 0;
+          let grassCount = 0;
+          let tileCount = 0;
+          const cells = [];
+
+          for (let r = -quietZone; r < gridSize + quietZone; r++) {
+            for (let c = -quietZone; c < gridSize + quietZone; c++) {
+              const inBounds = r >= 0 && r < gridSize && c >= 0 && c < gridSize;
+              const isDark = inBounds ? qr.isDark(r, c) : false;
+              const dx = (c + quietZone) - halfTotal + 0.5;
+              const dz = (r + quietZone) - halfTotal + 0.5;
+              const dist = Math.sqrt(dx * dx + dz * dz);
+
+              const isFinderPattern = inBounds && (
+                (r < 8 && c < 8) ||
+                (r < 8 && c >= gridSize - 8) ||
+                (r >= gridSize - 8 && c < 8)
+              );
+              const inCanopy = inBounds && dist < canopyRadius && !isFinderPattern;
+
+              tileCount++;
+
+              if (isDark) {
+                if (inCanopy) {
+                  const normDist = Math.max(0, 1 - (dist / canopyRadius));
+                  const stackCount = 3 + Math.floor(normDist * 4 + seededRandom(c, r, 2) * 2);
+                  leafCount += stackCount;
+                  cells.push({ type: 'leaf', c: c, r: r, dx: dx, dz: dz, normDist: normDist, stackCount: stackCount });
+                } else {
+                  const blades = 2;
+                  grassCount += blades;
+                  cells.push({ type: 'grass', c: c, r: r, dx: dx, dz: dz, blades: blades });
+                }
+              } else {
+                cells.push({ type: 'empty', c: c, r: r, dx: dx, dz: dz });
+              }
+            }
+          }
+
+          tileMesh = new THREE.InstancedMesh(tileGeo, tileMat, tileCount);
+          leafMesh = new THREE.InstancedMesh(leafGeo, leafMat, leafCount);
+          grassMesh = new THREE.InstancedMesh(grassGeo, grassMat, grassCount);
+
+          const colors = getThemeColors();
+          let tIdx = 0;
+          let lIdx = 0;
+          let gIdx = 0;
+
+          cells.forEach(function (cell) {
+            const tileH = 0.24;
+            dummy.position.set(cell.dx, tileH / 2, cell.dz);
+            dummy.rotation.set(0, 0, 0);
+            dummy.scale.set(1.02, tileH, 1.02);
+            dummy.updateMatrix();
+            tileMesh.setMatrixAt(tIdx, dummy.matrix);
+            const lCol = colors.tilePalette[Math.floor(seededRandom(cell.c, cell.r, 10) * colors.tilePalette.length)];
+            tileMesh.setColorAt(tIdx, lCol);
+            tIdx++;
+
+            if (cell.type === 'grass') {
+              for (let b = 0; b < cell.blades; b++) {
+                const isBaseTile = b === 0;
+                const h3D = isBaseTile ? 0.38 : (0.75 + seededRandom(cell.c, cell.r, b + 3) * 0.7);
+                const sx3D = isBaseTile ? 0.96 : 0.38;
+                const sz3D = isBaseTile ? 0.96 : 0.38;
+                const rx3D = isBaseTile ? 0 : (seededRandom(cell.c, cell.r, b + 30) - 0.5) * 0.45;
+                const rz3D = isBaseTile ? 0 : (seededRandom(cell.c, cell.r, b + 40) - 0.5) * 0.45;
+                const ox3D = isBaseTile ? 0 : (seededRandom(cell.c, cell.r, b + 50) - 0.5) * 0.3;
+                const oz3D = isBaseTile ? 0 : (seededRandom(cell.c, cell.r, b + 60) - 0.5) * 0.3;
+
+                grassData.push({
+                  x3D: cell.dx + ox3D,
+                  y3D: h3D / 2 + 0.14,
+                  z3D: cell.dz + oz3D,
+                  x2D: cell.dx,
+                  y2D: 0.28,
+                  z2D: cell.dz,
+                  rx3D: rx3D,
+                  rz3D: rz3D,
+                  sx3D: sx3D,
+                  sy3D: h3D,
+                  sz3D: sz3D,
+                  sx2D: isBaseTile ? 1.02 : 0.001,
+                  sy2D: 0.22,
+                  sz2D: isBaseTile ? 1.02 : 0.001,
+                  index: gIdx
+                });
+
+                const gCol = colors.leafPalette[Math.floor(seededRandom(cell.c, cell.r, b + 4) * colors.leafPalette.length)];
+                grassMesh.setColorAt(gIdx, gCol);
+                gIdx++;
+              }
+            } else if (cell.type === 'leaf') {
+              for (let s = 0; s < cell.stackCount; s++) {
+                const isTopCap = s === 0;
+                const jitter = 0.68;
+                const ox3D = (seededRandom(cell.c, cell.r, s + 11) - 0.5) * jitter;
+                const oz3D = (seededRandom(cell.c, cell.r, s + 22) - 0.5) * jitter;
+                const y3D = getCanopyHeight(cell.dx, cell.dz, canopyRadius, cell.c, cell.r, s);
+
+                const rx3D = (seededRandom(cell.c, cell.r, s + 44) - 0.5) * 0.9;
+                const ry3D = (seededRandom(cell.c, cell.r, s + 55) - 0.5) * 3.14;
+                const rz3D = (seededRandom(cell.c, cell.r, s + 66) - 0.5) * 0.85;
+
+                const puff = 1.05 + seededRandom(cell.c, cell.r, s + 77) * 0.65;
+
+                leafData.push({
+                  x3D: cell.dx + ox3D,
+                  y3D: y3D,
+                  z3D: cell.dz + oz3D,
+                  x2D: cell.dx,
+                  y2D: 0.3,
+                  z2D: cell.dz,
+                  rx3D: rx3D,
+                  ry3D: ry3D,
+                  rz3D: rz3D,
+                  sx3D: puff * 1.15,
+                  sy3D: puff * 0.72,
+                  sz3D: puff * 1.1,
+                  sx2D: isTopCap ? 1.02 : 0.001,
+                  sy2D: 0.22,
+                  sz2D: isTopCap ? 1.02 : 0.001,
+                  index: lIdx
+                });
+
+                const heightRatio = Math.min(1, Math.max(0, (y3D - 5.0) / 11.5));
+                const palIdx = Math.min(
+                  colors.leafPalette.length - 1,
+                  Math.floor(heightRatio * 4 + seededRandom(cell.c, cell.r, s + 20) * 1.8)
+                );
+                leafMesh.setColorAt(lIdx, colors.leafPalette[palIdx]);
+                lIdx++;
+              }
+            }
+          });
+
+          const plinthGeo = new THREE.BoxGeometry(totalGrid + 0.5, 1.0, totalGrid + 0.5);
+          const plinthMat = new THREE.MeshLambertMaterial({ color: 0xd5ccb8 });
+          basePlinth = new THREE.Mesh(plinthGeo, plinthMat);
+          basePlinth.position.set(0, -0.5, 0);
+
+          trunkGroup = new THREE.Group();
+          const barkMat = new THREE.MeshLambertMaterial({ color: 0x5c3d28 });
+
+          const rootFlare = new THREE.Mesh(new THREE.CylinderGeometry(1.45, 2.5, 2.4, 10), barkMat);
+          rootFlare.position.set(0, 1.2, 0);
+          trunkGroup.add(rootFlare);
+
+          const mainTrunk = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 1.55, 7.2, 10), barkMat);
+          mainTrunk.position.set(0, 5.2, 0);
+          trunkGroup.add(mainTrunk);
+
+          const branchConfigs = [
+            { len: 6.8, r1: 0.32, r2: 0.75, y: 5.8, rx: 0.62, rz: 0.58 },
+            { len: 6.4, r1: 0.30, r2: 0.70, y: 5.5, rx: -0.58, rz: 0.62 },
+            { len: 6.6, r1: 0.32, r2: 0.72, y: 6.0, rx: 0.55, rz: -0.64 },
+            { len: 6.2, r1: 0.28, r2: 0.68, y: 5.6, rx: -0.62, rz: -0.56 },
+            { len: 4.8, r1: 0.25, r2: 0.52, y: 7.2, rx: 0.35, rz: 0.25 },
+            { len: 4.6, r1: 0.25, r2: 0.50, y: 7.0, rx: -0.32, rz: -0.28 }
+          ];
+          branchConfigs.forEach(function (bc) {
+            const bGeo = new THREE.CylinderGeometry(bc.r1, bc.r2, bc.len, 8);
+            bGeo.translate(0, bc.len / 2, 0);
+            const bMesh = new THREE.Mesh(bGeo, barkMat);
+            bMesh.position.set(0, bc.y, 0);
+            bMesh.rotation.set(bc.rx, 0, bc.rz);
+            trunkGroup.add(bMesh);
+          });
+
+          treeGroup.add(basePlinth);
+          treeGroup.add(tileMesh);
+          treeGroup.add(grassMesh);
+          treeGroup.add(leafMesh);
+          treeGroup.add(trunkGroup);
+        }
+
+        function easeInOutQuint(x) {
+          return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
+        }
+
+        function updateSceneTransition(p) {
+          if (!leafMesh || !grassMesh || !camera) return;
+
+          for (let i = 0; i < leafData.length; i++) {
+            const d = leafData[i];
+            dummy.position.set(
+              THREE.MathUtils.lerp(d.x3D, d.x2D, p),
+              THREE.MathUtils.lerp(d.y3D, d.y2D, p),
+              THREE.MathUtils.lerp(d.z3D, d.z2D, p)
+            );
+            dummy.rotation.set(
+              THREE.MathUtils.lerp(d.rx3D, 0, p),
+              THREE.MathUtils.lerp(d.ry3D, 0, p),
+              THREE.MathUtils.lerp(d.rz3D, 0, p)
+            );
+            dummy.scale.set(
+              THREE.MathUtils.lerp(d.sx3D, d.sx2D, p),
+              THREE.MathUtils.lerp(d.sy3D, d.sy2D, p),
+              THREE.MathUtils.lerp(d.sz3D, d.sz2D, p)
+            );
+            dummy.updateMatrix();
+            leafMesh.setMatrixAt(d.index, dummy.matrix);
+          }
+          leafMesh.instanceMatrix.needsUpdate = true;
+
+          for (let j = 0; j < grassData.length; j++) {
+            const g = grassData[j];
+            dummy.position.set(
+              THREE.MathUtils.lerp(g.x3D, g.x2D, p),
+              THREE.MathUtils.lerp(g.y3D, g.y2D, p),
+              THREE.MathUtils.lerp(g.z3D, g.z2D, p)
+            );
+            dummy.rotation.set(
+              THREE.MathUtils.lerp(g.rx3D, 0, p),
+              0,
+              THREE.MathUtils.lerp(g.rz3D, 0, p)
+            );
+            dummy.scale.set(
+              THREE.MathUtils.lerp(g.sx3D, g.sx2D, p),
+              THREE.MathUtils.lerp(g.sy3D, g.sy2D, p),
+              THREE.MathUtils.lerp(g.sz3D, g.sz2D, p)
+            );
+            dummy.updateMatrix();
+            grassMesh.setMatrixAt(g.index, dummy.matrix);
+          }
+          grassMesh.instanceMatrix.needsUpdate = true;
+
+          if (trunkGroup) {
+            trunkGroup.scale.setScalar(Math.max(0.001, 1 - p * 1.28));
+            trunkGroup.visible = p < 0.84;
+          }
+          if (basePlinth) {
+            basePlinth.visible = p < 0.92;
+          }
+
+          ambientLight.intensity = THREE.MathUtils.lerp(0.66, 1.36, p);
+          hemiLight.intensity = THREE.MathUtils.lerp(0.38, 0.0, p);
+          dirLight.intensity = THREE.MathUtils.lerp(0.82, 0.0, p);
+
+          const angle = THREE.MathUtils.lerp(Math.PI * 0.25, 0, p);
+          const horizRadius = THREE.MathUtils.lerp(46, 0.001, p);
+          const camY = THREE.MathUtils.lerp(32, 58, p);
+
+          camera.position.set(
+            Math.sin(angle) * horizRadius,
+            camY,
+            Math.cos(angle) * horizRadius
+          );
+          camera.lookAt(0, THREE.MathUtils.lerp(5.8, 0, p), 0);
+          camera.zoom = THREE.MathUtils.lerp(0.96, 1.15, p);
+          camera.updateProjectionMatrix();
+        }
+
+        function renderLoop(now) {
+          if (!isModalOpen) {
+            rafId = null;
+            return;
+          }
+          if (animStartTime > 0) {
+            const elapsed = now - animStartTime;
+            const rawT = Math.min(1, elapsed / ANIM_DURATION);
+            const eased = easeInOutQuint(rawT);
+            progress = animFrom + (animTo - animFrom) * eased;
+            if (rawT >= 1) {
+              progress = animTo;
+              animStartTime = 0;
+            }
+          }
+          updateSceneTransition(progress);
+          renderer.render(scene, camera);
+          rafId = requestAnimationFrame(renderLoop);
+        }
+
+        function setFlatState(flat, instant) {
+          isFlat = flat;
+          animFrom = progress;
+          animTo = isFlat ? 1 : 0;
+          if (instant) {
+            progress = animTo;
+            animStartTime = 0;
+            updateSceneTransition(progress);
+          } else {
+            animStartTime = performance.now();
+          }
+        }
+
+        function toggleFlatView() {
+          if (!engineInitialized) return;
+          setFlatState(!isFlat, false);
+        }
+
+        function downloadQRImage() {
+          if (!engineInitialized || !renderer) return;
+          const prevProgress = progress;
+          updateSceneTransition(1);
+          renderer.render(scene, camera);
+
+          const selectedOpt = targetSelect.options[targetSelect.selectedIndex];
+          const fileName = (selectedOpt && selectedOpt.getAttribute('data-name')) || 'QR-Guillermo-Eugui';
+          const dataUrl = renderer.domElement.toDataURL('image/png');
+
+          const link = document.createElement('a');
+          link.download = fileName + '.png';
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          updateSceneTransition(prevProgress);
+          renderer.render(scene, camera);
+        }
+
+        function resizeRenderer() {
+          if (!engineInitialized || !renderer || !camera) return;
+          const w = canvasWrap.clientWidth || 420;
+          const h = canvasWrap.clientHeight || 420;
+          const aspect = w / h;
+          camera.left = -currentFrustum * aspect / 2;
+          camera.right = currentFrustum * aspect / 2;
+          camera.top = currentFrustum / 2;
+          camera.bottom = -currentFrustum / 2;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        }
+
+        function openModal() {
+          isModalOpen = true;
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+          ensureLibraries().then(function () {
+            if (!isModalOpen) return;
+            initEngine();
+            setFlatState(false, true);
+            resizeRenderer();
+            if (!rafId) {
+              rafId = requestAnimationFrame(renderLoop);
+            }
+          });
+        }
+
+        function closeModal() {
+          isModalOpen = false;
+          modal.classList.remove('is-open');
+          modal.setAttribute('aria-hidden', 'true');
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && isModalOpen) closeModal();
+        });
+
+        canvasWrap.addEventListener('click', toggleFlatView);
+        if (downloadBtn) {
+          downloadBtn.addEventListener('click', downloadQRImage);
+        }
+
+        targetSelect.addEventListener('change', function () {
+          if (!engineInitialized) return;
+          buildQRTree(targetSelect.value);
+          updateSceneTransition(progress);
+        });
+
+        window.addEventListener('resize', function () {
+          if (isModalOpen) resizeRenderer();
+        });
+
+        if (themeSwitch) {
+          themeSwitch.addEventListener('change', function () {
+            if (scene) {
+              scene.background = new THREE.Color(getThemeColors().sceneBg);
+            }
+          });
+        }
       })();
     </script>
   </body>
