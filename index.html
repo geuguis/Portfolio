@@ -1226,7 +1226,7 @@
         position: relative;
         z-index: 2;
         width: 100%;
-        max-width: 1080px;
+        max-width: 760px;
       }
 
       #balatro-bg-canvas {
@@ -1661,16 +1661,13 @@
       #projects-view.fx-on[data-active-fx="workshop"] .projects-title em  { color: #66c0f4; }
       #projects-view.fx-on[data-active-fx="plantinar"] .projects-title em { color: #ff5e57; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4); }
 
-      #projects-view.fx-on .project-card:not(.fx-focused) {
-        opacity: 0.38;
-        filter: saturate(0.55);
-        transform: scale(0.985);
+      #projects-view.fx-on .project-card.showcase-row:not(.fx-focused) {
+        opacity: 0.35;
+        filter: saturate(0.5);
       }
 
-      #projects-view.fx-on .project-card.fx-focused {
-        transform: translateY(-6px) scale(1.015);
-        border-color: rgba(255, 255, 255, 0.55);
-        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.45);
+      #projects-view.fx-on .project-card.showcase-row.fx-focused {
+        opacity: 1;
       }
 
       .projects-grid {
@@ -2452,6 +2449,371 @@
           width: 100%;
         }
       }
+      .showcase-list {
+
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+
+        border-bottom: 1px solid var(--border);
+
+      }
+
+      #projects-view.fx-on .showcase-list {
+
+        border-bottom-color: rgba(255, 255, 255, 0.18);
+
+      }
+
+      .project-card.showcase-row {
+
+        position: relative;
+
+        border: none;
+
+        border-top: 1px solid var(--border);
+
+        border-radius: 0;
+
+        background: transparent;
+
+        padding: 24px 16px;
+
+        margin: 0 -16px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        cursor: pointer;
+
+        contain: none;
+
+        overflow: visible;
+
+        transition: opacity 0.35s ease, filter 0.35s ease, transform 0.3s var(--ease-out), border-color 0.35s ease;
+
+      }
+
+      .project-card.showcase-row:hover {
+
+        box-shadow: none;
+
+        transform: none;
+
+      }
+
+      #projects-view.fx-on .project-card.showcase-row {
+
+        border-top-color: rgba(255, 255, 255, 0.18);
+
+      }
+
+      .showcase-row-bg {
+
+        position: absolute;
+
+        inset: 4px 0;
+
+        border-radius: 12px;
+
+        background: var(--green-pale);
+
+        opacity: 0;
+
+        transform: scale(0.97);
+
+        transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), background-color 0.3s ease;
+
+        pointer-events: none;
+
+        z-index: 0;
+
+      }
+
+      #projects-view.fx-on .showcase-row-bg {
+        background: rgba(14, 22, 19, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+      }
+      .project-card.showcase-row:hover .showcase-row-bg,
+      .project-card.showcase-row.fx-focused .showcase-row-bg {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .showcase-row-top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .showcase-title-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .showcase-title {
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(1.35rem, 3vw, 1.65rem);
+        font-weight: 400;
+        color: var(--ink);
+        line-height: 1.15;
+        position: relative;
+        transition: color 0.25s ease;
+      }
+      #projects-view.fx-on .showcase-title {
+        color: #f9faf7;
+      }
+      .showcase-title-line {
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        height: 1.5px;
+        width: 0;
+        background: var(--green-light);
+        transition: width 0.3s var(--ease-out);
+      }
+      .project-card.showcase-row:hover .showcase-title-line,
+      .project-card.showcase-row.fx-focused .showcase-title-line {
+        width: 100%;
+      }
+      .showcase-arrow {
+        width: 18px;
+        height: 18px;
+        color: var(--green);
+        opacity: 0;
+        transform: translate3d(-6px, 6px, 0);
+        transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out), color 0.25s ease;
+        flex: none;
+      }
+      #projects-view.fx-on .showcase-arrow {
+        color: var(--green-light);
+      }
+      .project-card.showcase-row:hover .showcase-arrow,
+      .project-card.showcase-row.fx-focused .showcase-arrow {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+      .showcase-meta-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .showcase-category {
+        font-family: "DM Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition: color 0.25s ease;
+      }
+      #projects-view.fx-on .showcase-category {
+        color: rgba(245, 230, 200, 0.78);
+      }
+      .showcase-desc {
+        position: relative;
+        z-index: 1;
+        font-size: 0.82rem;
+        line-height: 1.75;
+        color: var(--text-secondary);
+        max-width: 620px;
+        transition: color 0.25s ease;
+      }
+      #projects-view.fx-on .showcase-desc {
+        color: rgba(249, 250, 247, 0.82);
+      }
+      .showcase-footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+      .showcase-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .showcase-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.66rem;
+        letter-spacing: 0.05em;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        color: var(--green);
+        background: rgba(255, 255, 255, 0.45);
+        transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+      }
+      [data-theme="dark"] .showcase-tag {
+        background: rgba(15, 21, 18, 0.45);
+      }
+      #projects-view.fx-on .showcase-tag {
+        color: #d8f3dc;
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.35);
+      }
+      .showcase-badge-Accent {
+        border-color: var(--green-light);
+        background: var(--green);
+        color: var(--on-accent);
+      }
+      #projects-view.fx-on .showcase-badge-Accent {
+        background: rgba(82, 183, 136, 0.25);
+        border-color: #74c69d;
+        color: #ffffff;
+      }
+      .showcase-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      #projects-view.fx-on .project-link {
+        color: #f9faf7;
+      }
+      #projects-view.fx-on .project-link.primary {
+        color: #74c69d;
+      }
+      #floating-preview {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 176px;
+        border-radius: 12px;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 120;
+        opacity: 0;
+        background: #0f1512;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+        transform: translate3d(0, 0, 0) scale(0.86);
+        transition: opacity 0.22s ease-out;
+        will-change: transform, opacity;
+        contain: layout paint style;
+        backface-visibility: hidden;
+      }
+      #floating-preview.is-visible {
+        opacity: 1;
+      }
+      .floating-preview-slot {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transform: scale(1.05);
+        transition: opacity 0.26s ease-out, transform 0.26s ease-out;
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+      .floating-preview-slot.is-active {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .floating-preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .fp-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 14px 16px;
+        color: #f9faf7;
+        overflow: hidden;
+      }
+      .fp-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        z-index: 2;
+      }
+      .fp-dots {
+        display: flex;
+        gap: 4px;
+      }
+      .fp-dots span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+      }
+      .fp-center {
+        position: relative;
+        z-index: 2;
+        margin: auto 0;
+      }
+      .fp-kicker {
+        font-family: "DM Mono", monospace;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        opacity: 0.8;
+        margin-bottom: 4px;
+      }
+      .fp-heading {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.35rem;
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+      }
+      .fp-bottom {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: "DM Mono", monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .fp-pill {
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 0.56rem;
+      }
+      .floating-preview-shade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 50%, rgba(10, 15, 13, 0.4) 100%);
+        pointer-events: none;
+        z-index: 3;
+      }
+      @media (hover: none), (pointer: coarse), (max-width: 768px) {
+        #floating-preview {
+          display: none !important;
+        }
+        .project-card.showcase-row {
+          padding: 20px 12px;
+          margin: 0 -12px;
+        }
+      }
     </style>
     <script>
       (function () {
@@ -2717,323 +3079,580 @@
       <footer>© <span class="js-year">2026</span> Guillermo Eugui · Sevilla</footer>
     </main>
 
-    <section id="projects-view" aria-label="Lista de proyectos" aria-hidden="true">
+<section id="projects-view" aria-label="Lista de proyectos" aria-hidden="true">
+
       <canvas id="balatro-bg-canvas" aria-hidden="true"></canvas>
+
       <div id="project-fx-layer" aria-hidden="true"></div>
+
       <div class="balatro-scanlines" aria-hidden="true"></div>
+
+      <div id="floating-preview" aria-hidden="true">
+
+        <div class="floating-preview-shade"></div>
+
+      </div>
 
       <div class="projects-inner">
 
         <button class="back-btn" id="backBtn">← Volver al portfolio</button>
 
         <div class="projects-header">
+
           <p class="projects-eyebrow">Trabajos · <span class="js-year">2026</span></p>
+
           <h2 class="projects-title">Mis <em>proyectos</em></h2>
+
         </div>
 
         <p class="projects-group-label">Proyectos destacados</p>
 
-        <div class="projects-grid">
+        <div class="showcase-list">
 
-          <article class="project-card" data-fx="tarifa">
-            <div class="project-card-accent" aria-hidden="true"></div>
-            <div class="project-media">
-              <iframe class="project-preview" data-src="https://tarifahouse.com/" title="Vista previa en vivo de Tarifa House" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-              <div class="project-badges-overlay">
-                <span class="project-badge project-badge--accent">100/100 LIGHTHOUSE</span>
-                <span class="project-badge">-50% PESO</span>
+          <article class="project-card showcase-row" data-fx="tarifa" data-preview-src="https://tarifahouse.com/">
+
+            <div class="showcase-row-bg" aria-hidden="true"></div>
+
+            <div class="showcase-row-top">
+
+              <div class="showcase-title-group">
+
+                <h3 class="showcase-title">Tarifa House<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
               </div>
-              <div class="project-media-link" aria-hidden="true">
-                <span class="project-media-cta">Abrir web en producción ↗</span>
+
+              <div class="showcase-meta-right">
+
+                <span class="showcase-tag showcase-badge-Accent">100/100 LIGHTHOUSE</span>
+
+                <span class="showcase-category">Cliente real · Producción</span>
+
               </div>
+
             </div>
-            <div class="project-body">
-              <p class="project-number">Web corporativa · Cliente real en producción</p>
-              <h3 class="project-name">Tarifa House</h3>
-              <p class="project-desc">
-                Plataforma completa de alquiler vacacional de 8 páginas diseñada y entregada en 1 semana bajo especificaciones del cliente. Optimización de recursos que redujo el peso total un 50% (de 40 MB a 20 MB), selector multi-idioma y 100/100 en las cuatro métricas de Google Lighthouse.
-              </p>
-              <div class="project-tags">
-                <span class="project-tag">HTML5</span>
-                <span class="project-tag">CSS3</span>
-                <span class="project-tag">JavaScript</span>
-                <span class="project-tag">Performance</span>
-                <span class="project-tag">Multi-idioma</span>
+
+            <p class="showcase-desc">
+
+              Plataforma completa de alquiler vacacional de 8 páginas diseñada y entregada en 1 semana bajo especificaciones del cliente. Optimización de recursos que redujo el peso total un 50% (de 40 MB a 20 MB), selector multi-idioma y 100/100 en las cuatro métricas de Google Lighthouse.
+
+            </p>
+
+            <div class="showcase-footer">
+
+              <div class="showcase-tags">
+
+                <span class="showcase-tag">HTML5</span>
+
+                <span class="showcase-tag">CSS3</span>
+
+                <span class="showcase-tag">JavaScript</span>
+
+                <span class="showcase-tag">Performance</span>
+
+                <span class="showcase-tag">Multi-idioma</span>
+
               </div>
-              <div class="project-links">
+
+              <div class="showcase-links">
+
                 <a href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+
               </div>
+
             </div>
+
           </article>
 
-          <article class="project-card" data-fx="freeki">
-            <div class="project-card-accent" aria-hidden="true"></div>
-            <div class="project-media">
-              <iframe class="project-preview" data-src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" title="Vista previa en vivo de Freekiland 3D" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-              <div class="project-badges-overlay">
-                <span class="project-badge project-badge--accent">98/100 LIGHTHOUSE</span>
-                <span class="project-badge">SQL + CATÁLOGO 3D</span>
+
+
+          <article class="project-card showcase-row" data-fx="freeki" data-preview-src="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/">
+
+            <div class="showcase-row-bg" aria-hidden="true"></div>
+
+            <div class="showcase-row-top">
+
+              <div class="showcase-title-group">
+
+                <h3 class="showcase-title">Freekiland 3D<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
               </div>
-              <div class="project-media-link" aria-hidden="true">
-                <span class="project-media-cta">Explorar proyecto ↗</span>
+
+              <div class="showcase-meta-right">
+
+                <span class="showcase-tag showcase-badge-Accent">98/100 LIGHTHOUSE</span>
+
+                <span class="showcase-category">Prácticas en empresa</span>
+
               </div>
+
             </div>
-            <div class="project-body">
-              <p class="project-number">Web corporativa · Prácticas en empresa</p>
-              <h3 class="project-name">Freekiland 3D</h3>
-              <p class="project-desc">
-                Web corporativa desarrollada en un equipo de 4 personas para una empresa de impresión y modelado 3D. Catálogo 3D interactivo, carrito de solicitud, flujo colaborativo con Git/GitHub y persistencia mediante consultas SQL. Auditoría Google Lighthouse: 97 rendimiento, 100 accesibilidad, 96 buenas prácticas y 100 SEO.
-              </p>
-              <div class="project-tags">
-                <span class="project-tag">JavaScript ES6+</span>
-                <span class="project-tag">SQL</span>
-                <span class="project-tag">HTML5</span>
-                <span class="project-tag">CSS3</span>
-                <span class="project-tag">Git</span>
+
+            <p class="showcase-desc">
+
+              Web corporativa desarrollada en un equipo de 4 personas para una empresa de impresión y modelado 3D. Catálogo 3D interactivo, carrito de solicitud, flujo colaborativo con Git/GitHub y persistencia mediante consultas SQL.
+
+            </p>
+
+            <div class="showcase-footer">
+
+              <div class="showcase-tags">
+
+                <span class="showcase-tag">JavaScript ES6+</span>
+
+                <span class="showcase-tag">SQL</span>
+
+                <span class="showcase-tag">HTML5</span>
+
+                <span class="showcase-tag">CSS3</span>
+
+                <span class="showcase-tag">Git</span>
+
               </div>
-              <div class="project-links">
+
+              <div class="showcase-links">
+
                 <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
               </div>
+
             </div>
+
           </article>
 
-          <article class="project-card" data-fx="rogue">
-            <div class="project-card-accent" aria-hidden="true"></div>
-            <div class="project-media">
-              <iframe class="project-preview" data-src="https://geuguis.github.io/RogueGambit/" title="Vista previa en vivo de RogueGambit" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-              <div class="project-badges-overlay">
-                <span class="project-badge project-badge--accent">0 DEPENDENCIAS</span>
-                <span class="project-badge">IA PROCEDURAL</span>
+
+
+          <article class="project-card showcase-row" data-fx="rogue" data-preview-src="https://geuguis.github.io/RogueGambit/">
+
+            <div class="showcase-row-bg" aria-hidden="true"></div>
+
+            <div class="showcase-row-top">
+
+              <div class="showcase-title-group">
+
+                <h3 class="showcase-title">RogueGambit<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
               </div>
-              <div class="project-media-link" aria-hidden="true">
-                <span class="project-media-cta">Jugar en el navegador ↗</span>
+
+              <div class="showcase-meta-right">
+
+                <span class="showcase-tag showcase-badge-Accent">0 DEPENDENCIAS</span>
+
+                <span class="showcase-category">Juego Web · Vanilla JS</span>
+
               </div>
+
             </div>
-            <div class="project-body">
-              <p class="project-number">Juego web · Arquitectura en Vanilla JS</p>
-              <h3 class="project-name">RogueGambit</h3>
-              <p class="project-desc">
-                Roguelike táctico por turnos sobre un tablero dinámico 5x5: mueves al héroe jugando cartas que imitan piezas de ajedrez y cada movimiento es a la vez tu ataque. Construcción de mazos, patrones de IA procedural, jefe final y síntesis de audio en tiempo real con Web Audio API.
-              </p>
-              <div class="project-tags">
-                <span class="project-tag">JavaScript Puro</span>
-                <span class="project-tag">HTML5 Canvas</span>
-                <span class="project-tag">Web Audio API</span>
-                <span class="project-tag">IA Procedural</span>
+
+            <p class="showcase-desc">
+
+              Roguelike táctico por turnos sobre un tablero dinámico 5x5: mueves al héroe jugando cartas que imitan piezas de ajedrez y cada movimiento es a la vez tu ataque. Construcción de mazos, IA procedural y síntesis de audio en tiempo real con Web Audio API.
+
+            </p>
+
+            <div class="showcase-footer">
+
+              <div class="showcase-tags">
+
+                <span class="showcase-tag">JavaScript Puro</span>
+
+                <span class="showcase-tag">HTML5 Canvas</span>
+
+                <span class="showcase-tag">Web Audio API</span>
+
+                <span class="showcase-tag">IA Procedural</span>
+
               </div>
-              <div class="project-links">
+
+              <div class="showcase-links">
+
                 <a href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                <a href="https://github.com/geuguis/RogueGambit" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                <a href="https://github.com/geuguis/RogueGambit" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
               </div>
+
             </div>
+
           </article>
 
-          <article class="project-card" data-fx="catan">
-            <div class="project-card-accent" aria-hidden="true"></div>
-            <div class="project-media">
-              <iframe class="project-preview" data-src="https://geuguis.github.io/CATAN-Web/" title="Vista previa en vivo de Catán Web" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-              <div class="project-badges-overlay">
-                <span class="project-badge project-badge--accent">GRAFO HEXAGONAL SVG</span>
-                <span class="project-badge">0 DEPENDENCIAS</span>
+
+
+          <article class="project-card showcase-row" data-fx="catan" data-preview-src="https://geuguis.github.io/CATAN-Web/">
+
+            <div class="showcase-row-bg" aria-hidden="true"></div>
+
+            <div class="showcase-row-top">
+
+              <div class="showcase-title-group">
+
+                <h3 class="showcase-title">Catán Web<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
               </div>
-              <div class="project-media-link" aria-hidden="true">
-                <span class="project-media-cta">Jugar en el navegador ↗</span>
+
+              <div class="showcase-meta-right">
+
+                <span class="showcase-tag showcase-badge-Accent">GRAFO HEXAGONAL SVG</span>
+
+                <span class="showcase-category">Juego de Mesa · Vanilla JS</span>
+
               </div>
+
             </div>
-            <div class="project-body">
-              <p class="project-number">Juego de mesa web · Arquitectura en Vanilla JS</p>
-              <h3 class="project-name">Catán Web</h3>
-              <p class="project-desc">
-                Implementación íntegra de CATÁN (5.ª Edición) construida desde cero sin librerías externas bajo arquitectura Functional Core / Imperative Shell. Tablero SVG generado como grafo planar por coordenadas axiales (19 hexágonos, 54 nodos y 72 aristas), cálculo de la Gran Ruta Comercial mediante DFS, modo Hot-Seat de 3 a 4 jugadores y suite de pruebas unitarias con node:test.
-              </p>
-              <div class="project-tags">
-                <span class="project-tag">JavaScript ES6+</span>
-                <span class="project-tag">SVG Dinámico</span>
-                <span class="project-tag">Algoritmos y Grafos</span>
-                <span class="project-tag">Node:test</span>
-                <span class="project-tag">HTML5 / CSS3</span>
+
+            <p class="showcase-desc">
+
+              Implementación íntegra de CATÁN (5.ª Edición) construida desde cero sin librerías externas bajo arquitectura Functional Core / Imperative Shell. Tablero SVG generado como grafo planar por coordenadas axiales (19 hexágonos, 54 nodos y 72 aristas) y cálculo de la Gran Ruta Comercial mediante DFS.
+
+            </p>
+
+            <div class="showcase-footer">
+
+              <div class="showcase-tags">
+
+                <span class="showcase-tag">JavaScript ES6+</span>
+
+                <span class="showcase-tag">SVG Dinámico</span>
+
+                <span class="showcase-tag">Algoritmos y Grafos</span>
+
+                <span class="showcase-tag">Node:test</span>
+
               </div>
-              <div class="project-links">
+
+              <div class="showcase-links">
+
                 <a href="https://geuguis.github.io/CATAN-Web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                <a href="https://github.com/geuguis/CATAN-Web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                <a href="https://github.com/geuguis/CATAN-Web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
               </div>
+
             </div>
+
           </article>
 
         </div>
+
+
 
         <div class="see-more-wrap">
+
           <button class="see-more-btn" id="seeMoreBtn" aria-label="Ver todos los proyectos">
+
             Ver más proyectos <span aria-hidden="true">↓</span>
+
           </button>
+
         </div>
 
+
+
         <div id="all-projects-anchor" class="all-projects-section">
+
           <p class="projects-group-label">Más proyectos y demos</p>
 
-          <div class="projects-grid">
+          <div class="showcase-list">
 
-            <article class="project-card" id="balatro-project-card" data-fx="balatro">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <div class="project-media">
-                <iframe class="project-preview" data-src="https://geuguis.github.io/LandingPage-003/" title="Vista previa en vivo de la Landing Page Temática Balatro" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-                <div class="project-badges-overlay">
-                  <span class="project-badge project-badge--accent">HOVER INTERACTIVO</span>
-                  <span class="project-badge">WEBGL SHADER</span>
+            <article class="project-card showcase-row" id="balatro-project-card" data-fx="balatro" data-preview-src="https://geuguis.github.io/LandingPage-003/">
+
+              <div class="showcase-row-bg" aria-hidden="true"></div>
+
+              <div class="showcase-row-top">
+
+                <div class="showcase-title-group">
+
+                  <h3 class="showcase-title">Landing Page Temática Balatro<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                  <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
                 </div>
-                <div class="project-media-link" aria-hidden="true">
-                  <span class="project-media-cta">Ver landing interactiva ↗</span>
+
+                <div class="showcase-meta-right">
+
+                  <span class="showcase-tag showcase-badge-Accent">WEBGL SHADER</span>
+
+                  <span class="showcase-category">Encargo a medida</span>
+
                 </div>
+
               </div>
-              <div class="project-body">
-                <p class="project-number">Landing page · Encargo a medida</p>
-                <h3 class="project-name">Landing Page Temática Balatro</h3>
-                <p class="project-desc">
-                  Portfolio gamificado realizado para un compañero de DAM con estética y mecánicas inspiradas en Balatro: shader WebGL hipnótico en segundo plano, tarjetas con física 3D, efectos policromados y microinteracciones a medida.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS3</span>
-                  <span class="project-tag">JavaScript</span>
-                  <span class="project-tag">WebGL Shader</span>
+
+              <p class="showcase-desc">
+
+                Portfolio gamificado realizado para un compañero de DAM con estética y mecánicas inspiradas en Balatro: shader WebGL hipnótico en segundo plano, tarjetas con física 3D, efectos policromados y microinteracciones a medida.
+
+              </p>
+
+              <div class="showcase-footer">
+
+                <div class="showcase-tags">
+
+                  <span class="showcase-tag">HTML5</span>
+
+                  <span class="showcase-tag">CSS3</span>
+
+                  <span class="showcase-tag">JavaScript</span>
+
+                  <span class="showcase-tag">WebGL Shader</span>
+
                 </div>
-                <div class="project-links">
+
+                <div class="showcase-links">
+
                   <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
                 </div>
+
               </div>
+
             </article>
 
-            <article class="project-card" data-fx="nextjs">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <div class="project-media">
-                <iframe class="project-preview" data-src="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" title="Vista previa en vivo del Portfolio con Next.js" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-                <div class="project-badges-overlay">
-                  <span class="project-badge project-badge--accent">RENDER 3D</span>
-                  <span class="project-badge">NEXT.JS 15</span>
+
+
+            <article class="project-card showcase-row" data-fx="nextjs" data-preview-src="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/">
+
+              <div class="showcase-row-bg" aria-hidden="true"></div>
+
+              <div class="showcase-row-top">
+
+                <div class="showcase-title-group">
+
+                  <h3 class="showcase-title">Portfolio con Next.js<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                  <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
                 </div>
-                <div class="project-media-link" aria-hidden="true">
-                  <span class="project-media-cta">Abrir demo 3D ↗</span>
+
+                <div class="showcase-meta-right">
+
+                  <span class="showcase-tag showcase-badge-Accent">RENDER 3D</span>
+
+                  <span class="showcase-category">Next.js 15 + Three.js</span>
+
                 </div>
+
               </div>
-              <div class="project-body">
-                <p class="project-number">Demo · Next.js + Three.js</p>
-                <h3 class="project-name">Portfolio con Next.js</h3>
-                <p class="project-desc">
-                  Portfolio construido con Next.js 15 y Three.js para renderizado 3D en navegador. Diseño sobrio con Tailwind CSS y Shadcn/UI, soporte de modo oscuro, accesibilidad y arquitectura orientada a rendimiento.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">Next.js 15</span>
-                  <span class="project-tag">Three.js</span>
-                  <span class="project-tag">Tailwind CSS</span>
-                  <span class="project-tag">Shadcn/UI</span>
-                  <span class="project-tag">App Router</span>
+
+              <p class="showcase-desc">
+
+                Portfolio construido con Next.js 15 y Three.js para renderizado 3D en navegador. Diseño sobrio con Tailwind CSS y Shadcn/UI, soporte de modo oscuro, accesibilidad y arquitectura orientada a rendimiento.
+
+              </p>
+
+              <div class="showcase-footer">
+
+                <div class="showcase-tags">
+
+                  <span class="showcase-tag">Next.js 15</span>
+
+                  <span class="showcase-tag">Three.js</span>
+
+                  <span class="showcase-tag">Tailwind CSS</span>
+
+                  <span class="showcase-tag">Shadcn/UI</span>
+
                 </div>
-                <div class="project-links">
+
+                <div class="showcase-links">
+
                   <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/DEMO-PortfolioWith-Nextjs" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                  <a href="https://github.com/geuguis/DEMO-PortfolioWith-Nextjs" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
                 </div>
+
               </div>
+
             </article>
 
-            <article class="project-card" data-fx="cyber">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <div class="project-media">
-                <iframe class="project-preview" data-src="https://geuguis.github.io/Demo-LandingPage002/" title="Vista previa en vivo de la Landing Page Cyberpunk" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-                <div class="project-badges-overlay">
-                  <span class="project-badge project-badge--accent">GLSL SHADERS</span>
-                  <span class="project-badge">60 FPS GPU</span>
+
+
+            <article class="project-card showcase-row" data-fx="cyber" data-preview-src="https://geuguis.github.io/Demo-LandingPage002/">
+
+              <div class="showcase-row-bg" aria-hidden="true"></div>
+
+              <div class="showcase-row-top">
+
+                <div class="showcase-title-group">
+
+                  <h3 class="showcase-title">Landing Page Cyberpunk<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                  <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
                 </div>
-                <div class="project-media-link" aria-hidden="true">
-                  <span class="project-media-cta">Probar shader en vivo ↗</span>
+
+                <div class="showcase-meta-right">
+
+                  <span class="showcase-tag showcase-badge-Accent">GLSL SHADERS</span>
+
+                  <span class="showcase-category">WebGL · 60 FPS GPU</span>
+
                 </div>
+
               </div>
-              <div class="project-body">
-                <p class="project-number">Demo · WebGL + Vanilla JS</p>
-                <h3 class="project-name">Landing Page Cyberpunk</h3>
-                <p class="project-desc">
-                  Demo experimental de ingeniería frontend pura. El fondo líquido y las ondas al clic se calculan directamente en la GPU mediante shaders GLSL. Estética HUD con telemetría en vivo optimizada con requestAnimationFrame sin frameworks.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">WebGL</span>
-                  <span class="project-tag">GLSL Shaders</span>
-                  <span class="project-tag">Vanilla JS</span>
-                  <span class="project-tag">GPU</span>
-                  <span class="project-tag">Cyberpunk HUD</span>
+
+              <p class="showcase-desc">
+
+                Demo experimental de ingeniería frontend pura. El fondo líquido y las ondas al clic se calculan directamente en la GPU mediante shaders GLSL. Estética HUD con telemetría en vivo optimizada con requestAnimationFrame sin frameworks.
+
+              </p>
+
+              <div class="showcase-footer">
+
+                <div class="showcase-tags">
+
+                  <span class="showcase-tag">WebGL</span>
+
+                  <span class="showcase-tag">GLSL Shaders</span>
+
+                  <span class="showcase-tag">Vanilla JS</span>
+
+                  <span class="showcase-tag">GPU</span>
+
                 </div>
-                <div class="project-links">
+
+                <div class="showcase-links">
+
                   <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/Demo-LandingPage002" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                  <a href="https://github.com/geuguis/Demo-LandingPage002" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
                 </div>
+
               </div>
+
             </article>
 
-            <article class="project-card" data-fx="workshop">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <div class="project-media is-ready">
-                <img class="project-thumb-img" src="img/workshop.webp" alt="Steam Workshop · vista previa" loading="lazy" decoding="async" />
-                <div class="project-badges-overlay">
-                  <span class="project-badge project-badge--accent">LUA SCRIPTING</span>
-                  <span class="project-badge">CÓDIGO LEGADO</span>
+
+
+            <article class="project-card showcase-row" data-fx="workshop" data-preview-img="img/workshop.webp">
+
+              <div class="showcase-row-bg" aria-hidden="true"></div>
+
+              <div class="showcase-row-top">
+
+                <div class="showcase-title-group">
+
+                  <h3 class="showcase-title">Steam Workshop: Mods &amp; Minijuegos<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                  <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
                 </div>
-                <div class="project-media-link" aria-hidden="true">
-                  <span class="project-media-cta">Abrir Steam Workshop ↗</span>
+
+                <div class="showcase-meta-right">
+
+                  <span class="showcase-tag showcase-badge-Accent">LUA SCRIPTING</span>
+
+                  <span class="showcase-category">Modding · Game Dev</span>
+
                 </div>
+
               </div>
-              <div class="project-body">
-                <p class="project-number">Modding · Game Dev</p>
-                <h3 class="project-name">Steam Workshop: Mods &amp; Minijuegos</h3>
-                <p class="project-desc">
-                  Desarrollo de modificaciones y modos de juego desde cero mediante scripting en Lua. Incluye programación de mecánicas personalizadas, interfaces HUD, físicas y refactorización de código legado para recuperar proyectos complejos como GarryWare.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">Lua</span>
-                  <span class="project-tag">Scripting</span>
-                  <span class="project-tag">Refactorización</span>
-                  <span class="project-tag">UI &amp; HUD</span>
-                  <span class="project-tag">Modding</span>
+
+              <p class="showcase-desc">
+
+                Desarrollo de modificaciones y modos de juego desde cero mediante scripting en Lua. Incluye programación de mecánicas personalizadas, interfaces HUD, físicas y refactorización de código legado para recuperar proyectos complejos como GarryWare.
+
+              </p>
+
+              <div class="showcase-footer">
+
+                <div class="showcase-tags">
+
+                  <span class="showcase-tag">Lua</span>
+
+                  <span class="showcase-tag">Scripting</span>
+
+                  <span class="showcase-tag">Refactorización</span>
+
+                  <span class="showcase-tag">UI &amp; HUD</span>
+
                 </div>
-                <div class="project-links">
+
+                <div class="showcase-links">
+
                   <a href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver Workshop <span aria-hidden="true">↗</span></a>
+
                 </div>
+
               </div>
+
             </article>
 
-            <article class="project-card" data-fx="plantinar">
-              <div class="project-card-accent" aria-hidden="true"></div>
-              <div class="project-media">
-                <iframe class="project-preview" data-src="https://geuguis.github.io/Primer-reto-web/" title="Vista previa en vivo del Club Atlético El Plantinar" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin" aria-hidden="true"></iframe>
-                <div class="project-badges-overlay">
-                  <span class="project-badge project-badge--accent">MAQUETACIÓN PURO CSS</span>
-                  <span class="project-badge">0 FRAMEWORKS</span>
+
+
+            <article class="project-card showcase-row" data-fx="plantinar" data-preview-src="https://geuguis.github.io/Primer-reto-web/">
+
+              <div class="showcase-row-bg" aria-hidden="true"></div>
+
+              <div class="showcase-row-top">
+
+                <div class="showcase-title-group">
+
+                  <h3 class="showcase-title">Club Atlético El Plantinar<span class="showcase-title-line" aria-hidden="true"></span></h3>
+
+                  <svg class="showcase-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+
                 </div>
-                <div class="project-media-link" aria-hidden="true">
-                  <span class="project-media-cta">Abrir sitio web ↗</span>
+
+                <div class="showcase-meta-right">
+
+                  <span class="showcase-tag showcase-badge-Accent">PURO CSS</span>
+
+                  <span class="showcase-category">Web Deportiva</span>
+
                 </div>
+
               </div>
-              <div class="project-body">
-                <p class="project-number">Web deportiva · Proyecto personal</p>
-                <h3 class="project-name">Club Atlético El Plantinar</h3>
-                <p class="project-desc">
-                  Sitio completo para un club deportivo de barrio: presentación del equipo, galería y sección de contacto. Maquetación desde cero en HTML5 y CSS puro, sin frameworks ni dependencias externas.
-                </p>
-                <div class="project-tags">
-                  <span class="project-tag">HTML5</span>
-                  <span class="project-tag">CSS3</span>
-                  <span class="project-tag">Responsive</span>
+
+              <p class="showcase-desc">
+
+                Sitio completo para un club deportivo de barrio: presentación del equipo, galería y sección de contacto. Maquetación desde cero en HTML5 y CSS puro, sin frameworks ni dependencias externas.
+
+              </p>
+
+              <div class="showcase-footer">
+
+                <div class="showcase-tags">
+
+                  <span class="showcase-tag">HTML5</span>
+
+                  <span class="showcase-tag">CSS3</span>
+
+                  <span class="showcase-tag">Responsive</span>
+
                 </div>
-                <div class="project-links">
+
+                <div class="showcase-links">
+
                   <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
-                  <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">→</span></a>
+
+                  <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+
                 </div>
+
               </div>
+
             </article>
 
           </div>
+
         </div>
 
       </div>
+
     </section>
 
     <div class="music-player" id="musicPlayer">
@@ -4130,21 +4749,11 @@
         window.activateProjectFx = activateCardFx;
         window.stopBalatroAmbience = deactivateCardFx;
 
+        const showcaseLists = projectsView.querySelectorAll('.showcase-list');
         cards.forEach(function (card) {
-          const mediaLink = card.querySelector('.project-media-link');
-          const primaryLink = card.querySelector('.project-link.primary');
-          if (mediaLink && primaryLink) {
-            mediaLink.addEventListener('click', function () {
-              window.open(primaryLink.href, '_blank', 'noopener,noreferrer');
-            });
-          }
           card.addEventListener('pointerenter', function (e) {
             if (e.pointerType === 'touch') return;
             activateCardFx(card);
-          });
-          card.addEventListener('pointerleave', function (e) {
-            if (e.pointerType === 'touch') return;
-            deactivateCardFx();
           });
           card.addEventListener('touchstart', function () {
             activateCardFx(card);
@@ -4154,6 +4763,12 @@
             if (!card.contains(e.relatedTarget)) {
               deactivateCardFx();
             }
+          });
+        });
+        showcaseLists.forEach(function (list) {
+          list.addEventListener('pointerleave', function (e) {
+            if (e.pointerType === 'touch') return;
+            deactivateCardFx();
           });
         });
 
@@ -4176,126 +4791,224 @@
 
       (function () {
         const projectsView = document.getElementById('projects-view');
-        if (!projectsView) return;
-        const BASE_WIDTH = 1280;
-        const cards = Array.prototype.slice.call(projectsView.querySelectorAll('.project-card'));
-        const medias = Array.prototype.slice.call(projectsView.querySelectorAll('.project-media'));
-        const frameMedias = medias.filter(function (m) { return m.querySelector('.project-preview[data-src]'); });
+        const floatingPreview = document.getElementById('floating-preview');
+        if (!projectsView || !floatingPreview) return;
+
+        const cards = Array.prototype.slice.call(projectsView.querySelectorAll('.project-card.showcase-row'));
+        const showcaseLists = Array.prototype.slice.call(projectsView.querySelectorAll('.showcase-list'));
         const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-        function fitPreview(media) {
-          const frame = media.querySelector('.project-preview');
-          if (!frame) return;
-          const w = media.clientWidth;
-          const h = media.clientHeight;
-          if (!w || !h) return;
-          const scale = w / BASE_WIDTH;
-          media.style.setProperty('--iframe-scale', scale.toFixed(5));
-          frame.style.height = Math.ceil(h / scale) + 'px';
-        }
-
-        let previewsReady = false;
-        let hasScrolledProjects = false;
-
-        function isProjectsOpen() {
-          return projectsView.classList.contains('visible');
-        }
-
-        function loadPreview(media) {
-          if (!media || !isProjectsOpen()) return;
-          const frame = media.querySelector('.project-preview[data-src]');
-          if (!frame || frame.dataset.loaded) return;
-          frame.dataset.loaded = '1';
-          media.classList.add('is-loading');
-          fitPreview(media);
-          frame.addEventListener('load', function () {
-            if (!frame.dataset.loaded) return;
-            frame.classList.add('is-loaded');
-            media.classList.remove('is-loading');
-            media.classList.add('is-ready');
-          }, { once: true });
-          frame.src = frame.dataset.src;
-        }
-
-        function unloadPreview(media) {
-          if (!media) return;
-          const frame = media.querySelector('.project-preview');
-          if (!frame || !frame.dataset.loaded) return;
-          delete frame.dataset.loaded;
-          frame.removeAttribute('src');
-          frame.classList.remove('is-loaded');
-          media.classList.remove('is-ready');
-          media.classList.remove('is-loading');
-        }
-
-        cards.forEach(function (card) {
-          const media = card.querySelector('.project-media');
-          if (!media) return;
-          const onActivate = function () {
-            if (!previewsReady || !isProjectsOpen()) return;
-            loadPreview(media);
-          };
-          card.addEventListener('pointerenter', onActivate);
-          card.addEventListener('focusin', onActivate);
-          if (!isFinePointer) {
-            card.addEventListener('touchstart', onActivate, { passive: true });
+        const PREVIEW_THEMES = {
+          tarifa: {
+            bg: 'radial-gradient(circle at 80% 20%, rgba(253,224,71,0.55), transparent 45%), linear-gradient(145deg, #0284c7 0%, #0d9488 55%, #d97706 100%)',
+            domain: 'tarifahouse.com',
+            kicker: 'Alquiler Vacacional · 8 Páginas',
+            title: 'Tarifa House',
+            metric: '100/100 Lighthouse',
+            tag: '-50% Peso'
+          },
+          freeki: {
+            bg: 'radial-gradient(circle at 20% 20%, rgba(45,212,191,0.45), transparent 50%), radial-gradient(circle at 80% 80%, rgba(168,85,247,0.45), transparent 55%), #091210',
+            domain: 'freekiland3d.studio',
+            kicker: 'Catálogo 3D + Carrito SQL',
+            title: 'Freekiland 3D',
+            metric: '98/100 Lighthouse',
+            tag: 'JS + SQL'
+          },
+          rogue: {
+            bg: 'radial-gradient(circle at 50% 35%, rgba(147,51,234,0.45), transparent 60%), repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50%/36px 36px',
+            domain: 'roguegambit.game',
+            kicker: 'Tablero Táctico 5x5 · IA',
+            title: 'RogueGambit ♔',
+            metric: '0 Dependencias',
+            tag: 'Web Audio'
+          },
+          catan: {
+            bg: 'radial-gradient(circle at 50% 40%, rgba(217,119,6,0.45), rgba(12,25,38,0.96) 80%), #0c1926',
+            domain: 'catan-web.board',
+            kicker: '19 Hexágonos · 54 Nodos',
+            title: 'Catán Web ⬡',
+            metric: 'Grafo Axial (q,r)',
+            tag: 'DFS Ruta'
+          },
+          balatro: {
+            bg: 'radial-gradient(circle at 30% 30%, rgba(220,38,38,0.65), transparent 55%), radial-gradient(circle at 75% 70%, rgba(37,99,235,0.6), transparent 60%), #12090d',
+            domain: 'balatro.shader',
+            kicker: 'GLSL Shader + Física 3D',
+            title: 'Balatro UI',
+            metric: 'WebGL Custom',
+            tag: '60 FPS'
+          },
+          nextjs: {
+            bg: 'radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.5), rgba(249,115,22,0.35) 45%, #050508 75%)',
+            domain: 'nextjs-3d.demo',
+            kicker: 'App Router · Shadcn/UI',
+            title: 'Next.js 15 + 3D',
+            metric: 'Three.js Render',
+            tag: 'Tailwind'
+          },
+          cyber: {
+            bg: 'linear-gradient(135deg, #050510 0%, #0f172a 55%, #042f2e 100%)',
+            domain: 'sys::online // gpu',
+            kicker: ' Ondas Líquidas en GPU',
+            title: 'Cyberpunk HUD',
+            metric: 'GLSL Fragment',
+            tag: '60 FPS'
+          },
+          plantinar: {
+            bg: 'linear-gradient(160deg, #ff5e57 0%, #2e2e50 48%, #1e1e38 100%)',
+            domain: 'ca-elplantinar.es',
+            kicker: 'Maquetación Puro CSS',
+            title: 'C.A. El Plantinar',
+            metric: '0 Frameworks',
+            tag: 'Responsive'
           }
-        });
-
-        projectsView.addEventListener('scroll', function () {
-          if (isProjectsOpen()) hasScrolledProjects = true;
-        }, { passive: true });
-
-        function initPreviews() {
-          if (previewsReady) return;
-          previewsReady = true;
-
-          if ('ResizeObserver' in window) {
-            const ro = new ResizeObserver(function (entries) {
-              if (!isProjectsOpen()) return;
-              entries.forEach(function (entry) { fitPreview(entry.target); });
-            });
-            frameMedias.forEach(function (m) { ro.observe(m); });
-          } else {
-            window.addEventListener('resize', function () {
-              if (isProjectsOpen()) frameMedias.forEach(fitPreview);
-            });
-          }
-
-          if (!isFinePointer && 'IntersectionObserver' in window) {
-            const touchObserver = new IntersectionObserver(function (entries) {
-              if (!projectsView.classList.contains('visible') || !hasScrolledProjects) return;
-              entries.forEach(function (entry) {
-                const card = entry.target;
-                const media = card.querySelector('.project-media');
-                if (entry.isIntersecting) {
-                  if (media) loadPreview(media);
-                  if (window.activateProjectFx) {
-                    window.activateProjectFx(card);
-                  }
-                } else if (media) {
-                  unloadPreview(media);
-                }
-              });
-            }, { root: projectsView, threshold: 0.68 });
-
-            cards.forEach(function (card) {
-              touchObserver.observe(card);
-            });
-          }
-        }
-
-        window.loadProjectPreviews = function () {
-          if (!isProjectsOpen()) return;
-          initPreviews();
-          requestAnimationFrame(function () {
-            if (isProjectsOpen()) frameMedias.forEach(fitPreview);
-          });
         };
 
+        let targetX = window.innerWidth * 0.5;
+        let targetY = window.innerHeight * 0.5;
+        let smoothX = targetX;
+        let smoothY = targetY;
+        let isFloatingVisible = false;
+        let currentScale = 0.86;
+        let targetScale = 0.86;
+        let lerpRafId = null;
+        let lastFrameTime = 0;
+        const slots = [];
+
+        cards.forEach(function (card, idx) {
+          const slot = document.createElement('div');
+          slot.className = 'floating-preview-slot';
+          const fx = card.getAttribute('data-fx') || 'tarifa';
+          const imgSrc = card.getAttribute('data-preview-img');
+
+          if (imgSrc) {
+            const img = document.createElement('img');
+            img.className = 'floating-preview-img';
+            img.src = imgSrc;
+            img.alt = '';
+            img.decoding = 'async';
+            slot.appendChild(img);
+          } else {
+            const theme = PREVIEW_THEMES[fx] || PREVIEW_THEMES.tarifa;
+            const box = document.createElement('div');
+            box.className = 'fp-card';
+            box.style.background = theme.bg;
+            box.innerHTML =
+              '<div class="fp-bar"><div class="fp-dots"><span></span><span></span><span></span></div><span>' + theme.domain + '</span></div>' +
+              '<div class="fp-center"><div class="fp-kicker">' + theme.kicker + '</div><div class="fp-heading">' + theme.title + '</div></div>' +
+              '<div class="fp-bottom"><span>' + theme.metric + '</span><span class="fp-pill">' + theme.tag + '</span></div>';
+            slot.appendChild(box);
+          }
+
+          floatingPreview.insertBefore(slot, floatingPreview.firstChild);
+          slots.push(slot);
+
+          card.addEventListener('click', function (e) {
+            if (e.target.closest('a')) return;
+            const primary = card.querySelector('.project-link.primary');
+            if (primary && primary.href) {
+              window.open(primary.href, '_blank', 'noopener,noreferrer');
+            }
+          });
+        });
+
+        function animateFloating(now) {
+          const dt = lastFrameTime ? Math.min(0.05, (now - lastFrameTime) / 1000) : 0.016;
+          lastFrameTime = now;
+
+          const posAlpha = 1 - Math.exp(-18 * dt);
+          const scaleAlpha = 1 - Math.exp(-16 * dt);
+
+          const prevX = smoothX;
+          smoothX += (targetX - smoothX) * posAlpha;
+          smoothY += (targetY - smoothY) * posAlpha;
+          currentScale += (targetScale - currentScale) * scaleAlpha;
+
+          const vx = smoothX - prevX;
+          const tilt = Math.max(-5, Math.min(5, vx * 0.22));
+
+          const maxX = window.innerWidth - 296;
+          const maxY = window.innerHeight - 192;
+          const clampedX = Math.max(16, Math.min(maxX, smoothX + 26));
+          const clampedY = Math.max(16, Math.min(maxY, smoothY - 88));
+
+          floatingPreview.style.transform =
+            'translate3d(' + clampedX.toFixed(2) + 'px,' + clampedY.toFixed(2) + 'px,0) scale(' + currentScale.toFixed(3) + ') rotate(' + tilt.toFixed(2) + 'deg)';
+
+          const dist = Math.hypot(targetX - smoothX, targetY - smoothY);
+          if (isFloatingVisible || dist > 0.25 || Math.abs(currentScale - targetScale) > 0.003) {
+            lerpRafId = requestAnimationFrame(animateFloating);
+          } else {
+            lerpRafId = null;
+            lastFrameTime = 0;
+          }
+        }
+
+        function startLerpLoop() {
+          if (!lerpRafId && isFinePointer && !prefersReducedMotion) {
+            lastFrameTime = performance.now();
+            lerpRafId = requestAnimationFrame(animateFloating);
+          }
+        }
+
+        if (isFinePointer) {
+          projectsView.addEventListener('pointermove', function (e) {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            if (!isFloatingVisible) {
+              smoothX = targetX;
+              smoothY = targetY;
+            }
+            startLerpLoop();
+          }, { passive: true });
+
+          cards.forEach(function (card, idx) {
+            card.addEventListener('pointerenter', function (e) {
+              if (e.pointerType === 'touch') return;
+              for (let i = 0; i < slots.length; i++) {
+                slots[i].classList.toggle('is-active', i === idx);
+              }
+              if (!isFloatingVisible) {
+                smoothX = e.clientX;
+                smoothY = e.clientY;
+                targetX = e.clientX;
+                targetY = e.clientY;
+              }
+              isFloatingVisible = true;
+              targetScale = 1;
+              floatingPreview.classList.add('is-visible');
+              startLerpLoop();
+            });
+          });
+
+          showcaseLists.forEach(function (list) {
+            list.addEventListener('pointerleave', function (e) {
+              if (e.pointerType === 'touch') return;
+              isFloatingVisible = false;
+              targetScale = 0.86;
+              floatingPreview.classList.remove('is-visible');
+              for (let i = 0; i < slots.length; i++) {
+                slots[i].classList.remove('is-active');
+              }
+              startLerpLoop();
+            });
+          });
+        }
+
+        window.loadProjectPreviews = function () {};
+
         window.unloadProjectPreviews = function () {
-          hasScrolledProjects = false;
-          frameMedias.forEach(unloadPreview);
+          isFloatingVisible = false;
+          floatingPreview.classList.remove('is-visible');
+          if (lerpRafId) {
+            cancelAnimationFrame(lerpRafId);
+            lerpRafId = null;
+            lastFrameTime = 0;
+          }
+          for (let i = 0; i < slots.length; i++) {
+            slots[i].classList.remove('is-active');
+          }
         };
 
         window.triggerProjectsReveal = function () {
