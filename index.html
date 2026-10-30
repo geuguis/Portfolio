@@ -45,7 +45,7 @@
       "knowsAbout": ["Java", "Python", "C#", "Kotlin", "SQL", "PL/SQL", "PostgreSQL", "MySQL", "Flutter", "Dart", "HTML5", "CSS3", "JavaScript", "Docker", "Git"],
       "sameAs": [
         "https://github.com/geuguis",
-        "https://www.linkedin.com/in/guillermoeuguisanchez"
+        "https://www.linkedin.com/in/guillermoeuguisanchez/"
       ]
     }
     </script>
@@ -781,7 +781,7 @@
 
       @media (max-width: 600px) {
         .cert-toggle { padding: 12px 14px; }
-        .cert-toggle-hint { display: none; }
+        .cert-toggle-hint { font-size: 0.7rem; }
         .cert-card { padding: 12px 14px; gap: 12px; }
         .cert-badge { width: 38px; height: 38px; }
       }
@@ -1159,17 +1159,105 @@
         }
       }
 
-      #flowers-canvas {
+      .bp-defs {
+        position: fixed;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .bp-garden {
         position: fixed;
         inset: 0;
-        width: 100%;
-        height: 100%;
         pointer-events: none;
-        z-index: 2;
-        opacity: 0;
-        transition: opacity 1.2s ease;
+        z-index: 0;
+        overflow: hidden;
       }
-      #flowers-canvas.visible { opacity: 1; }
+
+      .bp-plant {
+        --bp-flip: 1;
+        --bp-scale: 1;
+        position: fixed;
+        width: clamp(220px, 22vw, 340px);
+        height: auto;
+        pointer-events: none;
+        opacity: 0.85;
+        transform-origin: 42.18% 92.39%;
+        will-change: transform;
+      }
+
+      .bp-plant--left {
+        left: 0;
+        transform: translate(calc(-42.18% - 3px), -92.39%) rotate(90deg) scale(var(--bp-scale)) scaleX(var(--bp-flip));
+      }
+
+      .bp-plant--right {
+        right: 0;
+        transform: translate(calc(57.82% + 3px), -92.39%) rotate(-90deg) scale(var(--bp-scale)) scaleX(var(--bp-flip));
+      }
+
+      .bp-plant--l1 { top: 24%; --bp-scale: 1; --bp-flip: 1; }
+      .bp-plant--l2 { top: 72%; --bp-scale: 0.86; --bp-flip: -1; }
+      .bp-plant--r1 { top: 28%; --bp-scale: 0.9; --bp-flip: -1; }
+      .bp-plant--r2 { top: 74%; --bp-scale: 1.02; --bp-flip: 1; }
+
+      @media (max-width: 1024px) {
+        .bp-plant {
+          width: clamp(130px, 17vw, 200px);
+          opacity: 0.72;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .bp-plant {
+          width: clamp(68px, 17vw, 94px);
+          opacity: 0.48;
+        }
+        .bp-plant--left {
+          transform: translate(calc(-42.18% - 8px), -92.39%) rotate(90deg) scale(var(--bp-scale)) scaleX(var(--bp-flip));
+        }
+        .bp-plant--right {
+          transform: translate(calc(57.82% + 8px), -92.39%) rotate(-90deg) scale(var(--bp-scale)) scaleX(var(--bp-flip));
+        }
+      }
+
+      .bp__branch {
+        will-change: transform;
+      }
+
+      .bp__stalk {
+        fill: none;
+        stroke-width: 10;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 3.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .bp__stroke--green { stroke: var(--green); }
+      .bp__stroke--green-light { stroke: var(--muted); }
+      .bp__stroke--green-lighter { stroke: var(--green-light); }
+
+      .bp__fill--blue { fill: var(--green); }
+      .bp__fill--orange { fill: var(--green-light); }
+      .bp__fill--green { fill: var(--muted); }
+
+      .bp__flower-group {
+        transform-box: fill-box;
+        transform-origin: center;
+        transform: scale(0);
+        opacity: 0;
+        transition: transform 1.4s cubic-bezier(0.22, 1.28, 0.36, 1), opacity 0.8s ease;
+      }
+
+      .bp-plant.is-blooming .bp__flower-group {
+        transform: scale(var(--f-scale, 1));
+        opacity: 1;
+      }
+
+      .bp__flower--b {
+        stroke-width: 1.2;
+        stroke: var(--white);
+      }
 
       #projects-view {
         position: fixed;
@@ -1631,6 +1719,7 @@
       #projects-view.fx-on .projects-eyebrow,
       #projects-view.fx-on .projects-group-label,
       #projects-view.fx-on .back-btn,
+      #projects-view.fx-on .fx-audio-btn,
       #projects-view.fx-on .see-more-btn {
         color: #f5e6c8;
         border-color: rgba(255, 255, 255, 0.22);
@@ -1998,6 +2087,15 @@
       }
       .project-link.primary:hover { color: #1f4f39; }
 
+      .projects-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 36px;
+      }
+
       .back-btn {
         display: inline-flex;
         align-items: center;
@@ -2010,7 +2108,7 @@
         border: none;
         color: var(--muted);
         cursor: pointer;
-        margin-bottom: 36px;
+        margin-bottom: 0;
         padding: 0;
         transition: color 0.2s, gap 0.2s, transform 0.16s var(--ease-out);
       }
@@ -2021,6 +2119,34 @@
         outline: 2px solid var(--green);
         outline-offset: 3px;
         border-radius: 2px;
+      }
+
+      .fx-audio-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        cursor: pointer;
+        padding: 5px 12px;
+        transition: color 0.2s, border-color 0.2s, transform 0.16s var(--ease-out);
+      }
+
+      .fx-audio-btn:hover {
+        color: var(--green);
+        border-color: var(--green-light);
+      }
+
+      .fx-audio-btn:active { transform: scale(0.97); }
+      .fx-audio-btn:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
       }
 
       @keyframes cardIn {
@@ -2035,7 +2161,7 @@
         opacity: 0;
       }
 
-      #projects-view.visible .back-btn {
+      #projects-view.visible .projects-top-bar {
         animation: cardIn 0.45s ease forwards 0s;
         opacity: 0;
       }
@@ -2113,6 +2239,12 @@
         width: 2em;
         height: 2em;
         cursor: pointer;
+      }
+
+      .switch:focus-within {
+        outline: 2px solid var(--green);
+        outline-offset: 4px;
+        border-radius: 4px;
       }
 
       .switch input,
@@ -2226,7 +2358,7 @@
         align-items: center;
         gap: 7px;
         padding: 5px 11px;
-        cursor: pointer;
+        cursor: default;
         user-select: none;
         border-radius: 8px;
         font-family: "DM Mono", monospace;
@@ -2261,25 +2393,13 @@
         align-items: center;
         gap: 7px;
       }
-      .avail-badge.is-hovered,
-      .avail-badge:focus-visible {
+      .avail-badge.is-hovered {
         --rot: 0deg !important;
         --sc: 1.05;
         --hy: -3px;
         z-index: 10 !important;
         border-color: var(--green-light);
         box-shadow: 0 8px 20px rgba(36, 88, 64, 0.12);
-        outline: none;
-      }
-      .avail-badge.is-clicked {
-        --rot: 0deg !important;
-        --sc: 1.08;
-        --hy: -4px;
-        z-index: 15 !important;
-        background-color: var(--green);
-        color: var(--on-accent);
-        border-color: var(--green);
-        box-shadow: 0 10px 24px rgba(36, 88, 64, 0.18);
       }
       .avail-badge.is-dimmed {
         --sc: 0.96;
@@ -2360,6 +2480,10 @@
         overflow: hidden;
         user-select: none;
       }
+      .qr-canvas-wrap:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: -3px;
+      }
       [data-theme="dark"] .qr-canvas-wrap {
         background-color: #141d18;
       }
@@ -2367,6 +2491,38 @@
         width: 100% !important;
         height: 100% !important;
         display: block;
+      }
+      .qr-status {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        background-color: inherit;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .qr-status.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .qr-spinner {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        border-top-color: var(--green);
+        animation: spin 0.8s linear infinite;
+      }
+      .qr-status.is-error .qr-spinner {
+        display: none;
       }
       .qr-modal-footer {
         padding: 12px 16px;
@@ -2848,7 +3004,27 @@
     </svg>
   </div>
 
-    <canvas id="flowers-canvas" aria-hidden="true"></canvas>
+    <div class="bp-garden" id="bpGarden" aria-hidden="true">
+      <svg class="bp-defs" viewBox="0 0 360.9 269.5" aria-hidden="true">
+        <defs>
+          <clipPath id="bp__stalk-shape--01-a"><path d="M147.21,249.08c-0.13-58.96-10.21-147.64-79.05-164.63c-14.41-3.56-36.55-6.12-47.69,6.53c9.25-12.26,29.22-12.71,42.89-11.11c16.11,1.89,31.14,8.56,43.41,19.17c28.18,24.38,39.95,63.66,45.76,99.19c2.74,16.77,4.13,33.7,4.68,50.67C153.88,248.96,150.55,249.02,147.21,249.08z"/></clipPath>
+          <clipPath id="bp__stalk-shape--01-b"><path d="M138.98,171.07c-6.85-10.84-18.06-19.87-30.33-23.74c-13.01-4.1-25.9-1.51-38.08,3.94c12.54-7.14,26.01-10.81,40.35-7.41c13.4,3.18,26.15,11.82,34.55,22.7C143.31,168.06,141.15,169.57,138.98,171.07z"/></clipPath>
+          <clipPath id="bp__stalk-shape--01-c"><path d="M126.35,134.81c-2.14-11.51,0.14-24.23,4.77-34.85c4.59-10.53,11.85-20.03,20.8-27.24c4.81-3.87,9.85-7.21,15.17-10.33c-9.2,6.37-17.65,13.56-24.08,22.82c-6.3,9.07-10.37,19.55-11.44,30.57c-0.56,5.78-0.5,11.94,1,17.59C130.48,133.84,128.41,134.33,126.35,134.81z"/></clipPath>
+          <clipPath id="bp__stalk-shape--02-a"><path d="M147.21,249.08c-0.14-40.62,5.69-82.64,24.2-119.25c9.67-19.12,23.08-36.74,40.88-48.95c18.69-12.83,41.4-18.8,63.96-18.36c22.18,0.43,43.29,7.21,63.01,16.98c-0.06,0.12-0.12,0.25-0.18,0.37C302.49,63.1,259.5,57.9,223.31,78.93c-38.32,22.27-55.89,67.58-62.67,109.29c-3.26,20.07-4.11,40.37-3.43,60.67C153.88,248.96,150.55,249.02,147.21,249.08z"/></clipPath>
+          <clipPath id="bp__stalk-shape--02-b"><path d="M167,139.4c3.05-13.8,0.05-29.48-5.73-42.15c-6.58-14.43-17.36-25.56-29.98-34.87c13.69,8.64,25.53,19.4,33.3,33.8c7.09,13.14,11.12,29.51,8.99,44.45C171.39,140.21,169.19,139.81,167,139.4z"/></clipPath>
+          <clipPath id="bp__stalk-shape--03-a"><path d="M147.21,248.9c0.82-26.09,7.7-51.63,24.3-72.27c13.14-16.32,31-27.54,49.22-37.43c24.29-13.19,53.35-25.76,69.15-49.69c12.58-19.06,11.32-45.13-5.71-61.27c-20.99-19.89-53.88-17.42-74.46,1.6c-0.12-0.12-0.23-0.25-0.35-0.37c17.44-16.95,44.1-22.21,65.98-10.57c20.47,10.88,30.68,34.21,25.23,56.67c-6.8,28.01-35.18,45.67-58.47,59.06c-20.94,12.04-43.12,23.13-59.53,41.31c-18.2,20.16-25.2,46.54-25.36,73.14C153.88,249.02,150.55,248.96,147.21,248.9z"/></clipPath>
+          <clipPath id="bp__stalk-shape--03-b"><path d="M158.88,197.17c19.16-26.48,53.28-30.91,82.53-22.2c-27.78-5.64-60.1,0.13-75.89,26.47C163.31,200.02,161.09,198.59,158.88,197.17z"/></clipPath>
+
+          <path id="bp__petals" d="M171.12,63.96c-0.02,0.05-0.04,0.11-0.06,0.16c2.45,1.05,5.61,2.82,6.4,3.61c1.27,1.27,1.17,3.42-0.22,4.81c-1.39,1.38-3.54,1.48-4.8,0.22c-0.79-0.79-2.57-3.95-3.62-6.4c-0.05,0.02-0.1,0.04-0.16,0.06c1,2.47,1.98,5.97,1.98,7.08c0,1.79-1.59,3.24-3.56,3.24c-1.96,0-3.55-1.45-3.55-3.24c0-1.11,0.98-4.61,1.97-7.08c-0.06-0.02-0.11-0.04-0.16-0.06c-1.05,2.45-2.82,5.61-3.61,6.4c-1.27,1.26-3.42,1.16-4.8-0.22c-1.39-1.39-1.49-3.54-0.23-4.81c0.79-0.79,3.95-2.56,6.4-3.61c-0.02-0.05-0.04-0.11-0.06-0.16c-2.47,0.99-5.96,1.97-7.08,1.97c-1.79,0-3.24-1.59-3.24-3.55c0-1.96,1.45-3.55,3.24-3.55c1.12,0,4.61,0.98,7.08,1.97c0.02-0.05,0.04-0.11,0.06-0.16c-2.45-1.05-5.61-2.82-6.4-3.61c-1.26-1.27-1.16-3.42,0.23-4.81c1.38-1.39,3.53-1.49,4.8-0.22c0.79,0.79,2.56,3.96,3.61,6.4c0.05-0.02,0.1-0.04,0.16-0.06c-0.99-2.48-1.97-5.97-1.97-7.09c0-1.78,1.59-3.23,3.55-3.23c1.97,0,3.56,1.45,3.56,3.23c0,1.12-0.98,4.61-1.98,7.09c0.06,0.02,0.11,0.04,0.16,0.06c1.05-2.44,2.83-5.61,3.62-6.4c1.26-1.27,3.41-1.17,4.8,0.22c1.39,1.39,1.49,3.54,0.22,4.81c-0.79,0.79-3.95,2.56-6.4,3.61c0.02,0.05,0.04,0.11,0.06,0.16c2.47-0.99,5.97-1.97,7.09-1.97c1.79,0,3.24,1.59,3.24,3.55c0,1.96-1.45,3.55-3.24,3.55C177.09,65.93,173.59,64.95,171.12,63.96z"/>
+          <circle id="bp__center" cx="167.09" cy="62.38" r="4.34"/>
+        </defs>
+      </svg>
+
+      <svg class="bp-plant bp-plant--left bp-plant--l1" viewBox="0 0 360.9 269.5" aria-hidden="true"></svg>
+      <svg class="bp-plant bp-plant--left bp-plant--l2" viewBox="0 0 360.9 269.5" aria-hidden="true"></svg>
+      <svg class="bp-plant bp-plant--right bp-plant--r1" viewBox="0 0 360.9 269.5" aria-hidden="true"></svg>
+      <svg class="bp-plant bp-plant--right bp-plant--r2" viewBox="0 0 360.9 269.5" aria-hidden="true"></svg>
+    </div>
 
     <main id="portfolio-view">
       <div class="wrapper">
@@ -2860,19 +3036,19 @@
           </div>
           <p class="role">Back-End Developer · Técnico Superior en DAM · Sevilla</p>
           <div class="availability-cluster" id="availabilityCluster" role="group" aria-label="Disponibilidad y modalidades de trabajo">
-            <div class="avail-badge avail-badge--primary" style="--rot: -1deg;" tabindex="0" role="button">
+            <div class="avail-badge avail-badge--primary" style="--rot: -1deg;">
               <span class="avail-badge-text">Disponible para prácticas</span>
             </div>
-            <div class="avail-badge" style="--rot: 0.8deg;" tabindex="0" role="button">
+            <div class="avail-badge" style="--rot: 0.8deg;">
               <span class="avail-badge-text">Presencial · Sevilla</span>
             </div>
-            <div class="avail-badge avail-badge--subtle" style="--rot: -0.9deg;" tabindex="0" role="button">
+            <div class="avail-badge avail-badge--subtle" style="--rot: -0.9deg;">
               <span class="avail-badge-text">Híbrido</span>
             </div>
-            <div class="avail-badge avail-badge--subtle" style="--rot: 1.1deg;" tabindex="0" role="button">
+            <div class="avail-badge avail-badge--subtle" style="--rot: 1.1deg;">
               <span class="avail-badge-text">Remoto</span>
             </div>
-            <div class="avail-badge avail-badge--outline" style="--rot: -0.6deg;" tabindex="0" role="button">
+            <div class="avail-badge avail-badge--outline" style="--rot: -0.6deg;">
               <span class="avail-badge-text">Incorporación inmediata</span>
             </div>
           </div>
@@ -2892,69 +3068,69 @@
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-0">Lenguajes</p>
                 <ul class="stack-dock stack-dock--wrap" aria-labelledby="sg-0">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Dart-Dark.svg" alt="Dart" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Kotlin-Dark.svg" alt="Kotlin" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Java</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Java-Dark.svg" alt="Java" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Python</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Python-Dark.svg" alt="Python" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">C#</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CS.svg" alt="C#" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">JavaScript</span><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI2MCIgZmlsbD0iI0YwREI0RiIvPjxwYXRoIGQ9Ik02Ny4zMTE3IDIxMy45MzJMODYuOTAyNyAyMDIuMDc2QzkwLjY4MjEgMjA4Ljc3NyA5NC4xMjAyIDIxNC40NDcgMTAyLjM2NyAyMTQuNDQ3QzExMC4yNzIgMjE0LjQ0NyAxMTUuMjU2IDIxMS4zNTUgMTE1LjI1NiAxOTkuMzI3VjExNy41MjlIMTM5LjMxNFYxOTkuNjY3QzEzOS4zMTQgMjI0LjU4NCAxMjQuNzA4IDIzNS45MjYgMTAzLjM5OCAyMzUuOTI2Qzg0LjE1MzMgMjM1LjkyNiA3Mi45ODE5IDIyNS45NTkgNjcuMzExMyAyMTMuOTMiIGZpbGw9IiMzMjMzMzAiLz48cGF0aCBkPSJNMTUyLjM4MSAyMTEuMzU0TDE3MS45NjkgMjAwLjAxM0MxNzcuMTI2IDIwOC40MzQgMTgzLjgyOCAyMTQuNjIgMTk1LjY4NCAyMTQuNjJDMjA1LjY1MyAyMTQuNjIgMjEyLjAwOSAyMDkuNjM2IDIxMi4wMDkgMjAyLjc2MkMyMTIuMDA5IDE5NC41MTQgMjA1LjQ3OSAxOTEuNTkyIDE5NC40ODEgMTg2Ljc4MkwxODguNDY4IDE4NC4yMDNDMTcxLjExMSAxNzYuODE1IDE1OS41OTcgMTY3LjUzNSAxNTkuNTk3IDE0Ny45NDVDMTU5LjU5NyAxMjkuOTAxIDE3My4zNDUgMTE2LjE1MyAxOTQuODI2IDExNi4xNTNDMjEwLjEyIDExNi4xNTMgMjIxLjExOCAxMjEuNDgxIDIyOS4wMjIgMTM1LjRMMjEwLjI5MSAxNDcuNDI5QzIwNi4xNjYgMTQwLjA0IDIwMS43IDEzNy4xMTkgMTk0LjgyNiAxMzcuMTE5QzE4Ny43OCAxMzcuMTE5IDE4My4zMTIgMTQxLjU4NyAxODMuMzEyIDE0Ny40MjlDMTgzLjMxMiAxNTQuNjQ2IDE4Ny43OCAxNTcuNTY4IDE5OC4wOSAxNjIuMDM3TDIwNC4xMDQgMTY0LjYxNEMyMjQuNTUzIDE3My4zNzkgMjM2LjA2NyAxODIuMzEzIDIzNi4wNjcgMjAyLjQxOEMyMzYuMDY3IDIyNC4wNzIgMjE5LjA1NSAyMzUuOTI4IDE5Ni4yIDIzNS45MjhDMTczLjg2MSAyMzUuOTI4IDE1OS40MjYgMjI1LjI3NCAxNTIuMzgxIDIxMS4zNTQiIGZpbGw9IiMzMjMzMzAiLz48L3N2Zz4=" alt="JavaScript" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Lua</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Lua-Dark.svg" alt="Lua" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Dart</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Dart-Dark.svg" alt="Dart" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Kotlin</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Kotlin-Dark.svg" alt="Kotlin" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-1">Web</p>
                 <ul class="stack-dock" aria-labelledby="sg-1">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">HTML</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/HTML.svg" alt="HTML" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">CSS</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/CSS.svg" alt="CSS" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bootstrap</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bootstrap.svg" alt="Bootstrap" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-2">Móvil y motores</p>
                 <ul class="stack-dock" aria-labelledby="sg-2">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Flutter-Dark.svg" alt="Flutter" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Android</span><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='60' fill='%23242938'/%3E%3Cg fill='%233DDC84'%3E%3Cpath d='M78 112a50 50 0 0 1 100 0z'/%3E%3Crect x='78' y='118' width='100' height='72' rx='10'/%3E%3Crect x='54' y='118' width='18' height='56' rx='9'/%3E%3Crect x='184' y='118' width='18' height='56' rx='9'/%3E%3Crect x='98' y='176' width='18' height='42' rx='9'/%3E%3Crect x='140' y='176' width='18' height='42' rx='9'/%3E%3C/g%3E%3Cpath d='M98 72L86 54M158 72L170 54' stroke='%233DDC84' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='108' cy='93' r='6' fill='%23242938'/%3E%3Ccircle cx='148' cy='93' r='6' fill='%23242938'/%3E%3C/svg%3E" alt="Android" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Unity-Dark.svg" alt="Unity" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Flutter</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Flutter-Dark.svg" alt="Flutter" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android</span><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='60' fill='%23242938'/%3E%3Cg fill='%233DDC84'%3E%3Cpath d='M78 112a50 50 0 0 1 100 0z'/%3E%3Crect x='78' y='118' width='100' height='72' rx='10'/%3E%3Crect x='54' y='118' width='18' height='56' rx='9'/%3E%3Crect x='184' y='118' width='18' height='56' rx='9'/%3E%3Crect x='98' y='176' width='18' height='42' rx='9'/%3E%3Crect x='140' y='176' width='18' height='42' rx='9'/%3E%3C/g%3E%3Cpath d='M98 72L86 54M158 72L170 54' stroke='%233DDC84' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='108' cy='93' r='6' fill='%23242938'/%3E%3Ccircle cx='148' cy='93' r='6' fill='%23242938'/%3E%3C/svg%3E" alt="Android" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Unity</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Unity-Dark.svg" alt="Unity" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-3">Bases de datos</p>
                 <ul class="stack-dock" aria-labelledby="sg-3">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">MySQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/MySQL-Dark.svg" alt="MySQL" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PostgreSQL</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/PostgreSQL-Dark.svg" alt="PostgreSQL" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-4">IDEs</p>
                 <ul class="stack-dock" aria-labelledby="sg-4">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/AndroidStudio-Dark.svg" alt="Android Studio" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">NetBeans</span><img src="img/netBeans.svg" alt="NetBeans" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">VS Code</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/VSCode-Dark.svg" alt="VS Code" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Android Studio</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/AndroidStudio-Dark.svg" alt="Android Studio" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-5">Versiones y DevOps</p>
                 <ul class="stack-dock" aria-labelledby="sg-5">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Docker.svg" alt="Docker" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Git</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Git.svg" alt="Git" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">GitHub</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Github-Dark.svg" alt="GitHub" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Docker</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Docker.svg" alt="Docker" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-6">Terminal y sistemas</p>
                 <ul class="stack-dock" aria-labelledby="sg-6">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Linux-Dark.svg" alt="Linux" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Bash</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Bash-Dark.svg" alt="Bash" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">PowerShell</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Powershell-Dark.svg" alt="PowerShell" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Ubuntu</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Ubuntu-Dark.svg" alt="Ubuntu" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Linux</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Linux-Dark.svg" alt="Linux" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Windows</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Windows-Dark.svg" alt="Windows" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
               <div class="stack-group">
                 <p class="stack-group-label" id="sg-7">Utilidades</p>
                 <ul class="stack-dock" aria-labelledby="sg-7">
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
-                <li class="s-icon"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Markdown</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Markdown-Dark.svg" alt="Markdown" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
+                <li class="s-icon" tabindex="0"><span class="s-name" aria-hidden="true">Regex</span><img src="https://cdn.jsdelivr.net/gh/tandpfun/skill-icons/icons/Regex-Dark.svg" alt="Regex" width="36" height="36" loading="lazy" decoding="async" fetchpriority="low"></li>
                 </ul>
               </div>
             </div>
@@ -3074,7 +3250,12 @@
 
       <div class="projects-inner">
 
-        <button class="back-btn" id="backBtn">← Volver al portfolio</button>
+        <div class="projects-top-bar">
+          <button class="back-btn" id="backBtn">← Volver al portfolio</button>
+          <button type="button" class="fx-audio-btn" id="fxAudioToggle" aria-pressed="false" aria-label="Silenciar efectos de sonido de los proyectos">
+            <span id="fxAudioLabel">AUDIO: ON</span>
+          </button>
+        </div>
 
         <div class="projects-header">
 
@@ -3136,7 +3317,7 @@
 
               <div class="showcase-links">
 
-                <a href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://tarifahouse.com/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Tarifa House</span> <span aria-hidden="true">↗</span></a>
 
               </div>
 
@@ -3194,9 +3375,9 @@
 
               <div class="showcase-links">
 
-                <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://geuguis.github.io/Practica-FREEKILAND3D-pagina-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Freekiland 3D</span> <span aria-hidden="true">↗</span></a>
 
-                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/Practica-FREEKILAND3D-pagina-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Freekiland 3D</span> <span aria-hidden="true">↗</span></a>
 
               </div>
 
@@ -3252,9 +3433,9 @@
 
               <div class="showcase-links">
 
-                <a href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://geuguis.github.io/RogueGambit/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> RogueGambit</span> <span aria-hidden="true">↗</span></a>
 
-                <a href="https://github.com/geuguis/RogueGambit" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/RogueGambit" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> RogueGambit</span> <span aria-hidden="true">↗</span></a>
 
               </div>
 
@@ -3310,9 +3491,9 @@
 
               <div class="showcase-links">
 
-                <a href="https://geuguis.github.io/CATAN-Web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                <a href="https://geuguis.github.io/CATAN-Web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Catán Web</span> <span aria-hidden="true">↗</span></a>
 
-                <a href="https://github.com/geuguis/CATAN-Web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                <a href="https://github.com/geuguis/CATAN-Web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Catán Web</span> <span aria-hidden="true">↗</span></a>
 
               </div>
 
@@ -3388,9 +3569,9 @@
 
                 <div class="showcase-links">
 
-                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://geuguis.github.io/LandingPage-003/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Landing Page Temática Balatro</span> <span aria-hidden="true">↗</span></a>
 
-                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/LandingPage-003" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Landing Page Temática Balatro</span> <span aria-hidden="true">↗</span></a>
 
                 </div>
 
@@ -3446,9 +3627,9 @@
 
                 <div class="showcase-links">
 
-                  <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://geuguis.github.io/DEMO-PortfolioWith-Nextjs/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Portfolio con Next.js</span> <span aria-hidden="true">↗</span></a>
 
-                  <a href="https://github.com/geuguis/DEMO-PortfolioWith-Nextjs" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/DEMO-PortfolioWith-Nextjs" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Portfolio con Next.js</span> <span aria-hidden="true">↗</span></a>
 
                 </div>
 
@@ -3504,9 +3685,9 @@
 
                 <div class="showcase-links">
 
-                  <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://geuguis.github.io/Demo-LandingPage002/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Landing Page Cyberpunk</span> <span aria-hidden="true">↗</span></a>
 
-                  <a href="https://github.com/geuguis/Demo-LandingPage002" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/Demo-LandingPage002" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Landing Page Cyberpunk</span> <span aria-hidden="true">↗</span></a>
 
                 </div>
 
@@ -3562,7 +3743,7 @@
 
                 <div class="showcase-links">
 
-                  <a href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver Workshop <span aria-hidden="true">↗</span></a>
+                  <a href="https://steamcommunity.com/id/WarioWaaa/myworkshopfiles/?appid=4000" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver Workshop<span class="sr-only"> Steam Workshop: Mods &amp; Minijuegos</span> <span aria-hidden="true">↗</span></a>
 
                 </div>
 
@@ -3616,9 +3797,9 @@
 
                 <div class="showcase-links">
 
-                  <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo <span aria-hidden="true">↗</span></a>
+                  <a href="https://geuguis.github.io/Primer-reto-web/" target="_blank" rel="noopener noreferrer" class="project-link primary">Ver en vivo<span class="sr-only"> Club Atlético El Plantinar</span> <span aria-hidden="true">↗</span></a>
 
-                  <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/geuguis/Primer-reto-web" target="_blank" rel="noopener noreferrer" class="project-link">Código fuente<span class="sr-only"> Club Atlético El Plantinar</span> <span aria-hidden="true">↗</span></a>
 
                 </div>
 
@@ -3662,7 +3843,12 @@
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <div class="qr-canvas-wrap" id="qrCanvasWrap"></div>
+        <div class="qr-canvas-wrap" id="qrCanvasWrap" role="button" tabindex="0" aria-pressed="false" aria-label="Alternar entre vista de árbol 3D y código QR 2D escaneable" title="Clic o Enter para alternar entre árbol 3D y QR 2D">
+          <div class="qr-status" id="qrStatus" role="status" aria-live="polite">
+            <span class="qr-spinner" aria-hidden="true"></span>
+            <span id="qrStatusText">Cargando visor 3D…</span>
+          </div>
+        </div>
         <div class="qr-modal-footer">
           <select class="qr-target-select" id="qrTargetSelect" aria-label="Seleccionar destino del QR">
             <option value="https://geuguis.github.io/Portfolio/" data-name="QR-Portfolio-Guillermo-Eugui">Portfolio · Web</option>
@@ -3767,164 +3953,199 @@
     </script>
 
     <script>
-      (function() {
-        const canvas = document.getElementById('flowers-canvas');
-        const ctx = canvas.getContext('2d');
-        let flowers = [];
-        let startTime = null;
-        let lastWidth = window.innerWidth;
-        let activeRaf = null;
+      (function () {
+        const garden = document.getElementById('bpGarden');
+        if (!garden) return;
 
-        function initCanvasSize() {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-        }
+        const plantMarkup = `
+          <g class="bp__branch" data-px="152.21" data-py="248.99" data-tx="48" data-ty="90" data-max="4.2" style="transform-origin: 152.21px 248.99px">
+            <path class="bp__stalk bp__stalk--main bp__stroke--green" clip-path="url(#bp__stalk-shape--01-a)" d="M152.21,248.99C151.23,175.5,131.32,96.52,69.9,82.84c-37.38-8.32-49.43,8.14-49.43,8.14"/>
+            <g transform="translate(-143, 24)"><g class="bp__flower-group" style="transition-delay: 2.35s"><use href="#bp__petals" class="bp__fill--blue"/><use href="#bp__center" class="bp__flower--b bp__fill--orange"/></g></g>
+            <g class="bp__branch" data-px="142.23" data-py="168.82" data-tx="77" data-ty="149" data-max="5.8" style="transform-origin: 142.23px 168.82px">
+              <path class="bp__stalk bp__stalk--sub bp__stroke--green" clip-path="url(#bp__stalk-shape--01-b)" d="M142.23,168.82c0,0-28.22-41.32-71.65-17.54"/>
+              <g transform="translate(-90, 87)"><g class="bp__flower-group" style="--f-scale: 0.8; transition-delay: 2.05s"><use href="#bp__petals" class="bp__fill--orange"/><use href="#bp__center" class="bp__flower--b bp__fill--blue"/></g></g>
+            </g>
+            <g class="bp__branch" data-px="129.45" data-py="134.08" data-tx="167" data-ty="62" data-max="5.8" style="transform-origin: 129.45px 134.08px">
+              <path class="bp__stalk bp__stalk--sub bp__stroke--green" clip-path="url(#bp__stalk-shape--01-c)" d="M129.45,134.08c0,0-10.42-42.56,37.64-71.71"/>
+              <g transform="translate(0, 0)"><g class="bp__flower-group" style="transition-delay: 1.85s"><use href="#bp__petals" class="bp__fill--blue"/><use href="#bp__center" class="bp__flower--b bp__fill--orange"/></g></g>
+            </g>
+          </g>
 
-        initCanvasSize();
+          <g class="bp__branch" data-px="152.21" data-py="248.99" data-tx="280" data-ty="78" data-max="3.8" style="transform-origin: 152.21px 248.99px">
+            <path class="bp__stalk bp__stalk--main bp__stroke--green-lighter" clip-path="url(#bp__stalk-shape--02-a)" d="M152.21,248.99c-0.55-22.47,1.07-45.07,5.49-67.13c4.07-20.28,10.54-40.29,20.59-58.43c9.06-16.36,21.21-31.2,36.74-41.8c18.08-12.34,40.13-18.2,61.92-17.93c19.69,0.25,39.14,5.35,57,13.49c1.75,0.8,3.49,1.63,5.21,2.49"/>
+            <g transform="translate(170, 16)"><g class="bp__flower-group" style="transition-delay: 2.2s"><use href="#bp__petals" class="bp__fill--orange"/><use href="#bp__center" class="bp__flower--b bp__fill--blue"/></g></g>
+            <g class="bp__branch" data-px="170.29" data-py="140.01" data-tx="135" data-ty="66" data-max="5.8" style="transform-origin: 170.29px 140.01px">
+              <path class="bp__stalk bp__stalk--sub bp__stroke--green-lighter" clip-path="url(#bp__stalk-shape--02-b)" d="M170.29,140.01c0,0,9.06-46.47-39-77.63"/>
+              <g transform="translate(-32, 4)"><g class="bp__flower-group" style="--f-scale: 0.8; transition-delay: 1.95s"><use href="#bp__petals" class="bp__fill--green"/><use href="#bp__center" class="bp__flower--b bp__fill--orange"/></g></g>
+            </g>
+          </g>
 
-        window.addEventListener('resize', function() {
-          if (window.innerWidth !== lastWidth) {
-            lastWidth = window.innerWidth;
-            initCanvasSize();
-            if (canvas.classList.contains('visible') && window.startFlowers) {
-              window.startFlowers();
-            }
-          }
+          <g class="bp__branch" data-px="152.21" data-py="248.99" data-tx="240" data-ty="55" data-max="4.0" style="transform-origin: 152.21px 248.99px">
+            <path class="bp__stalk bp__stalk--main bp__stroke--green-light" clip-path="url(#bp__stalk-shape--03-a)" d="M152.21,248.99c0-28.02,8.33-54.97,27.52-75.82c22.39-24.31,53.95-35.09,80.8-53.24c17.5-11.83,35.64-27.29,39.07-49.34c3.04-19.55-4.69-37.93-21.46-48.71c-18.74-12.05-42.87-11.18-61.03,1.56c-2.68,1.88-5.2,3.96-7.57,6.22"/>
+            <g transform="translate(43, -34)"><g class="bp__flower-group" style="--f-scale: 0.8; transition-delay: 2.0s"><use href="#bp__petals" class="bp__fill--orange"/><use href="#bp__center" class="bp__flower--b bp__fill--blue"/></g></g>
+            <g class="bp__branch" data-px="162.2" data-py="199.3" data-tx="238" data-ty="173" data-max="5.8" style="transform-origin: 162.2px 199.3px">
+              <path class="bp__stalk bp__stalk--sub bp__stroke--green-light" clip-path="url(#bp__stalk-shape--03-b)" d="M162.2,199.3c0,0,24.79-39.37,79.21-24.34"/>
+              <g transform="translate(71, 111)"><g class="bp__flower-group" style="transition-delay: 2.25s"><use href="#bp__petals" class="bp__fill--blue"/><use href="#bp__center" class="bp__flower--b bp__fill--orange"/></g></g>
+            </g>
+          </g>
+        `;
+
+        const plants = Array.prototype.slice.call(garden.querySelectorAll('.bp-plant'));
+        plants.forEach(function (svg) {
+          svg.innerHTML = plantMarkup;
         });
 
-        const palette = [
-          '#2d6a4f', '#52b788', '#d8f3dc', '#8a9e91', '#b7e4c7', '#74c69d', '#40916c'
-        ];
-
-        function makeFlower(side) {
-          const h = canvas.height;
-          const isLeft = side === 'left';
-          const baseX = isLeft ? 0 : canvas.width;
-          const baseY = h * 0.15 + Math.random() * h * 0.8;
-          const reach = 60 + Math.random() * 110;
-          const tipX  = isLeft ? reach : canvas.width - reach;
-          const stemH = 40 + Math.random() * 80;
-          const petalCount = 5 + Math.floor(Math.random() * 3);
-          const petalR     = 4 + Math.random() * 7;
-          const centerR    = petalR * 0.45;
-          const color = palette[Math.floor(Math.random() * palette.length)];
-          const centerColor = '#f9faf7';
-          const delay = Math.random() * 1800;
-          const duration = 900 + Math.random() * 600;
-          const hasLeaf = Math.random() > 0.4;
-          const leafT   = 0.4 + Math.random() * 0.35;
-          const leafSide = Math.random() > 0.5 ? 1 : -1;
-          return { isLeft, baseX, baseY, tipX, stemH, petalCount, petalR, centerR,
-                   color, centerColor, delay, duration, hasLeaf, leafT, leafSide, progress: 0 };
+        function resetStalks() {
+          plants.forEach(function (svg) {
+            svg.classList.remove('is-blooming');
+            svg.querySelectorAll('.bp__stalk').forEach(function (el) {
+              const len = el.getTotalLength();
+              el.style.transition = 'none';
+              el.style.strokeDasharray = len;
+              el.style.strokeDashoffset = len;
+            });
+          });
         }
 
-        function spawnFlowers() {
-          flowers = [];
-          const divisor = isSmallScreen ? 220 : 140;
-          const leftCount = Math.floor(canvas.width / divisor);
-          for (let i = 0; i < leftCount; i++) flowers.push(makeFlower('left'));
-          const rightCount = Math.floor(canvas.width / divisor);
-          for (let i = 0; i < rightCount; i++) flowers.push(makeFlower('right'));
-        }
+        resetStalks();
 
-        function stemPoint(f, t) {
-          const cx = f.isLeft ? f.tipX * 0.5 : canvas.width - (canvas.width - f.tipX) * 0.5;
-          const cy = f.baseY - f.stemH * 0.6;
-          const x = (1-t)*(1-t)*f.baseX + 2*(1-t)*t*cx + t*t*f.tipX;
-          const y = (1-t)*(1-t)*f.baseY + 2*(1-t)*t*cy + t*t*(f.baseY - f.stemH);
-          return {x, y};
-        }
-
-        function drawFlower(f, elapsed) {
-          const adj = Math.max(0, elapsed - f.delay);
-          const p   = Math.min(1, adj / f.duration);
-          const ep = 1 - Math.pow(1 - p, 3);
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(f.baseX, f.baseY);
-          const steps = 20;
-          for (let i = 1; i <= steps; i++) {
-            const t = (i / steps) * ep;
-            const pt = stemPoint(f, t);
-            ctx.lineTo(pt.x, pt.y);
-          }
-          ctx.strokeStyle = '#2d6a4f';
-          ctx.lineWidth   = 1.2;
-          ctx.lineCap     = 'round';
-          ctx.stroke();
-          if (f.hasLeaf && ep > f.leafT) {
-            const leafProgress = Math.min(1, (ep - f.leafT) / (1 - f.leafT));
-            const lp = stemPoint(f, f.leafT * ep);
-            ctx.save();
-            ctx.translate(lp.x, lp.y);
-            const angle = f.isLeft ? -0.4 * f.leafSide : 0.4 * f.leafSide;
-            ctx.rotate(angle + (f.leafSide * Math.PI / 5));
-            ctx.scale(leafProgress, leafProgress);
-            ctx.beginPath();
-            ctx.ellipse(0, 0, 14, 6, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#52b788';
-            ctx.globalAlpha = 0.7;
-            ctx.fill();
-            ctx.restore();
-          }
-          if (ep > 0.85) {
-            const flowerP = (ep - 0.85) / 0.15;
-            const fp = Math.min(1, flowerP);
-            const tip = stemPoint(f, ep);
-            ctx.save();
-            ctx.translate(tip.x, tip.y);
-            ctx.scale(fp, fp);
-            for (let i = 0; i < f.petalCount; i++) {
-              const angle = (i / f.petalCount) * Math.PI * 2;
-              ctx.save();
-              ctx.rotate(angle);
-              ctx.beginPath();
-              ctx.ellipse(0, -f.petalR * 1.1, f.petalR * 0.55, f.petalR, 0, 0, Math.PI * 2);
-              ctx.fillStyle = f.color;
-              ctx.globalAlpha = 0.82;
-              ctx.fill();
-              ctx.restore();
-            }
-            ctx.beginPath();
-            ctx.arc(0, 0, f.centerR, 0, Math.PI * 2);
-            ctx.fillStyle = f.centerColor;
-            ctx.globalAlpha = 1;
-            ctx.fill();
-            ctx.strokeStyle = f.color;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-            ctx.restore();
-          }
-          ctx.restore();
-        }
-
-        function animate(ts) {
-          if (!startTime) startTime = ts;
-          const elapsed = ts - startTime;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          flowers.forEach(f => drawFlower(f, elapsed));
-          const maxEnd = Math.max(...flowers.map(f => f.delay + f.duration + 200));
-          if (elapsed < maxEnd + 400) {
-            activeRaf = requestAnimationFrame(animate);
-          } else {
-            activeRaf = null;
-          }
-        }
-
-        window.startFlowers = function() {
-          if (prefersReducedMotion) {
-            canvas.classList.add('visible');
-            return;
-          }
-          if (activeRaf) {
-            cancelAnimationFrame(activeRaf);
-            activeRaf = null;
-          }
-          canvas.classList.add('visible');
-          spawnFlowers();
-          startTime = null;
-          activeRaf = requestAnimationFrame(animate);
+        window.startFlowers = function () {
+          resetStalks();
+          garden.getBoundingClientRect();
+          plants.forEach(function (svg, pIdx) {
+            const baseDelay = pIdx * 0.26;
+            svg.querySelectorAll('.bp__stalk').forEach(function (el, i) {
+              const isSub = el.classList.contains('bp__stalk--sub');
+              const dur = isSub ? '2.5s' : '3.2s';
+              const delay = baseDelay + (isSub ? 0.55 + i * 0.1 : i * 0.12);
+              el.style.transition = 'stroke-dashoffset ' + dur + ' cubic-bezier(0.16, 1, 0.3, 1) ' + delay.toFixed(2) + 's';
+              el.style.strokeDashoffset = '0';
+            });
+            setTimeout(function () {
+              svg.classList.add('is-blooming');
+            }, baseDelay * 1000);
+          });
         };
+
+        if (prefersReducedMotion) return;
+
+        const branchNodes = [];
+        plants.forEach(function (svg) {
+          svg.querySelectorAll('.bp__branch').forEach(function (el) {
+            branchNodes.push({
+              svg: svg,
+              el: el,
+              px: parseFloat(el.getAttribute('data-px')),
+              py: parseFloat(el.getAttribute('data-py')),
+              tx: parseFloat(el.getAttribute('data-tx')),
+              ty: parseFloat(el.getAttribute('data-ty')),
+              max: parseFloat(el.getAttribute('data-max')) || 4.5,
+              spx: 0,
+              spy: 0,
+              stx: 0,
+              sty: 0,
+              detSign: 1,
+              angle: 0,
+              vel: 0,
+              target: 0
+            });
+          });
+        });
+
+        function updateScreenCoords() {
+          branchNodes.forEach(function (b) {
+            const ctm = b.svg.getScreenCTM();
+            if (!ctm) return;
+            b.spx = ctm.a * b.px + ctm.c * b.py + ctm.e;
+            b.spy = ctm.b * b.px + ctm.d * b.py + ctm.f;
+            b.stx = ctm.a * b.tx + ctm.c * b.ty + ctm.e;
+            b.sty = ctm.b * b.tx + ctm.d * b.ty + ctm.f;
+            const det = ctm.a * ctm.d - ctm.b * ctm.c;
+            b.detSign = det < 0 ? -1 : 1;
+          });
+        }
+
+        updateScreenCoords();
+        window.addEventListener('resize', updateScreenCoords, { passive: true });
+
+        let rafId = null;
+        let lastX = null;
+        let lastY = null;
+        let svx = 0;
+        let svy = 0;
+
+        function stepPhysics() {
+          let moving = false;
+          for (let i = 0; i < branchNodes.length; i++) {
+            const b = branchNodes[i];
+            b.target *= 0.93;
+            const force = (b.target - b.angle) * 0.042;
+            b.vel = (b.vel + force) * 0.90;
+            b.angle += b.vel;
+            if (Math.abs(b.angle) > 0.008 || Math.abs(b.vel) > 0.008 || Math.abs(b.target) > 0.008) {
+              moving = true;
+              b.el.style.transform = 'rotate(' + b.angle.toFixed(2) + 'deg)';
+            } else if (b.angle !== 0) {
+              b.angle = 0;
+              b.vel = 0;
+              b.target = 0;
+              b.el.style.transform = '';
+            }
+          }
+          if (moving) {
+            rafId = requestAnimationFrame(stepPhysics);
+          } else {
+            rafId = null;
+          }
+        }
+
+        window.addEventListener('pointermove', function (e) {
+          if (e.pointerType === 'touch') return;
+          const mx = e.clientX;
+          const my = e.clientY;
+          const rawVx = lastX !== null ? Math.max(-22, Math.min(22, mx - lastX)) : 0;
+          const rawVy = lastY !== null ? Math.max(-22, Math.min(22, my - lastY)) : 0;
+          lastX = mx;
+          lastY = my;
+          svx = svx * 0.65 + rawVx * 0.35;
+          svy = svy * 0.65 + rawVy * 0.35;
+
+          let triggered = false;
+          const R = 145;
+
+          for (let i = 0; i < branchNodes.length; i++) {
+            const b = branchNodes[i];
+            const dx = b.stx - b.spx;
+            const dy = b.sty - b.spy;
+            const len2 = dx * dx + dy * dy;
+            if (len2 < 1) continue;
+
+            const t = Math.max(0.18, Math.min(1, ((mx - b.spx) * dx + (my - b.spy) * dy) / len2));
+            const cx = b.spx + t * dx;
+            const cy = b.spy + t * dy;
+            const dist = Math.hypot(mx - cx, my - cy);
+
+            if (dist < R) {
+              const falloff = 1 - dist / R;
+              const smooth = falloff * falloff * (3 - 2 * falloff);
+              const len = Math.sqrt(len2);
+              const nx = -dy / len;
+              const ny = dx / len;
+
+              const signedLat = ((mx - cx) * nx + (my - cy) * ny) / R;
+              const softApart = -Math.sin(signedLat * Math.PI) * smooth * b.max * 0.55;
+              const breeze = ((svx * nx + svy * ny) * 0.22) * smooth;
+              const desired = Math.max(-b.max, Math.min(b.max, (softApart + breeze) * b.detSign * (0.45 + 0.55 * t)));
+
+              b.target += (desired - b.target) * 0.32;
+              triggered = true;
+            }
+          }
+
+          if (triggered && !rafId) {
+            rafId = requestAnimationFrame(stepPhysics);
+          }
+        }, { passive: true });
       })();
     </script>
 
@@ -3961,6 +4182,7 @@
             toast.classList.remove('visible');
           }, ms || 3200);
         }
+        window.showToast = showToast;
 
         function buildEmail() {
           var u = ['guillermo', 'eugui', 'sanchez'].join('');
@@ -4614,6 +4836,28 @@
         let lfo = null;
         let filter = null;
         let audioSuspendTimer = null;
+        let fxAudioMuted = false;
+
+        const fxAudioToggle = document.getElementById('fxAudioToggle');
+        const fxAudioLabel = document.getElementById('fxAudioLabel');
+
+        if (fxAudioToggle) {
+          fxAudioToggle.addEventListener('click', function () {
+            fxAudioMuted = !fxAudioMuted;
+            fxAudioToggle.setAttribute('aria-pressed', fxAudioMuted ? 'true' : 'false');
+            fxAudioToggle.setAttribute(
+              'aria-label',
+              fxAudioMuted ? 'Activar efectos de sonido de los proyectos' : 'Silenciar efectos de sonido de los proyectos'
+            );
+            if (fxAudioLabel) fxAudioLabel.textContent = fxAudioMuted ? 'AUDIO: OFF' : 'AUDIO: ON';
+            if (fxAudioMuted) {
+              stopAmbienceTone();
+            } else if (activeCardEl && projectsView.classList.contains('fx-on')) {
+              const fx = activeCardEl.getAttribute('data-fx');
+              if (fx) playAmbienceTone(fx);
+            }
+          });
+        }
 
         const SOUND_PRESETS = {
           balatro:   { t1: 'sawtooth', t2: 'triangle', f1: 55,    f2: 110.4,  lfo: 3.2, cutoff: 145, vol: 0.042 },
@@ -4628,7 +4872,7 @@
         };
 
         function playAmbienceTone(fxType) {
-          if (prefersReducedMotion) return;
+          if (prefersReducedMotion || fxAudioMuted) return;
           const preset = SOUND_PRESETS[fxType] || SOUND_PRESETS.balatro;
           try {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -5856,15 +6100,12 @@
         if (cluster) {
           const badges = Array.prototype.slice.call(cluster.querySelectorAll('.avail-badge'));
           let hoveredEl = null;
-          let clickedEl = null;
 
           function syncBadges() {
             badges.forEach(function (b) {
               const isHov = b === hoveredEl;
-              const isClk = b === clickedEl;
-              const isDim = hoveredEl !== null && !isHov && !isClk;
+              const isDim = hoveredEl !== null && !isHov;
               b.classList.toggle('is-hovered', isHov);
-              b.classList.toggle('is-clicked', isClk);
               b.classList.toggle('is-dimmed', isDim);
             });
           }
@@ -5880,17 +6121,6 @@
               if (hoveredEl === badge) hoveredEl = null;
               syncBadges();
             });
-            badge.addEventListener('click', function () {
-              clickedEl = clickedEl === badge ? null : badge;
-              syncBadges();
-            });
-            badge.addEventListener('keydown', function (e) {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                clickedEl = clickedEl === badge ? null : badge;
-                syncBadges();
-              }
-            });
           });
         }
       })();
@@ -5900,9 +6130,14 @@
     const modal = document.getElementById('qrTreeModal');
     const closeBtn = document.getElementById('qrModalClose');
     const canvasWrap = document.getElementById('qrCanvasWrap');
+    const qrStatus = document.getElementById('qrStatus');
+    const qrStatusText = document.getElementById('qrStatusText');
     const downloadBtn = document.getElementById('qrDownloadBtn');
     const targetSelect = document.getElementById('qrTargetSelect');
     const themeSwitch = document.getElementById('theme-switch');
+    const portfolioView = document.getElementById('portfolio-view');
+    const themeToggleWrap = document.querySelector('.theme-toggle');
+    const musicPlayer = document.getElementById('musicPlayer');
 
     if (!openBtn || !modal || !canvasWrap) return;
 
@@ -5949,11 +6184,14 @@
     function ensureLibraries() {
       if (libsLoaded) return Promise.resolve();
       if (libsLoading) {
-        return new Promise(function (resolve) {
+        return new Promise(function (resolve, reject) {
           const check = setInterval(function () {
             if (libsLoaded) {
               clearInterval(check);
               resolve();
+            } else if (!libsLoading) {
+              clearInterval(check);
+              reject(new Error('Error loading libraries'));
             }
           }, 50);
         });
@@ -5965,6 +6203,9 @@
       ]).then(function () {
         libsLoaded = true;
         libsLoading = false;
+      }).catch(function (err) {
+        libsLoading = false;
+        throw err;
       });
     }
 
@@ -6408,6 +6649,7 @@
       isFlat = flat;
       animFrom = progress;
       animTo = isFlat ? 1 : 0;
+      canvasWrap.setAttribute('aria-pressed', isFlat ? 'true' : 'false');
       if (instant) {
         progress = animTo;
         animStartTime = 0;
@@ -6456,29 +6698,54 @@
       renderer.setSize(w, h);
     }
 
+    function setBackgroundInert(state) {
+      if (!('inert' in HTMLElement.prototype)) return;
+      if (portfolioView) portfolioView.inert = state;
+      if (themeToggleWrap) themeToggleWrap.inert = state;
+      if (musicPlayer) musicPlayer.inert = state;
+    }
+
     function openModal() {
       isModalOpen = true;
+      setBackgroundInert(true);
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
+      closeBtn.focus();
+      if (!engineInitialized && qrStatus) {
+        qrStatus.classList.remove('is-hidden', 'is-error');
+        if (qrStatusText) qrStatusText.textContent = 'Cargando visor 3D…';
+      }
       ensureLibraries().then(function () {
         if (!isModalOpen) return;
         initEngine();
+        if (qrStatus) qrStatus.classList.add('is-hidden');
         setFlatState(false, true);
         resizeRenderer();
         if (!rafId) {
           rafId = requestAnimationFrame(renderLoop);
+        }
+      }).catch(function () {
+        if (qrStatus) {
+          qrStatus.classList.remove('is-hidden');
+          qrStatus.classList.add('is-error');
+          if (qrStatusText) qrStatusText.textContent = 'Error al cargar el visor 3D';
+        }
+        if (window.showToast) {
+          window.showToast('Error al cargar el visor 3D');
         }
       });
     }
 
     function closeModal() {
       isModalOpen = false;
+      setBackgroundInert(false);
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       if (rafId) {
         cancelAnimationFrame(rafId);
         rafId = null;
       }
+      openBtn.focus();
     }
 
     openBtn.addEventListener('click', openModal);
@@ -6487,10 +6754,33 @@
       if (e.target === modal) closeModal();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && isModalOpen) closeModal();
+      if (!isModalOpen) return;
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusables = modal.querySelectorAll('button, [href], select, [tabindex]:not([tabindex="-1"])');
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
 
     canvasWrap.addEventListener('click', toggleFlatView);
+    canvasWrap.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleFlatView();
+      }
+    });
     if (downloadBtn) {
       downloadBtn.addEventListener('click', downloadQRImage);
     }
